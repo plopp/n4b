@@ -1,0 +1,13 @@
+<template name="scenarioItem">
+  <div class="scenario">
+    <div class="scenario-content">
+      <h3><a href="{{scenarioPagePath this}}">{{title}}</a>
+         {{#each usedResources}}
+         #<span>
+           {{title}}
+         </span>
+         {{/each}}
+      </h3>
+    </div>
+  </div>
+</template>

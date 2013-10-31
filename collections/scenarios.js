@@ -1,0 +1,1 @@
+Scenarios = new Meteor.Collection('scenarios');

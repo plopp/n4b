@@ -1,0 +1,17 @@
+<template name="scenarioPage">
+  {{#with currentScenario}}
+    {{> scenarioItem}}
+	
+    <ul class="rules">
+      {{#each rules}}
+        {{> ruleItem}}
+      {{/each}}
+    </ul>
+
+    {{#if currentUser}}
+      {{> ruleSubmit}}
+    {{else}}
+      <p>Please log in to create a rule.</p>
+    {{/if}}
+  {{/with}}
+</template>
