@@ -6,6 +6,22 @@ Meteor.Router.add({
     and: function(id) { Session.set('currentScenarioId', id); }
   },
 
+  '/rule/schedule/:_id':{
+    to: 'ruleSchedule',
+    and: function(id) {
+      Meteor.call('scheduleThis',id,function (error, result) { 
+          console.log("Error: "+error+", Result: "+result);
+          if(error != undefined){
+            throw new Meteor.Error(500, "Parse error "+error);
+            Meteor.Router.to('/');
+          }
+
+          if(result != undefined){
+            Meteor.Router.to('scenarioPage', result);
+          }
+      });
+    }
+  },
 	/*
   '/scenario/:_id/edit': {
     to: 'scenarioEdit', 

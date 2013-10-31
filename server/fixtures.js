@@ -96,27 +96,27 @@ if (Scenarios.find().count() === 0) {
     console.log('Job2 occurred.');
   });
   
-  var job1 = Jobs.insert({
+  var job1 = undefined;/*Jobs.insert({
     scenId: exScenId,
     schedule: singleSchedJob1,
     recurring: false,
     finished: false
-  });
+  });*/
   
-  var job2 = Jobs.insert({
+  var job2 = undefined; /*Jobs.insert({
     scenId: exScenId,
     schedule: recurSchedJob2,
     recurring: true
-  });
+  });*/
 
   Rules.insert({
     scenId: exScenId,
     userId: admin._id,
     creator: admin.profile.name,
-    submitted: now - 5 * 3600 * 1000,
+    submitted: new Date().getTime(),
     jobId: job1,
     value: 0,
-    timerule: 'every wednesday at 3 pm',
+    timerule: 'every 5 seconds',
     resourceId: stove1,
     title: 'Turn on stove.'
   });
@@ -125,12 +125,12 @@ if (Scenarios.find().count() === 0) {
     scenId: exScenId,
     userId: admin._id,
     creator: admin.profile.name,
-    submitted: now - 3 * 3600 * 1000,
+    submitted: new Date().getTime(),
     jobId: job2,
     value: 22,
     valueMin: 10,
     valueMax: 35,
-    timerule: 'every wednesday at 3 pm',
+    timerule: 'at 10:11 am',
     resourceId: centralHeating,
     title: 'Lower heat.'
   });
@@ -139,10 +139,10 @@ if (Scenarios.find().count() === 0) {
     scenId: exScenId2,
     userId: admin._id,
     creator: admin.profile.name,
-    submitted: now - 3 * 3600 * 1000,
+    submitted: new Date().getTime(),
     jobId: job2,
     value: 0,
-    timerule: 'every wednesday at 3 pm',
+    timerule: 'at 10:12 am',
     resourceId: showerWater,
     title: 'Turn on water.'
   });
@@ -151,10 +151,10 @@ if (Scenarios.find().count() === 0) {
     scenId: exScenId2,
     userId: admin._id,
     creator: admin.profile.name,
-    submitted: now - 3 * 3600 * 1000,
+    submitted: new Date().getTime(),
     jobId: job2,
     value: 0,
-    timerule: 'every wednesday at 3 pm',
+    timerule: 'at 10:13 am',
     resourceId: showerWater,
     title: 'Turn off water.'
   });
@@ -163,10 +163,10 @@ if (Scenarios.find().count() === 0) {
     scenId: exScenId2,
     userId: admin._id,
     creator: admin.profile.name,
-    submitted: now - 3 * 3600 * 1000,
+    submitted: new Date().getTime(),
     jobId: job2,
     value: 0,
-    timerule: 'every wednesday at 3 pm',
+    timerule: 'at 10:14 am',
     resourceId: bathroomVent,
     title: 'Start ventilation in bathroom.'
   });
@@ -175,10 +175,10 @@ if (Scenarios.find().count() === 0) {
     scenId: exScenId2,
     userId: admin._id,
     creator: admin.profile.name,
-    submitted: now - 3 * 3600 * 1000,
+    submitted: new Date().getTime(),
     jobId: job2,
     value: 0,
-    timerule: 'every wednesday at 3 pm',
+    timerule: 'at 10:15 am',
     resourceId: bathroomVent,
     title: 'Stop ventilation in bathroom.'
   });

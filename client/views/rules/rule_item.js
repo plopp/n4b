@@ -10,5 +10,11 @@ Template.ruleItem.helpers({
   },
   unit: function(){
   	return Resources.findOne(this.resourceId).unit;
+  },
+  jobs: function(){
+  	return Jobs.find({ruleId: this._id});
+  },
+  isScheduled: function(){
+  	return Jobs.find({ruleId: this._id}).count() > 0;
   }
 });
