@@ -16,23 +16,17 @@ Meteor.methods({
       throw new Meteor.Error(404, "Parse error "+textSched.error);
       return rule.scenId;
     }
-    next = later.schedule(textSched).next(1);
-    console.log(next);
-
-
-
-    var j = schedule.scheduleJob(later.schedule(textSched).next(1), job);
+    
+    //For serialization purposes, methods are stripped
+    var s = {schedules: textSched.schedules, exceptions: textSched.exceptions};
 
     function job(){
         console.log('The world is going to end today.');
-        var j = schedule.scheduleJob(later.schedule(textSched).next(2)[1], job);
     }
-    //console.log(j.job());
-    //console.log(j);
-    j.ruleId = ruleId;
-    Jobs.insert(j);
-    console.log(j);
 
+
+    s.ruleId = ruleId; //Append ruleId for backtracking the rule
+    Jobs.insert(s); //For scheduling: schedule.scheduleJob(s.schedules, job);
     return rule.scenId;
   }
 });
