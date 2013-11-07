@@ -1,5 +1,3 @@
-var schedule = Meteor.require('node-schedule');
-
 if(Types.find().count() === 0){
     var digital = Types.insert({
       title: 'Digital'
@@ -85,17 +83,6 @@ if (Scenarios.find().count() === 0) {
     submitted: now - 8 * 3600 * 1000
   });
 
-  var singleSchedJob1 = schedule.scheduleJob(new Date(2012, 11, 21, 5, 30, 0), function(){
-      console.log('Job1 done.');
-  });
-
-  var rule = new schedule.RecurrenceRule();
-  rule.second = 42;
-  
-  var recurSchedJob2 = schedule.scheduleJob(rule, function(){
-    console.log('Job2 occurred.');
-  });
-  
   var job1 = undefined;/*Jobs.insert({
     scenId: exScenId,
     schedule: singleSchedJob1,
@@ -114,9 +101,8 @@ if (Scenarios.find().count() === 0) {
     userId: admin._id,
     creator: admin.profile.name,
     submitted: new Date().getTime(),
-    jobId: job1,
     value: 0,
-    timerule: 'every 5 seconds',
+    timerule: 'every 4 hour',
     resourceId: stove1,
     title: 'Turn on stove.'
   });
@@ -126,11 +112,10 @@ if (Scenarios.find().count() === 0) {
     userId: admin._id,
     creator: admin.profile.name,
     submitted: new Date().getTime(),
-    jobId: job2,
     value: 22,
     valueMin: 10,
     valueMax: 35,
-    timerule: 'at 10:11 am',
+    timerule: 'at 17:36',
     resourceId: centralHeating,
     title: 'Lower heat.'
   });
@@ -140,9 +125,8 @@ if (Scenarios.find().count() === 0) {
     userId: admin._id,
     creator: admin.profile.name,
     submitted: new Date().getTime(),
-    jobId: job2,
     value: 0,
-    timerule: 'at 10:12 am',
+    timerule: 'at 17:48',
     resourceId: showerWater,
     title: 'Turn on water.'
   });
@@ -152,9 +136,8 @@ if (Scenarios.find().count() === 0) {
     userId: admin._id,
     creator: admin.profile.name,
     submitted: new Date().getTime(),
-    jobId: job2,
     value: 0,
-    timerule: 'at 10:13 am',
+    timerule: 'at 17:37',
     resourceId: showerWater,
     title: 'Turn off water.'
   });
@@ -164,9 +147,8 @@ if (Scenarios.find().count() === 0) {
     userId: admin._id,
     creator: admin.profile.name,
     submitted: new Date().getTime(),
-    jobId: job2,
     value: 0,
-    timerule: 'at 10:14 am',
+    timerule: 'at 17:29',
     resourceId: bathroomVent,
     title: 'Start ventilation in bathroom.'
   });
@@ -176,7 +158,6 @@ if (Scenarios.find().count() === 0) {
     userId: admin._id,
     creator: admin.profile.name,
     submitted: new Date().getTime(),
-    jobId: job2,
     value: 0,
     timerule: 'at 10:15 am',
     resourceId: bathroomVent,

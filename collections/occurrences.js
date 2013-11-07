@@ -1,0 +1,1 @@
+Occurrences = new Meteor.Collection('occurrences');
