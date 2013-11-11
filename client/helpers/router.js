@@ -6,6 +6,8 @@ Meteor.Router.add({
     and: function(id) { Session.set('currentScenarioId', id); }
   },
 
+  '/submit/scenario/': 'scenarioSubmit',
+
   '/rule/schedule/:_id':{
     to: 'ruleSchedule',
     and: function(id) {
@@ -29,7 +31,6 @@ Meteor.Router.add({
   },
   */
 
-  '/submit': 'postSubmit'
 
 });
 

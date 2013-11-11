@@ -16,7 +16,7 @@ doJobFiberTask = Fiber(function(){
         curRule = Rules.findOne(occurrences[h].ruleId);
         console.log(curRule.title + " has changed value to "+curRule.value);
         Occurrences.remove(occurrences[h]._id);
-        console.log("Occurrence "+curRule._id+" has been removed. Remaining: "+Occurrences.find().count());
+        console.log("Occurrence "+occurrences[h]._id+" has been removed. Remaining: "+Occurrences.find().count());
       }
     };
     console.log('Minute check done.');
@@ -49,10 +49,11 @@ calcOccurrencesFiberTask = Fiber(function(){
       rulesArr = Rules.find().fetch();
       var k = 0;
       for (var i = rulesArr.length - 1; i >= 0; i--) {
-        calculatedOccurrences = later.schedule(later.parse.text(rulesArr[i].timerule)).next(11000,new Date().getTime(), nextSunday);
+        calculatedOccurrences = later.schedule(later.parse.text(rulesArr[i].timerule)).next(11000,new Date(), nextSunday);
         for (var j = calculatedOccurrences.length - 1; j >= 0; j--) {
           if(Occurrences.find({ruleId: rulesArr[i]._id, datetime: new Date(calculatedOccurrences[j]).getTime()}).count() === 0){
             Occurrences.insert({ruleId: rulesArr[i]._id, datetime: new Date(calculatedOccurrences[j]).getTime()});
+            console.log("Scheduled "+Rules.findOne(rulesArr[i]._id).title+" at "+new Date(calculatedOccurrences[j]).toString()+" with rule "+rulesArr[i].timerule);
             k++;
           }
         };

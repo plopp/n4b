@@ -115,7 +115,7 @@ if (Scenarios.find().count() === 0) {
     value: 22,
     valueMin: 10,
     valueMax: 35,
-    timerule: 'at 17:36',
+    timerule: 'at 11:47',
     resourceId: centralHeating,
     title: 'Lower heat.'
   });
@@ -126,7 +126,7 @@ if (Scenarios.find().count() === 0) {
     creator: admin.profile.name,
     submitted: new Date().getTime(),
     value: 0,
-    timerule: 'at 17:48',
+    timerule: 'at 11:47',
     resourceId: showerWater,
     title: 'Turn on water.'
   });
@@ -137,7 +137,7 @@ if (Scenarios.find().count() === 0) {
     creator: admin.profile.name,
     submitted: new Date().getTime(),
     value: 0,
-    timerule: 'at 17:37',
+    timerule: 'at 11:48',
     resourceId: showerWater,
     title: 'Turn off water.'
   });
