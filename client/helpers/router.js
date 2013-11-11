@@ -6,7 +6,11 @@ Meteor.Router.add({
     and: function(id) { Session.set('currentScenarioId', id); }
   },
 
-  '/submit/scenario/': 'scenarioSubmit',
+  '/submit/scenario': 'scenarioSubmit',
+  '/submit/:_id/rule' : {
+    to: 'ruleSubmit',
+    and: function(id) { Session.set('currentScenarioId', id); }
+  },
 
   '/rule/schedule/:_id':{
     to: 'ruleSchedule',

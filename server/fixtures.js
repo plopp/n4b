@@ -17,44 +17,48 @@ if(Types.find().count() === 0){
 if(Resources.find().count() === 0){
   var stove1 = Resources.insert({
     title: 'Stove',
-    typeId: analog._id,
-    unit: ''
+    typeId: analog,
+    max: 6,
+    min: 0,
+    unit: '#'
   });
   
   var lampKitchen = Resources.insert({
     title: 'Kitchen lamp',
-    typeId: digital._id,
+    typeId: digital,
   });
 
   var centralHeating = Resources.insert({
     title: 'Central heating',
-    typeId: analog._id,
+    typeId: analog,
+    max: 40,
+    min: 5,
     unit: '°C'
   });
 
   var outlet1 = Resources.insert({
     title: 'Outlet livingroom',
-    typeId: digital._id
+    typeId: digital
   });
 
   var outlet2 = Resources.insert({
     title: 'Outlet bedroom',
-    typeId: digital._id
+    typeId: digital
   });
 
   var outlet3 = Resources.insert({
     title: 'Outlet bedroom 2',
-    typeId: digital._id
+    typeId: digital
   });
 
   var showerWater = Resources.insert({
     title: 'Shower water',
-    typeId: digital._id
+    typeId: digital
   });
 
   var bathroomVent = Resources.insert({
     title: 'Bathroom ventilation',
-    typeId: digital._id
+    typeId: digital
   });
 
 }
