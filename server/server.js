@@ -97,5 +97,14 @@ Meteor.methods({
     s.ruleId = ruleId; //Append ruleId for backtracking the rule
     Jobs.insert(s); //For scheduling: schedule.scheduleJob(s.schedules, job);
     return rule.scenId;
+  },
+  verifyTimerule: function(rule){
+    var sched = later.parse.text(rule);
+    occurrence = later.schedule(sched).next(1);
+
+    return {
+      result: sched.error,
+      nextOccurrence: occurrence
+    }
   }
 });
