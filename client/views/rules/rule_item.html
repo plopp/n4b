@@ -7,10 +7,5 @@
     {{#each jobs}}
     	<p>{{name}}<p>
     {{/each}}
-    {{#if isScheduled}}
-    	<a href="{{ruleScheduleCancelPath this}}">Cancel</a>
-    {{else}}
-    	<a href="{{ruleSchedulePath this}}">Schedule this!</a>
-    {{/if}}
   </li>
 </template>

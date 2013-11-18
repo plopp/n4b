@@ -62,10 +62,6 @@ calcOccurrencesFiberTask = Fiber(function(){
       console.log('Calculating new occurrences done.');
     });
 
-//Occurrences.remove({});
-//if(Occurrences.find().count() === 0){
-  calcOccurrencesFiberTask.run();
-//}
 
 var recurSchedJob2 = schedule.scheduleJob(weekRule, function(){
   calcOccurrencesFiberTask.run();
@@ -73,31 +69,6 @@ var recurSchedJob2 = schedule.scheduleJob(weekRule, function(){
 
 
 Meteor.methods({
-  scheduleThis: function (ruleId) {
-    //check(arg1, String);
-    //check(arg2, [Number]);
-    // .. do stuff ..
-    rule = Rules.findOne(ruleId);
-    console.log(rule.timerule);
-
-    textSched = later.parse.text(rule.timerule);
-    if (textSched.error > 0){
-      throw new Meteor.Error(404, "Parse error "+textSched.error);
-      return rule.scenId;
-    }
-    
-    //For serialization purposes, methods are stripped
-    var s = {schedules: textSched.schedules, exceptions: textSched.exceptions};
-
-    function job(){
-        console.log('The world is going to end today.');
-    }
-
-
-    s.ruleId = ruleId; //Append ruleId for backtracking the rule
-    Jobs.insert(s); //For scheduling: schedule.scheduleJob(s.schedules, job);
-    return rule.scenId;
-  },
   verifyTimerule: function(rule){
     var sched = later.parse.text(rule);
     occurrence = later.schedule(sched).next(1);
@@ -106,5 +77,9 @@ Meteor.methods({
       result: sched.error,
       nextOccurrence: occurrence
     }
+  },
+  scheduleOccurrences: function(){
+    console.log("Reschedule");
+    calcOccurrencesFiberTask.run();
   }
 });

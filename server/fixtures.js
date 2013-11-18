@@ -106,7 +106,7 @@ if (Scenarios.find().count() === 0) {
     creator: admin.profile.name,
     submitted: new Date().getTime(),
     value: 0,
-    timerule: 'every 4 hour',
+    timerule: 'every 4 hour on the 0th min on the 0th sec',
     resourceId: stove1,
     title: 'Turn on stove.'
   });

@@ -13,8 +13,5 @@ Template.ruleItem.helpers({
   },
   jobs: function(){
   	return Jobs.find({ruleId: this._id});
-  },
-  isScheduled: function(){
-  	return Jobs.find({ruleId: this._id}).count() > 0;
   }
 });
