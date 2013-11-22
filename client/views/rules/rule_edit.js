@@ -1,4 +1,4 @@
-Template.ruleSubmit.helpers({
+Template.ruleEdit.helpers({
   resources : function(){
     return Resources.find();
   },
@@ -23,7 +23,7 @@ Template.ruleSubmit.helpers({
 });
 
 
-Template.ruleSubmit.events({
+Template.ruleEdit.events({
   'submit form': function(e) {
     e.preventDefault();
     console.log(Session.get("currentScenarioId"));
@@ -99,27 +99,3 @@ Template.ruleSubmit.events({
   }
 
 });
-
-Template.ruleSubmit.rendered = function(){
-  /*resourceId = $("#resource_select").val(); //The resource ID is stored in the value property in every option.
-  typeForThisResource = Types.findOne(Resources.findOne(resourceId).typeId); //Get the resource type.
-  console.log(Resources.findOne(resourceId).title);
-  Session.set("resourceType", typeForThisResource.title);
-  Session.set("resourceId", resourceId)
-    
-  unit = Resources.findOne(resourceId).unit;
-  Session.set("unit", unit); //Doesn't matter if unit is undefined
-    
-  max = Resources.findOne(resourceId).max;
-  Session.set("max", max);
-
-  min = Resources.findOne(resourceId).min;
-  Session.set("min",min);
-
-  if(typeof min == undefined || typeof max == undefined){
-    Session.set("val", 0);
-  }
-  else{
-    Session.set("val", Math.floor((max-min)/2));
-  }*/
-}
