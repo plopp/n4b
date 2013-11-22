@@ -20,12 +20,16 @@ if(Resources.find().count() === 0){
     typeId: analog,
     max: 6,
     min: 0,
-    unit: '#'
+    unit: '#',
+    value: 0,
+    plcVar: 'MAIN.stove'
   });
   
   var lampKitchen = Resources.insert({
     title: 'Kitchen lamp',
     typeId: digital,
+    value: 0,
+    plcVar: 'MAIN.kitchenLamp'
   });
 
   var centralHeating = Resources.insert({
@@ -33,32 +37,44 @@ if(Resources.find().count() === 0){
     typeId: analog,
     max: 40,
     min: 5,
-    unit: '°C'
+    unit: '°C',
+    value: 0,
+    plcVar: 'MAIN.centralHeating'
   });
 
   var outlet1 = Resources.insert({
     title: 'Outlet livingroom',
-    typeId: digital
+    typeId: digital,
+    value: 0,
+    plcVar: 'MAIN.outletLivingroom'
   });
 
   var outlet2 = Resources.insert({
     title: 'Outlet bedroom',
-    typeId: digital
+    typeId: digital,
+    value: 0,
+    plcVar: 'MAIN.outletBedroom'
   });
 
   var outlet3 = Resources.insert({
     title: 'Outlet bedroom 2',
-    typeId: digital
+    typeId: digital,
+    value: 0,
+    plcVar: 'MAIN.outletBedroom2'
   });
 
   var showerWater = Resources.insert({
     title: 'Shower water',
-    typeId: digital
+    typeId: digital,
+    value: 0,
+    plcVar: 'MAIN.showerWater'
   });
 
   var bathroomVent = Resources.insert({
     title: 'Bathroom ventilation',
-    typeId: digital
+    typeId: digital,
+    value: 0,
+    plcVar: 'MAIN.bathroomVentilation'
   });
 
 }

@@ -7,19 +7,25 @@ var Fiber = Npm.require('fibers');
 var minuteRule = new schedule.RecurrenceRule();
 minuteRule.second = 0;
 
-doJobFiberTask = Fiber(function(){
+var doJobFiberTask = Fiber(function(){
   //Check if any rule should be performed by matching occurences
     //for every rule.
-    occurrences = Occurrences.find().fetch();
+    var plcHandleNames = new Array();
+    var plcValues = new Array();
+    var occurrences = Occurrences.find().fetch();
     for (var h = occurrences.length - 1; h >= 0; h--) {
       if(new Date(occurrences[h].datetime) < new Date()){
-        curRule = Rules.findOne(occurrences[h].ruleId);
-        console.log(curRule.title + " has changed value to "+curRule.value);
+        var curRule = Rules.findOne(occurrences[h].ruleId);
+        Resources.update(curRule.resourceId, {$set: {value:curRule.value}});
+        var curResource = Resources.findOne(curRule.resourceId);
+        console.log(curResource.title + " has changed value to "+curResource.value);
+        plcHandleNames.push(curResource.plcVar);
+        plcValues.push(curResource.value);
         Occurrences.remove(occurrences[h]._id);
         console.log("Occurrence "+occurrences[h]._id+" has been removed. Remaining: "+Occurrences.find().count());
       }
     };
-    sendToPlc();
+    sendToPlc(plcHandleNames, plcValues, 'write');
     console.log('Minute check done.');
 });
 
@@ -34,7 +40,7 @@ weekRule.hour = 12;
 weekRule.minute = 0;
 weekRule.second = 0;
 
-calcOccurrencesFiberTask = Fiber(function(){
+var calcOccurrencesFiberTask = Fiber(function(){
       var schedule = Meteor.require('node-schedule');
       var later = Meteor.require('later');
 
@@ -46,6 +52,7 @@ calcOccurrencesFiberTask = Fiber(function(){
 
       //Clear existing occurrences that are newer than now - the remaining ones will have been missed and needs
       //to be performed.
+
 
       rulesArr = Rules.find().fetch();
       var k = 0;
@@ -1036,45 +1043,40 @@ var TcAdsWebService = new (function () {
 
     });
 
-function sendToPlc(){
-            console.log("sendToPlc");
+/*
+Sends data to the PLC, the handlesVarNames should be an Array of strings containing
+the handle name-strings. All communication is done usin REAL-value type.
+*/
+function sendToPlc(handlesVarNames, values, method){
+            if(handlesVarNames.length != values.length){
+              console.log("ERROR! Number of handles sent to the PLC must equal the number of values! Communication with PLC aborted.")
+              return 1;
+            }
+
+            if(method != 'write' && method != 'read'){
+              console.log("ERROR! Parameter 'method' must equal 'write' or 'read'. Communication with PLC aborted.");
+              return 2;
+            }
+
+            console.log("Starting communication with PLC.");
             var NETID = ""; // Empty string for local machine;
             var PORT = "801"; // TC3 PLC Runtime
             var SERVICE_URL = "http://192.168.0.87/TcAdsWebService/TcAdsWebService.dll"; // HTTP path to the TcAdsWebService;
-
             var client = new TcAdsWebService.Client(SERVICE_URL, null, null);
-
             var general_timeout = 500;
-
             var readLoopID = null;
             var readLoopDelay = 500;
-
             var readSymbolValuesData = null;
-
-            // Array of symbol names to read;
-            var handlesVarNames = [
-                    "MAIN.byteValue",
-                    "MAIN.wordValue",
-                    "MAIN.dwordValue",
-                    "MAIN.sintValue",
-                    "MAIN.intValue",
-                    "MAIN.dintValue",
-                    "MAIN.realValue",
-                    "MAIN.lrealValue"
-                ];
-
-            // Occurs if the window has loaded;
-            //window.onload = (function () {
 
             // Create sumcommando for reading twincat symbol handles by symbol name;
             var handleswriter = new TcAdsWebService.DataWriter();
 
             // Write general information for each symbol handle to the TcAdsWebService.DataWriter object;
             for (var i = 0; i < handlesVarNames.length; i++) {
-                handleswriter.writeDINT(TcAdsWebService.TcAdsReservedIndexGroups.SymbolHandleByName);
-                handleswriter.writeDINT(0);
-                handleswriter.writeDINT(4); // Expected size; A handle has a size of 4 byte;
-                handleswriter.writeDINT(handlesVarNames[i].length); // The length of the symbol name string;
+              handleswriter.writeDINT(TcAdsWebService.TcAdsReservedIndexGroups.SymbolHandleByName);
+              handleswriter.writeDINT(0);
+              handleswriter.writeDINT(4); // Expected size; A handle has a size of 4 byte;
+              handleswriter.writeDINT(handlesVarNames[i].length); // The length of the symbol name string;
             }
 
             // Write symbol names after the general information to the TcAdsWebService.DataWriter object;
@@ -1082,22 +1084,98 @@ function sendToPlc(){
                 handleswriter.writeString(handlesVarNames[i]);
             }
 
+            // Occurs if the readwrite for the sumcommando to request symbol handles runs into timeout;
+            var RequestHandlesTimeoutCallback = (function () {
+                console.log("RequestHandlesTimeoutCallback");
+                // HANDLE TIMEOUT HERE;
+                div_log.innerHTML = "Request handles timeout!";
+            });
+
+            // Occurs if the read-read-write command has finished;
+            var ReadCallback = (function (e, s) {
+                if (e && e.isBusy) {
+                    // HANDLE PROGRESS TASKS HERE;
+                    // Exit callback function because request is still busy;
+                    return;
+                }
+
+                if (e && !e.hasError) {
+
+                    var reader = e.reader;
+                    
+                    // Read error codes from begin of TcAdsWebService.DataReader object;
+                    for (var i = 0; i < handlesVarNames.length; i++) {
+                        var err = reader.readDWORD();
+                        if (err != 0) {
+                            console.log("Symbol error!");
+                            return;
+                        }
+                    }
+
+                    for(var i = 0 ; i < handlesVarNames.length; i++){
+                      var varValue = reader.readREAL();
+                      //DO SOMETHING WITH THE READ VALUES -> STORE TO DATABASE FOR EXAMPLE
+                      console.log("Read PLC-variable: "+handlesVarNames[i]+"="+varValue);
+                    }
+                } else {
+
+                    if (e.error.getTypeString() == "TcAdsWebService.ResquestError") {
+                        // HANDLE TcAdsWebService.ResquestError HERE;
+                        console.log("Error: StatusText = " + e.error.statusText + " Status: " + e.error.status);
+                    }
+                    else if (e.error.getTypeString() == "TcAdsWebService.Error") {
+                        // HANDLE TcAdsWebService.Error HERE;
+                        console.log("Error: ErrorMessage = " + e.error.errorMessage + " ErrorCode: " + e.error.errorCode);
+                    }
+                }
+
+            });
+            
+            // Occurs if the read-read-write command runs into timeout;
+            var ReadTimeoutCallback = (function () {
+                // HANDLE TIMEOUT HERE;
+                console.log("Read timeout!");
+            });
+
+            // Occurs if the read-read-write command has finished;
+            var WriteCallback = (function (e, s) {
+                if (e && e.isBusy) {
+                    // HANDLE PROGRESS TASKS HERE;
+                    // Exit callback function because request is still busy;
+                    return;
+                }
+
+                if (e && !e.hasError) {
+
+                    console.log("Writing values finished.");
+                    
+                } else {
+
+                    if (e.error.getTypeString() == "TcAdsWebService.ResquestError") {
+                        // HANDLE TcAdsWebService.ResquestError HERE;
+                        console.log("Error: StatusText = " + e.error.statusText + " Status: " + e.error.status);
+                    }
+                    else if (e.error.getTypeString() == "TcAdsWebService.Error") {
+                        // HANDLE TcAdsWebService.Error HERE;
+                        console.log("Error: ErrorMessage = " + e.error.errorMessage + " ErrorCode: " + e.error.errorCode);
+                    }
+                }
+
+            });
+            
+            // Occurs if the read-read-write command runs into timeout;
+            var WriteTimeoutCallback = (function () {
+                // HANDLE TIMEOUT HERE;
+                console.log("Write timeout!");
+            });
+
             //Callbacks
             var RequestHandlesCallback = (function (e, s) {
-                console.log("RequestHandlesCallback. s: "+s+" e:"+e);
+                console.log("RequestHandlesCallback.");
                 if (e && e.isBusy) {
                     // HANDLE PROGRESS TASKS HERE;
                     var message = "Requesting handles...";
                     console.log(message);
-                    /*td_byteValue.innerHTML = message;
-                    td_wordValue.innerHTML = message;
-                    td_dwordValue.innerHTML = message;
-                    td_sintValue.innerHTML = message;
-                    td_intValue.innerHTML = message;
-                    td_dintValue.innerHTML = message;
-                    td_realValue.innerHTML = message;
-                    td_lrealValue.innerHTML = message;*/
-                    // Exit callback function because request is still busy;
                     return;
                 }
 
@@ -1113,72 +1191,64 @@ function sendToPlc(){
                         var len = reader.readDWORD();
 
                         if (err != 0) {
-                            div_log.innerHTML = "Handle error!";
+                            console.log("Handle error: "+err);
                             return;
                         }
 
                     }
 
-                    // Read handles from TcAdsWebService.DataReader object;
-                    var hByteValue = reader.readDWORD();
-                    var hWordValue = reader.readDWORD();
-                    var hDwordValue = reader.readDWORD();
-                    var hSintValue = reader.readDWORD();
-                    var hIntValue = reader.readDWORD();
-                    var hDintValue = reader.readDWORD();
-                    var hRealValue = reader.readDWORD();
-                    var hLrealValue = reader.readDWORD();
+                    var handles = []
+
+                    // Store the handles
+                    for(var i = 0; i < handlesVarNames.length; i++){
+                      handles[i] = reader.readDWORD();
+                    }
 
                     // Create sum commando to read symbol values based on the handle
                     var readSymbolValuesWriter = new TcAdsWebService.DataWriter();
+                    var size = 0;
+                    for(var i = 0; i < handlesVarNames.length; i++){
+                      readSymbolValuesWriter.writeDINT(TcAdsWebService.TcAdsReservedIndexGroups.SymbolValueByHandle);
+                      readSymbolValuesWriter.writeDINT(handles[i]); // IndexOffset = The target handle
+                      readSymbolValuesWriter.writeDINT(4); // size to read
+                      size += 4;
+                    }
 
-                    //  "MAIN.byteValue" // BYTE
-                    readSymbolValuesWriter.writeDINT(TcAdsWebService.TcAdsReservedIndexGroups.SymbolValueByHandle); // IndexGroup
-                    readSymbolValuesWriter.writeDINT(hByteValue); // IndexOffset = The target handle
-                    readSymbolValuesWriter.writeDINT(1); // size to read
+                    if(method == 'write'){
+                      //Assign the values to the writer
+                      for(var i = 0; i < values.length; i++){
+                        readSymbolValuesWriter.writeREAL(values[i]);
+                      }
 
-                    //  "MAIN.wordValue" // WORD
-                    readSymbolValuesWriter.writeDINT(TcAdsWebService.TcAdsReservedIndexGroups.SymbolValueByHandle); // IndexGroup
-                    readSymbolValuesWriter.writeDINT(hWordValue); // IndexOffset = The target handle
-                    readSymbolValuesWriter.writeDINT(2); // size to read
-
-                    //  "MAIN.dwordValue" // DWORD
-                    readSymbolValuesWriter.writeDINT(TcAdsWebService.TcAdsReservedIndexGroups.SymbolValueByHandle); // IndexGroup
-                    readSymbolValuesWriter.writeDINT(hDwordValue); // IndexOffset = The target handle
-                    readSymbolValuesWriter.writeDINT(4); // size to read
-
-                    //  "MAIN.sintValue" // SINT
-                    readSymbolValuesWriter.writeDINT(TcAdsWebService.TcAdsReservedIndexGroups.SymbolValueByHandle); // IndexGroup
-                    readSymbolValuesWriter.writeDINT(hSintValue); // IndexOffset = The target handle
-                    readSymbolValuesWriter.writeDINT(1); // size to read
-
-                    //  "MAIN.intValue" // INT
-                    readSymbolValuesWriter.writeDINT(TcAdsWebService.TcAdsReservedIndexGroups.SymbolValueByHandle); // IndexGroup
-                    readSymbolValuesWriter.writeDINT(hIntValue); // IndexOffset = The target handle
-                    readSymbolValuesWriter.writeDINT(2); // size to read
-
-                    //  "MAIN.dintValue" // DINT
-                    readSymbolValuesWriter.writeDINT(TcAdsWebService.TcAdsReservedIndexGroups.SymbolValueByHandle); // IndexGroup
-                    readSymbolValuesWriter.writeDINT(hDintValue); // IndexOffset = The target handle
-                    readSymbolValuesWriter.writeDINT(4); // size to read
-
-                    //  "MAIN.realValue" // REAL
-                    readSymbolValuesWriter.writeDINT(TcAdsWebService.TcAdsReservedIndexGroups.SymbolValueByHandle); // IndexGroup
-                    readSymbolValuesWriter.writeDINT(hRealValue); // IndexOffset = The target handle
-                    readSymbolValuesWriter.writeDINT(4); // size to read
-
-                    //  "MAIN.lrealValue" // LREAL
-                    readSymbolValuesWriter.writeDINT(TcAdsWebService.TcAdsReservedIndexGroups.SymbolValueByHandle); // IndexGroup
-                    readSymbolValuesWriter.writeDINT(hLrealValue); // IndexOffset = The target handle
-                    readSymbolValuesWriter.writeDINT(8); // size to read
-
-                    // Get Base64 encoded data from TcAdsWebService.DataWriter;
-                    readSymbolValuesData = readSymbolValuesWriter.getBase64EncodedData();
-
-                    // Start cyclic reading of symbol values;
-                    console.log("Creating read loop...");
-                    ReadLoop(); //Run once
-                    //readLoopID = window.setInterval(ReadLoop, readLoopDelay);
+                      client.readwrite(
+                        NETID,
+                        PORT,
+                        0xF081, // 0xF081 = Call Write SumCommando
+                        handles.length, // IndexOffset = Count of requested variables.
+                        size+(handles.length*4), // Length of requested data + 4 byte errorcode per variable.
+                        readSymbolValuesWriter.getBase64EncodedData(),
+                        WriteCallback,
+                        null,
+                        general_timeout,
+                        WriteTimeoutCallback,
+                        true
+                      );
+                    }
+                    else if(method == 'read'){
+                      client.readwrite(
+                        NETID,
+                        PORT,
+                        0xF080, // 0xF080 = Read command;
+                        8, // IndexOffset = Variables count;
+                        26 + (8 * 4), // Length of requested data + 4 byte errorcode per variable;
+                        readSymbolValuesWriter.getBase64EncodedData(),
+                        ReadCallback,
+                        null,
+                        general_timeout,
+                        ReadTimeoutCallback,
+                        true
+                      );
+                    }
 
                 } else if(e) {
 
@@ -1193,130 +1263,19 @@ function sendToPlc(){
 
                 }
 
-            });
+            });   
 
-            // Occurs if the readwrite for the sumcommando to request symbol handles runs into timeout;
-            var RequestHandlesTimeoutCallback = (function () {
-                console.log("RequestHandlesTimeoutCallback");
-                // HANDLE TIMEOUT HERE;
-                div_log.innerHTML = "Request handles timeout!";
-            });
-
-            console.log("Doing the read-write...");
-            // Send the list-read-write command to the TcAdsWebService by use of the readwrite function of the TcAdsWebService.Client object;
             client.readwrite(
-                NETID,
-                PORT,
-                0xF082,   // IndexGroup = ADS list-read-write command; Used to request handles for twincat symbols;
-                handlesVarNames.length, // IndexOffset = Count of requested symbol handles;
-                (handlesVarNames.length * 4) + (handlesVarNames.length * 8), // Length of requested data + 4 byte errorcode and 4 byte length per twincat symbol;
-                handleswriter.getBase64EncodedData(),
-                RequestHandlesCallback,
-                null,
-                general_timeout,
-                RequestHandlesTimeoutCallback,
-                true);
-            console.log("Read-write done...");
-        //});
-            // Occurs if the readwrite for the sumcommando has finished;
-            
-            // Occurs if the read-read-write command has finished;
-            var ReadCallback = (function (e, s) {
-                console.log("ReadCallback");
-                if (e && e.isBusy) {
-                    // HANDLE PROGRESS TASKS HERE;
-                    // Exit callback function because request is still busy;
-                    return;
-                }
-
-                if (e && !e.hasError) {
-
-                    var reader = e.reader;
-                    
-                    // Read error codes from begin of TcAdsWebService.DataReader object;
-                    for (var i = 0; i < handlesVarNames.length; i++) {
-                        var err = reader.readDWORD();
-                        if (err != 0) {
-                            div_log.innerHTML = "Symbol error!";
-                            return;
-                        }
-                    }
-
-                    //  "MAIN.byteValue" // BYTE
-                    var byteValue = reader.readBYTE();
-
-                    //  "MAIN.wordValue" // WORD
-                    var wordValue = reader.readWORD();
-
-                    //  "MAIN.dwordValue" // DWORD
-                    var dwordValue = reader.readDWORD();
-
-                    //  "MAIN.sintValue" // SINT
-                    var sintValue = reader.readSINT();
-
-                    //  "MAIN.intValue" // INT
-                    var intValue = reader.readINT();
-
-                    //  "MAIN.dintValue" // DINT
-                    var dintValue = reader.readDINT();
-
-                    //  "MAIN.realValue" // REAL
-                    var realValue = reader.readREAL();
-
-                    //  "MAIN.lrealValue" // LREAL
-                    var lrealValue = reader.readLREAL();
-
-                    console.log(lrealValue);
-                    // Write data to the user interface;
-                    /*td_byteValue.innerHTML = byteValue;
-                    td_wordValue.innerHTML = wordValue;
-                    td_dwordValue.innerHTML = dwordValue;
-                    td_sintValue.innerHTML = sintValue;
-                    td_intValue.innerHTML = intValue;
-                    td_dintValue.innerHTML = dintValue;
-                    td_realValue.innerHTML = realValue;
-                    td_lrealValue.innerHTML = lrealValue;*/
-
-                } else {
-
-                    if (e.error.getTypeString() == "TcAdsWebService.ResquestError") {
-                        // HANDLE TcAdsWebService.ResquestError HERE;
-                        div_log.innerHTML = "Error: StatusText = " + e.error.statusText + " Status: " + e.error.status;
-                    }
-                    else if (e.error.getTypeString() == "TcAdsWebService.Error") {
-                        // HANDLE TcAdsWebService.Error HERE;
-                        div_log.innerHTML = "Error: ErrorMessage = " + e.error.errorMessage + " ErrorCode: " + e.error.errorCode;
-                    }
-                }
-
-            });
-            
-            // Occurs if the read-read-write command runs into timeout;
-            var ReadTimeoutCallback = (function () {
-                // HANDLE TIMEOUT HERE;
-                div_log.innerHTML = "Read timeout!";
-            });
-
-            
-            // Interval callback for cyclic reading;
-            var ReadLoop = (function () {
-                console.log("ReadLoop");
-                // Send the read-read-write command to the TcAdsWebService by use of the readwrite function of the TcAdsWebService.Client object;
-                client.readwrite(
-                    NETID,
-                    PORT,
-                    0xF080, // 0xF080 = Read command;
-                    8, // IndexOffset = Variables count;
-                    26 + (8 * 4), // Length of requested data + 4 byte errorcode per variable;
-                    readSymbolValuesData,
-                    ReadCallback,
-                    null,
-                    general_timeout,
-                    ReadTimeoutCallback,
-                    true);
-
-            });
-
-            
-            
+                      NETID,
+                      PORT,
+                      0xF082,   // IndexGroup = ADS list-read-write command; Used to request handles for twincat symbols;
+                      handlesVarNames.length, 
+                      (handlesVarNames.length * 4) + (handlesVarNames.length * 8), 
+                      handleswriter.getBase64EncodedData(),
+                      RequestHandlesCallback,
+                      null,
+                      general_timeout,
+                      RequestHandlesTimeoutCallback,
+                      true
+            );         
 }
