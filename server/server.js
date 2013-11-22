@@ -25,7 +25,10 @@ var doJobFiberTask = Fiber(function(){
         console.log("Occurrence "+occurrences[h]._id+" has been removed. Remaining: "+Occurrences.find().count());
       }
     };
-    sendToPlc(plcHandleNames, plcValues, 'write');
+    if(plcHandleNames.length > 0){
+      //We have data to write...do it
+      sendToPlc(plcHandleNames, plcValues, 'write');
+    }
     console.log('Minute check done.');
 });
 
@@ -422,7 +425,7 @@ var TcAdsWebService = new (function () {
             }
 
             var sendMessage = function (message, method, pCallback, userState, ajaxTimeout, ajaxTimeoutCallback, async) {
-                console.log("Sending message..."+message+" With callback: "+pCallback != undefined);
+                console.log("Sending message...");
                 if (async == null || async == undefined)
                     async = true;
 
@@ -433,7 +436,7 @@ var TcAdsWebService = new (function () {
                     return null;
                 console.log("XHR object is OK...");
                 if (async) {
-                    console.log("Async callback..."+pCallback);
+                    console.log("Async callback...");
                     xhr.onreadystatechange = function () {
                         handleAsyncResponse(xhr, pCallback, userState);
                     }
