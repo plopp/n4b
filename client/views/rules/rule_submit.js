@@ -28,6 +28,7 @@ Template.ruleSubmit.events({
     e.preventDefault();
     console.log(Session.get("currentScenarioId"));
     val = Session.get("resourceType") === "Analog" ? Session.get("val") : ($(e.target).find('[name=Value]').attr('checked') ? 1 : 0);
+    console.log("val");
     var rule = {
       title: $(e.target).find('[name=title]').val(),
       scenId: Session.get("currentScenarioId"),
@@ -103,7 +104,7 @@ Template.ruleSubmit.events({
 
 
 Template.ruleSubmit.rendered = function(){
-  resourceId = $("#resource_select").val(); //The resource ID is stored in the value property in every option.
+  /*resourceId = $("#resource_select").val(); //The resource ID is stored in the value property in every option.
   typeForThisResource = Types.findOne(Resources.findOne(resourceId).typeId); //Get the resource type.
   console.log(Resources.findOne(resourceId).title);
   Session.set("resourceType", typeForThisResource.title);
@@ -123,7 +124,7 @@ Template.ruleSubmit.rendered = function(){
   }
   else{
     Session.set("val", Math.floor((max-min)/2));
-  }
+  }*/
 }
 /*
 function redraw(){
