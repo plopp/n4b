@@ -1,10 +1,10 @@
 <template name="ruleEdit">
+{{#with rule}}
   <form class="main">
-
     <div class="control-group">
         <label class="control-label" for="title">Title</label>
         <div class="controls">
-            <input name="title" type="text" value="" placeholder="Name your rule"/>
+            <input name="title" type="text" value="{{title}}" placeholder="Name your rule"/>
         </div>
     </div>
 
@@ -13,43 +13,50 @@
         <div class="control-group">
             <select id="resource_select">
                 {{#each resources}}
-                  <option name="resource" value="{{_id}}">{{title}}</option>
+                  <option name="resource" value="{{_id}}" {{isSelected _id getSelected}}>{{title}}</option>
                 {{/each}}
             </select>
         </div>
     </div>
-
+    {{selRes}}
     <div class="control-group">
-        <label class="control-label" for="value">value</label>
+        <label class="control-label" for="Value">Value</label>
         <div class="controls">
-            {{#if valueTypeIsDigital}}
-                <input name="Value" id="valcheckbox" value="your_value" type="checkbox">
-            {{/if}}
-            {{#if valueTypeIsAnalog}}
-                <input type="range" name="points" min="{{min}}" max="{{max}}" id="valrange"> {{sliderVal}} {{unit}}
-            {{/if}}
+        {{#if valueTypeIsDigital resourceId}}
+          <!--<div class="onoffswitch">
+              <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="valcheckbox" {{isChecked isTrue true}}>
+              <label class="onoffswitch-label" for="myonoffswitch">
+                  <div class="onoffswitch-inner"></div>
+                  <div class="onoffswitch-switch"></div>
+              </label>
+          </div>-->
+          <input name="Value" id="valcheckbox" value="your_value" type="checkbox" {{isChecked isTrue true}}/>
+          {{/if}}
+          {{#if valueTypeIsAnalog resourceId}}
+              {{min}} {{unit}} <input type="range" name="points" min="{{min}}" max="{{max}}" id="valrange" value="{{value}}"> {{max}} {{unit}} New value: {{sliderVal}} {{unit}} Current value: {{value}} {{unit}}
+          {{/if}}
         </div>
     </div> 
 
     <div class="control-group">
         <label class="control-label" for="timerule">Time rule</label>
         <div class="controls">
-            <input name="timerule" id="timerule" type="text" value="" placeholder="weekdays at 14:00" required/>
+            <input name="timerule" id="timerule" type="text" value="{{timerule}}" placeholder="weekdays at 14:00" required/>
             <p id="nextOccurrence"></p>
             <p class="help-block"><button class="btn" id="verify">Verify</button></p>
         </div>
 
     </div>
-
+    <hr/>
     <div class="control-group">
         <div class="controls">
             <input type="submit" value="Submit" class="btn btn-primary"/>
         </div>
     </div>
-
+    <hr/>
     <div class="control-group">
         <div class="controls">
-            <a class="btn btn-danger delete" href="#">Delete post</a>
+            <a class="btn btn-danger delete" href="#">Delete rule</a>
         </div>
     </div>
   </form>
@@ -66,4 +73,5 @@
       <p><span>"at 5:00 pm on Weds,Thurs and Fri"</span><span>// fires at 5:00pm on Wednesday, Thursday, and Friday</span></p>
       <p><span>"at 5:00 pm every 1 day of March in 2014"</span><span>// fires at 5:00pm every day of March in 2014</span></p>
   </div>
+  {{/with}}
 </template>

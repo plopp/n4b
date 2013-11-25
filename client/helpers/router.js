@@ -7,26 +7,24 @@ Meteor.Router.add({
   },
 
   '/submit/scenario': 'scenarioSubmit',
+
   '/submit/:_id/rule' : {
     to: 'ruleSubmit',
     and: function(id) { Session.set('currentScenarioId', id); }
   },
 
-  '/rule/schedule/:_id':{
-    to: 'ruleSchedule',
-    and: function(id) {
-      Meteor.call('scheduleThis',id,function (error, result) { 
-          console.log("Error: "+error+", Result: "+result);
-          if(error != undefined){
-            throw new Meteor.Error(500, "Parse error "+error);
-            Meteor.Router.to('/');
-          }
+/*  '/rule/:_id': {
+    to: 'rulePage', 
+    and: function(id) { Session.set('currentRuleId', id); }
+  },*/
 
-          if(result != undefined){
-            Meteor.Router.to('scenarioPage', result);
-          }
-      });
-    }
+  '/rule/:_id/edit': {
+    to: 'ruleEdit', 
+    and: function(id) { 
+      Session.set('currentRuleId', id); 
+      Session.set('val', Rules.findOne(id).value);
+      //console.log(Session.get('val'));
+    }    
   },
 	/*
   '/scenario/:_id/edit': {
