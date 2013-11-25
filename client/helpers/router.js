@@ -25,7 +25,7 @@ Meteor.Router.add({
       Session.set('val', Rules.findOne(id).value);
       //console.log(Session.get('val'));
     }    
-  },
+  }
 	/*
   '/scenario/:_id/edit': {
     to: 'scenarioEdit', 

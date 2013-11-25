@@ -1,4 +1,4 @@
 Deps.autorun(function() {
-  console.log("New rule added: "+Rules.find().count());
+  var count = Rules.find().fetch();
   Meteor.call('scheduleOccurrences');
 });

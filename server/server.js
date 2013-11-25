@@ -59,8 +59,9 @@ var calcOccurrencesFiberTask = Fiber(function(){
 
       rulesArr = Rules.find().fetch();
       var k = 0;
+      var m = 0;
       for (var i = rulesArr.length - 1; i >= 0; i--) {
-        calculatedOccurrences = later.schedule(later.parse.text(rulesArr[i].timerule)).next(11000,new Date(), nextSunday);
+        calculatedOccurrences = later.schedule(later.parse.text(rulesArr[i].timerule)).next(100,new Date(), nextSunday);
         for (var j = calculatedOccurrences.length - 1; j >= 0; j--) {
           if(Occurrences.find({ruleId: rulesArr[i]._id, datetime: new Date(calculatedOccurrences[j]).getTime()}).count() === 0){
             Occurrences.insert({ruleId: rulesArr[i]._id, datetime: new Date(calculatedOccurrences[j]).getTime()});
@@ -68,8 +69,9 @@ var calcOccurrencesFiberTask = Fiber(function(){
             k++;
           }
         };
+        m+=calculatedOccurrences.length;
       }
-      console.log("Added "+k+" occurrences. "+Occurrences.find().count()+" in total.");
+      console.log("Added "+k+"/"+m+" occurrences. "+Occurrences.find().count()+" in total.");
       console.log('Calculating new occurrences done.');
     });
 

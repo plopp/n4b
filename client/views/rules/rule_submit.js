@@ -2,12 +2,20 @@ Template.ruleSubmit.helpers({
   resources : function(){
     return Resources.find();
   },
-  valueTypeIsAnalog : function(resourceId){
+  valueTypeIsAnalog : function(){
     var selectedResource = Session.get("selectedResource");
     if(selectedResource == undefined){
-      selectedResource = resourceId;
+      return false; //Error, default to false
     }
-    return Types.findOne(Resources.findOne(selectedResource).typeId).title === "Analog"; 
+    console.log(selectedResource);
+    var res = Resources.findOne(selectedResource);
+    if(res != undefined){
+      var typeId = res.typeId;
+      return Types.findOne(typeId).title === "Analog"; 
+    }
+    else{
+      return false;
+    }
     
     /*var selectedResId = Session.get("currentRuleId")
     if(selectedResId != undefined && resourceId != selectedResId){ //If selected resource differs form the store resourceId, the user has changed resource.
@@ -16,12 +24,20 @@ Template.ruleSubmit.helpers({
     return Types.findOne(Resources.findOne(resourceId).typeId).title === "Analog";
     //return Session.get("resourceType") === "Analog"; //Is Either Analog or Digital*/
   },
-  valueTypeIsDigital : function(resourceId){
+  valueTypeIsDigital : function(){
     var selectedResource = Session.get("selectedResource");
     if(selectedResource == undefined){
-      selectedResource = resourceId;
+      return true; //Error, default to true
     }
-    return Types.findOne(Resources.findOne(selectedResource).typeId).title === "Digital"; 
+    var res = Resources.findOne(selectedResource);
+    if(res != undefined){
+      var typeId = res.typeId;
+      return Types.findOne(typeId).title === "Digital"; 
+    }
+    else{
+      return true;
+    }
+    
     /*var selectedResId = Session.get("resourceId");
     if(selectedResId != undefined && resourceId != selectedResId){ //If selected resource differs form the store resourceId, the user has changed resource.
       return Types.findOne(Resources.findOne(selectedResId).typeId).title === "Digital";  

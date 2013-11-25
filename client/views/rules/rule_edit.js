@@ -86,7 +86,6 @@ Template.ruleEdit.events({
         console.log("Resource type not found!");
     }
 
-    console.log("Submit val: "+val);
     var rule = {
       title: $(e.target).find('[name=title]').val(),
       resourceId: selRes,
@@ -94,7 +93,15 @@ Template.ruleEdit.events({
       value: val,
       timerule: $(e.target).find('[name=timerule]').val(),
     }
-    console.log(rule);
+    var currentRuleId = Session.get('currentRuleId');
+    var vector = Occurrences.find({ruleId:currentRuleId});
+    var numOcc = vector.count();
+    var arrOcc = vector.fetch();
+    for(var i = 0; i < numOcc; i++){
+      Occurrences.remove(arrOcc[i]._id);
+    }
+    console.log("Removed "+numOcc+" occurrences.");
+
     rule._id = Rules.update(Session.get("currentRuleId"), {$set: rule}, function(error) {
       if (error) {
         // display the error to the user
@@ -103,14 +110,27 @@ Template.ruleEdit.events({
         Meteor.Router.to('scenarioPage', Session.get("currentScenarioId"));
       }
     });
+
+
   },
 
   'click .delete': function(e) {
     e.preventDefault();
 
+    var currentRuleId = Session.get('currentRuleId');
+
     if (confirm("Delete this post?")) {
-      var currentRuleId = Session.get('currentRuleId');
+      
+      var vector = Occurrences.find({ruleId:currentRuleId});
+      var numOcc = vector.count();
+      var arrOcc = vector.fetch();
+      for(var i = 0; i < numOcc; i++){
+        Occurrences.remove(arrOcc[i]._id);
+      }
+      console.log("Removed "+numOcc+" occurrences.");
+
       Rules.remove(currentRuleId);
+
       Meteor.Router.to('scenarioPage', Session.get("currentScenarioId"));
       /* TODO - make sure that every occurrence is cleaned */
     }
@@ -152,75 +172,9 @@ Template.ruleEdit.events({
 
 Template.ruleEdit.rendered = function() {
     
-    
-/*
-    var element = document.getElementById('valrange');
-    if(element != null || element != undefined){
-      //element.value = Session.get("val");
-      element.points = 1
-      element.max = curResource.max;
-      element.min = curResource.min
-      element.value = curRule.value;
-      Session.set("val", curRule.value);
-    }
-
-    var element = document.getElementById('valcheckbox');
-    if(element != null || element != undefined){
-      //element.value = Session.get("val");
-      curRule.value != 0 ? element.checked = false : element.checked = true;
-      Session.set("val", curRule.value);
-    }
-    console.log("rendered");
-    */
   Meteor.defer(function() {
     var selVal = $('#resource_select').val();
     Session.set("selectedResource", selVal);
     console.log("Selected resource: "+Resources.findOne(selVal).title);
-
-    //Session.set("val", Rules.findOne(Session.get("currentRuleId")).value);
-    /*var curRule = Rules.findOne(Session.get("currentRuleId"));
-    var curResource = Resources.findOne(curRule.resourceId);
-    Session.set("resourceId", curRule.resourceId);
-
-    var type = Types.findOne(curResource.typeId); //Get the resource type.
-    Session.set("resourceType", type.title);
-    
-    var element = document.getElementById('resource_select');
-    element.value = Session.get("resourceId");
-
-    var unit = curResource.unit;
-    Session.set("unit", unit); //Doesn't matter if unit is undefined
-
-    var max = curResource.max;
-    Session.set("max", max);
-
-    var min = curResource.min;
-    Session.set("min",min);
-
-    var element = document.getElementById('valcheckbox');
-    if(element != null){
-      console.log(curRule.value);
-      $( "#valcheckbox" ).prop( "checked", curRule.value );
-      //element.checked = curRule.value;
-    }
-*/
-    /*var val = curRule.value;
-    Session.set("val", val);
-*/
-    
-
-    //Set initial resourceId session variable
-//    
-
-    //Set initial val session variable
-    //Session.set("val", Rules.findOne(Session.get("currentRuleId")).value);
-
-    //Set initial resourceType session variable
-    
-
-    /*
-    
-    */
-    //element.value = Rules.findOne(Session.get("currentRuleId")).resourceId;
   });
 };
