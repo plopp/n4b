@@ -2,23 +2,50 @@ Template.ruleSubmit.helpers({
   resources : function(){
     return Resources.find();
   },
-  valueTypeIsAnalog : function(){
-    return Session.get("resourceType") === "Analog"; //Is Either Analog or Digital
+  valueTypeIsAnalog : function(resourceId){
+    var selectedResource = Session.get("selectedResource");
+    if(selectedResource == undefined){
+      selectedResource = resourceId;
+    }
+    return Types.findOne(Resources.findOne(selectedResource).typeId).title === "Analog"; 
+    
+    /*var selectedResId = Session.get("currentRuleId")
+    if(selectedResId != undefined && resourceId != selectedResId){ //If selected resource differs form the store resourceId, the user has changed resource.
+      return Types.findOne(Resources.findOne(selectedResId).typeId).title === "Analog";  
+    }
+    return Types.findOne(Resources.findOne(resourceId).typeId).title === "Analog";
+    //return Session.get("resourceType") === "Analog"; //Is Either Analog or Digital*/
   },
-  valueTypeIsDigital : function(){
-    return Session.get("resourceType") === "Digital"; //Is Either Analog or Digital
+  valueTypeIsDigital : function(resourceId){
+    var selectedResource = Session.get("selectedResource");
+    if(selectedResource == undefined){
+      selectedResource = resourceId;
+    }
+    return Types.findOne(Resources.findOne(selectedResource).typeId).title === "Digital"; 
+    /*var selectedResId = Session.get("resourceId");
+    if(selectedResId != undefined && resourceId != selectedResId){ //If selected resource differs form the store resourceId, the user has changed resource.
+      return Types.findOne(Resources.findOne(selectedResId).typeId).title === "Digital";  
+    }
+    return Types.findOne(Resources.findOne(resourceId).typeId).title === "Digital";
+    //return Session.get("resourceType") === "Digital"; //Is Either Analog or Digital*/
   },
   sliderVal : function(){
     return Session.get("val");
   },
   unit : function(){
-    return Session.get("unit");
+    var selectedResource = Session.get("selectedResource");
+    return Resources.findOne(selectedResource).unit; 
+    //return Session.get("unit");
   },
   max : function() {
-    return Session.get("max");
+    var selectedResource = Session.get("selectedResource");
+    return Resources.findOne(selectedResource).max; 
+    //return Session.get("max");
   },
   min : function() {
-    return Session.get("min");
+    var selectedResource = Session.get("selectedResource");
+    return Resources.findOne(selectedResource).min; 
+    //return Session.get("min");
   }
 });
 
@@ -26,59 +53,44 @@ Template.ruleSubmit.helpers({
 Template.ruleSubmit.events({
   'submit form': function(e) {
     e.preventDefault();
-    console.log(Session.get("currentScenarioId"));
-    val = Session.get("resourceType") === "Analog" ? Session.get("val") : ($(e.target).find('[name=Value]').attr('checked') ? 1 : 0);
-    console.log("val");
+    var selRes = Session.get("selectedResource");
+    var val;
+    switch(Types.findOne(Resources.findOne(selRes).typeId).title){
+      case "Analog":
+        val = Session.get("val");
+        break;
+      case "Digital":
+        val = $(e.target).find('[name=Value]').attr('checked') ? 1 : 0;
+        break;
+      default:
+        val = 0;
+        console.log("Resource type not found!");
+    }
+
     var rule = {
       title: $(e.target).find('[name=title]').val(),
       scenId: Session.get("currentScenarioId"),
-      resourceId: Session.get("resourceId"),
+      resourceId: selRes,
       userId: "asdasdasd",
       creator: "user1",
       submitted: new Date().getTime(),
       value: val,
       timerule: $(e.target).find('[name=timerule]').val(),
     }
-    console.log(rule);
     rule._id = Rules.insert(rule);
     Meteor.Router.to('scenarioPage', Session.get("currentScenarioId"));
   },
-
   "change #resource_select": function(evt) {
-    console.log("option changed");
     resourceId = $(evt.target).val(); //The resource ID is stored in the value property in every option.
-    
-    typeForThisResource = Types.findOne(Resources.findOne(resourceId).typeId); //Get the resource type.
-    console.log(Resources.findOne(resourceId).title);
-    Session.set("resourceType", typeForThisResource.title);
-    Session.set("resourceId", resourceId)
-    
-    unit = Resources.findOne(resourceId).unit;
-    Session.set("unit", unit); //Doesn't matter if unit is undefined
-    
-    max = Resources.findOne(resourceId).max;
-    Session.set("max", max);
-
-    min = Resources.findOne(resourceId).min;
-    Session.set("min",min);
-
-    if(typeof min == undefined || typeof max == undefined){
-      Session.set("val", 0);
-    }
-    else{
-      Session.set("val", Math.floor((max-min)/2));
-    }
+    Session.set("selectedResource", resourceId)
   },
   "change #valrange": function(evt){
     val = $(evt.target).val();
     Session.set("val",val);
-    console.log(val);
   },
-
   "change #valcheckbox": function(evt){
     val = $(evt.target).attr('checked') ? 1 : 0;
     Session.set("val", val);
-    console.log(val);
   },
   'click #verify': function(e) {
     e.preventDefault();
@@ -87,39 +99,21 @@ Template.ruleSubmit.events({
         $("#nextOccurrence").text(r.nextOccurrence);
         $("#verify").addClass("btn-success");
         $("#verify").removeClass("btn-danger");
-        console.log("Success");
       }
       else{
         $("#verify").addClass("btn-danger");
         $("#verify").removeClass("btn-success");
-        console.log("Danger!");
       }
     });
     
   }
-
 });
 
-Template.ruleSubmit.rendered = function(){
-  /*resourceId = $("#resource_select").val(); //The resource ID is stored in the value property in every option.
-  typeForThisResource = Types.findOne(Resources.findOne(resourceId).typeId); //Get the resource type.
-  console.log(Resources.findOne(resourceId).title);
-  Session.set("resourceType", typeForThisResource.title);
-  Session.set("resourceId", resourceId)
+Template.ruleSubmit.rendered = function() {
     
-  unit = Resources.findOne(resourceId).unit;
-  Session.set("unit", unit); //Doesn't matter if unit is undefined
-    
-  max = Resources.findOne(resourceId).max;
-  Session.set("max", max);
-
-  min = Resources.findOne(resourceId).min;
-  Session.set("min",min);
-
-  if(typeof min == undefined || typeof max == undefined){
-    Session.set("val", 0);
-  }
-  else{
-    Session.set("val", Math.floor((max-min)/2));
-  }*/
-}
+  Meteor.defer(function() {
+    var selVal = $('#resource_select').val();
+    Session.set("selectedResource", selVal);
+    console.log("Selected resource: "+Resources.findOne(selVal).title);
+  });
+};

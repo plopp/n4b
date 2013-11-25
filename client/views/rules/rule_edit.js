@@ -117,31 +117,8 @@ Template.ruleEdit.events({
   },
 
   "change #resource_select": function(evt) {
-    //console.log("option changed");
     resourceId = $(evt.target).val(); //The resource ID is stored in the value property in every option.
     Session.set("selectedResource", resourceId)
-    
-    //typeForThisResource = Types.findOne(Resources.findOne(resourceId).typeId); //Get the resource type.
-    //console.log(Resources.findOne(resourceId).title);
-    //Session.set("resourceType", typeForThisResource.title);
-    
-    
-    /*unit = Resources.findOne(resourceId).unit;
-    Session.set("unit", unit); //Doesn't matter if unit is undefined
-    
-    max = Resources.findOne(resourceId).max;
-    Session.set("max", max);
-
-    min = Resources.findOne(resourceId).min;
-    Session.set("min",min);*/
-
-    /*
-    if(typeof min == undefined || typeof max == undefined){
-      //Session.set("val", 0);
-    }
-    else{
-      Session.set("val", Math.floor((max-min)/2));
-    }*/
   },
   "change #valrange": function(evt){
     val = $(evt.target).val();
