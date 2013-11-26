@@ -7,6 +7,13 @@ Template.scenarioSubmit.events({
     }
     console.log(scenario);
     scenario._id = Scenarios.insert(scenario);
-    Meteor.Router.to('scenarioPage', scenario);
+    Meteor.Router.to('/');
   }
 });
+
+Template.scenarioSubmit.rendered = function(){
+  Meteor.defer(function(){
+    $("[name=title]").focus();
+    console.log("Rendered submit form.");
+  });
+};

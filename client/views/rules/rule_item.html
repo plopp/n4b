@@ -1,15 +1,19 @@
 <template name="ruleItem">
-  <div style="float: right; display: block; margin-top: 5px; margin-right: 4px;">
-  	<a href="{{ruleEditPath this}}" class="discuss btn">Edit</a>
-  	<a href="" id="delete-btn" class="btn delte btn-danger">Delete</a>
+  <div class="scenario-content">
+	  <div style="float: right; display: inline-block; margin-right: 14px; margin-top: 5px">
+	  	<a href="{{ruleEditPath this}}" class="discuss btn">Edit</a>
+	  	<a href="" id="delete-btn" class="btn delte btn-danger">Delete</a>
+	  </div>
+	  <div>
+	  <li>
+	    <h4>
+	      <span class="author">{{title}}</span>
+	    </h4>
+	    <p>Set <b>{{resourceTitle}}</b> to <b>{{value}} {{#if hasUnit}}{{unit}}{{/if}}</b> {{timerule}}</p>
+	    {{#each jobs}}
+	    	<p>{{name}}<p>
+	    {{/each}}
+	  </li>
+	  </div>
   </div>
-  <li>
-    <h4>
-      <span class="author">{{title}}</span>
-    </h4>
-    <p>Set <b>{{resourceTitle}}</b> to <b>{{value}} {{#if hasUnit}}{{unit}}{{/if}}</b> {{timerule}}</p>
-    {{#each jobs}}
-    	<p>{{name}}<p>
-    {{/each}}
-  </li>
 </template>

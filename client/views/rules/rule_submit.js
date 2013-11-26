@@ -131,5 +131,7 @@ Template.ruleSubmit.rendered = function() {
     var selVal = $('#resource_select').val();
     Session.set("selectedResource", selVal);
     console.log("Selected resource: "+Resources.findOne(selVal).title);
+    $("[name=title]").focus();
+    console.log("Rendered submit form.");
   });
 };
