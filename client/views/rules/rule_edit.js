@@ -93,6 +93,8 @@ Template.ruleEdit.events({
       value: val,
       timerule: $(e.target).find('[name=timerule]').val(),
     }
+    
+/*
     var currentRuleId = Session.get('currentRuleId');
     var vector = Occurrences.find({ruleId:currentRuleId});
     var numOcc = vector.count();
@@ -101,7 +103,7 @@ Template.ruleEdit.events({
       Occurrences.remove(arrOcc[i]._id);
     }
     console.log("Removed "+numOcc+" occurrences.");
-
+*/
     rule._id = Rules.update(Session.get("currentRuleId"), {$set: rule}, function(error) {
       if (error) {
         // display the error to the user

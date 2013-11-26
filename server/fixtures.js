@@ -122,7 +122,7 @@ if (Scenarios.find().count() === 0) {
     creator: admin.profile.name,
     submitted: new Date().getTime(),
     value: 0,
-    timerule: 'every 4 hour on the 0th min on the 0th sec',
+    timerule: 'at 11:47',
     resourceId: stove1,
     title: 'Turn on stove.'
   });
@@ -157,7 +157,7 @@ if (Scenarios.find().count() === 0) {
     creator: admin.profile.name,
     submitted: new Date().getTime(),
     value: 0,
-    timerule: 'at 11:48',
+    timerule: 'at 11:47',
     resourceId: showerWater,
     title: 'Turn off water.'
   });
@@ -168,7 +168,7 @@ if (Scenarios.find().count() === 0) {
     creator: admin.profile.name,
     submitted: new Date().getTime(),
     value: 0,
-    timerule: 'at 17:29',
+    timerule: 'at 11:47',
     resourceId: bathroomVent,
     title: 'Start ventilation in bathroom.'
   });
@@ -179,7 +179,7 @@ if (Scenarios.find().count() === 0) {
     creator: admin.profile.name,
     submitted: new Date().getTime(),
     value: 0,
-    timerule: 'at 10:15 am',
+    timerule: 'at 11:47',
     resourceId: bathroomVent,
     title: 'Stop ventilation in bathroom.'
   });
