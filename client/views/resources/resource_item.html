@@ -1,5 +1,5 @@
-<template name="ruleItem">
-  <div class="scenario-content">
+<template name="resourceItem">
+  <div class="resource-content">
 	  <div style="float: right; display: inline-block; margin-right: 14px; margin-top: 5px">
 	  	<a href="{{ruleEditPath this}}" class="discuss btn">Edit</a>
 	  	<a href="" id="delete-btn" class="btn delete">Delete</a>
@@ -9,9 +9,11 @@
 	    <h4>
 	      <span class="author">{{title}}</span>
 	    </h4>
-	    <p>Set <b>{{resourceTitle}}</b> to <b>{{value}} {{#if hasUnit}}{{unit}}{{/if}}</b> {{timerule}}</p>
-	    {{#each jobs}}
-	    	<p>{{name}}<p>
+	    <p>Current value:<b> {{value}} {{#if hasUnit}}{{unit}}{{/if}}</b>, Address:<b> {{address}}</b>, I/O-type:<b> {{getType}}</b></p>
+	    <p></p>
+	    <h4>Upcoming occurrences:</h4>
+	    {{#each rules}}
+	    	<p>{{> ruleItem}}<p>
 	    {{/each}}
 	  </li>
 	  </div>

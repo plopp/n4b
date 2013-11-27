@@ -1,0 +1,14 @@
+<template name="resourceList">
+  <div class="resources">
+    {{#each resource}}
+      {{> resourceItem}}
+    {{/each}}
+  </div>
+	<form>
+	  <div class="control-group">
+		    <div class="controls">
+		        <input type="submit" value="+ Add resource" class="btn btn-primary"/>
+		    </div>
+		</div>
+	</form>
+</template>

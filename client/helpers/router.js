@@ -25,6 +25,14 @@ Meteor.Router.add({
       Session.set('val', Rules.findOne(id).value);
       //console.log(Session.get('val'));
     }    
+  },
+
+  '/resources': {
+    to: 'resourcePage',
+    and: function(id) {
+      //console.log("Resource id: "+id);
+      //Session.set('currentResourceId', id);
+    }
   }
 	/*
   '/scenario/:_id/edit': {

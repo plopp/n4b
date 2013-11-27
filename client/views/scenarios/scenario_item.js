@@ -30,5 +30,11 @@ Template.scenarioItem.events({
       }
       Scenarios.remove(this._id);
       Meteor.Router.to("");
+  },
+  'mouseenter #delete-btn-scenario' : function(evt){
+    $(evt.target).addClass("btn-danger");
+  },
+  'mouseleave #delete-btn-scenario' : function(evt){
+    $(evt.target).removeClass("btn-danger");
   }
 });
