@@ -108,6 +108,9 @@ body {
     color: #aaaaaa;
 }
 .scenario .scenario-content p { margin: 0 }
+
+
+
 .scenario .discuss {
     display: block;
     float: right;
@@ -128,6 +131,12 @@ body {
 .rules li h4 a { font-size: 12px }
 .rules li p:last-child { margin-bottom: 0 }
 
+.rule-content li {
+    background-color: #FFF; 
+    margin-top:10px; 
+    border: 2px solid #999999; 
+    border-radius: 8px;
+}
 
 .dropdown-menu span {
     display: block;

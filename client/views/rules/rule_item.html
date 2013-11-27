@@ -1,10 +1,10 @@
 <template name="ruleItem">
   <div class="scenario-content">
-	  <div style="float: right; display: inline-block; margin-right: 14px; margin-top: 5px">
-	  	<a href="{{ruleEditPath this}}" class="discuss btn">Edit</a>
-	  	<a href="" id="delete-btn" class="btn delete">Delete</a>
+	  <div style="float: right; display: inline-block; margin-right: 10px; margin-top: 10px">
+	  	<a href="{{ruleEditPath this}}" id="edit-btn" class="discuss btn edit-rule">Edit</a>
+	  	<a href="" id="delete-btn" class="btn delete delete-rule">Delete</a>
 	  </div>
-	  <div>
+	  <div class="rule-content">
 	  <li>
 	    <h4>
 	      <span class="author">{{title}}</span>

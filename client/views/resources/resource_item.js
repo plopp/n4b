@@ -42,3 +42,8 @@ Template.resourceItem.events({
     $(evt.target).removeClass("btn-danger");
   }
 });
+
+Template.resourceItem.rendered = function(){
+  $(".edit-rule").hide();
+  $(".delete-rule").hide();
+}
