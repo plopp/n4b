@@ -1,8 +1,9 @@
 <template name="resourceItem">
   <div class="resource-content">
 	  <div style="float: right; display: inline-block; margin-right: 10px; margin-top: 10px">
-	  	<a href="{{ruleEditPath this}}" id="edit-btn-resource" class="discuss btn edit-resource">Edit</a>
-	  	<a href="" class="btn delete delete-resource">Delete</a>
+	  	<a href="" class="btn delete delete-resource"><span class="glyphicon glyphicon-align-justify"></span></a>
+	  	<a href="{{ruleEditPath this}}" id="edit-btn-resource" class="discuss btn edit-resource"><span class="glyphicon glyphicon-cog"></span></a>
+	  	<a href="" class="btn delete delete-resource"><span class="glyphicon glyphicon-trash"></span></a>
 	  </div>
 	  <div>
 	  <li>
@@ -10,13 +11,12 @@
 	      <span class="author">{{title}}</span>
 	    </h4>
 	    <p>Current value:<b> {{value}} {{#if hasUnit}}{{unit}}{{/if}}</b>, Address:<b> {{address}}</b>, I/O-type:<b> {{getType}}</b></p>
-	    <p></p>
-	    <h4>Upcoming occurrences:</h4>
-	    {{#each rules}}
-	    	<div class="differentiate">
-	    	<p>{{> ruleItem}}<p>
-	    	</div>
-	    {{/each}}
+	    <div id="showRulesDiv" hidden>
+		    <h4>Rules:</h4>
+		    {{#each rules}}
+		    	<p>{{> ruleItem}}<p>
+		    {{/each}}
+		</div>
 	  </li>
 	  </div>
   </div>

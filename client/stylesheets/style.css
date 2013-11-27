@@ -101,6 +101,10 @@ body {
     display: inline-block;
     margin-right: 5px;
 }
+.scenario .scenario-content h4 a {
+    display: inline-block;
+    margin-right: 5px;
+}
 .scenario .scenario-content h3 span {
     font-weight: normal;
     font-size: 14px;
@@ -128,15 +132,8 @@ body {
     font-size: 12px;
     font-weight: normal;
 }
-.rules li h4 a { font-size: 12px }
+.rules li h4 a { font-size: 16px; color: #666666; }
 .rules li p:last-child { margin-bottom: 0 }
-
-.rule-content li {
-    background-color: #FFF; 
-    margin-top:10px; 
-    border: 2px solid #999999; 
-    border-radius: 8px;
-}
 
 .dropdown-menu span {
     display: block;

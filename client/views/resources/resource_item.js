@@ -30,7 +30,9 @@ Template.resourceItem.events({
       }
       console.log("Removed "+numOcc+" occurrences.");
 
-      Rules.remove(this._id);
+      Rules.remove({resourceId: this._id});
+      
+      Resources
       */
       /* TODO Handle delete of resource */
   },

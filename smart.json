@@ -4,6 +4,7 @@
     "accounts-ui-bootstrap-dropdown": {},
     "router": {},
     "jqbootstrapvalidation": {},
-    "handlebar-helpers": {}
+    "handlebar-helpers": {},
+    "bootstrap-3": {}
   }
 }

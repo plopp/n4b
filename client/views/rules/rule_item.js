@@ -11,8 +11,11 @@ Template.ruleItem.helpers({
   unit: function(){
   	return Resources.findOne(this.resourceId).unit;
   },
-  jobs: function(){
-  	return Jobs.find({ruleId: this._id});
+  occurrences: function(){
+  	return Occurrences.find({ruleId: this._id},{sort: {datetime: 1}});
+  },
+  getTimestamp: function(){
+    return new Date(this.datetime);
   }
 });
 
@@ -34,5 +37,8 @@ Template.ruleItem.events({
   },
   'mouseleave #delete-btn' : function(evt){
     $(evt.target).removeClass("btn-danger");
+  },
+  'click #view-occurrences' : function(evt){
+    $("#occ-"+this._id).toggle();
   }
 });

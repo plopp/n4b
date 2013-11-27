@@ -1,18 +1,32 @@
 <template name="ruleItem">
   <div class="scenario-content">
 	  <div style="float: right; display: inline-block; margin-right: 10px; margin-top: 10px">
-	  	<a href="{{ruleEditPath this}}" id="edit-btn" class="discuss btn edit-rule">Edit</a>
-	  	<a href="" id="delete-btn" class="btn delete delete-rule">Delete</a>
+	    <a href="" class="btn" id="view-occurrences"><span class="glyphicon glyphicon-time"></span></a>
+	  	<a href="{{ruleEditPath this}}" id="edit-btn-rule" class="discuss btn edit-rule"><span class="glyphicon glyphicon-cog"></span></a>
+	  	<a href="" class="btn delete delete-rule" id="delete-btn"><span class="glyphicon glyphicon-trash"></span></a>
 	  </div>
 	  <div class="rule-content">
 	  <li>
 	    <h4>
-	      <span class="author">{{title}}</span>
+	      <a href="{{ruleEditPath this}}" id="" class="author"><span class="author">{{title}}</span></a>
 	    </h4>
-	    <p>Set <b>{{resourceTitle}}</b> to <b>{{value}} {{#if hasUnit}}{{unit}}{{/if}}</b> {{timerule}}</p>
-	    {{#each jobs}}
-	    	<p>{{name}}<p>
-	    {{/each}}
+	    <p>Set <b>{{resourceTitle}}</b> to <b>{{value}} {{#if hasUnit}}{{unit}}{{/if}}</b> {{timerule}}</p>	    
+		<div id="occ-{{_id}}" hidden>
+		    
+		    <div class="panel panel-default">
+			  <!-- Default panel contents -->
+			  <div class="panel-heading">Occurrences</div>
+
+			  <!-- Table -->
+			  <table class="table">
+			    {{#each occurrences}}
+			    <tr>
+		    	<td><span class="glyphicon glyphicon-time"></span> {{getTimestamp}}</td>
+		    	</tr>
+		    {{/each}}
+			  </table>
+			</div>
+		</div>
 	  </li>
 	  </div>
   </div>
