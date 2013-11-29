@@ -1,0 +1,1 @@
+Plotdata = new Meteor.Collection('plotdata');

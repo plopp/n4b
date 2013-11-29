@@ -1,5 +1,7 @@
 Meteor.Router.add({
-  '/': 'scenariosList',
+  '/': 'dashboard',
+
+  '/scenarios': 'scenariosList',
 
   '/scenario/:_id': {
     to: 'scenarioPage', 
@@ -33,7 +35,9 @@ Meteor.Router.add({
       //console.log("Resource id: "+id);
       //Session.set('currentResourceId', id);
     }
-  }
+  },
+
+  '/documentation': 'documentation',
 	/*
   '/scenario/:_id/edit': {
     to: 'scenarioEdit', 

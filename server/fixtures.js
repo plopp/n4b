@@ -11,8 +11,15 @@ if(Types.find().count() === 0){
     var analogTempDegreesCelsius = Types.insert({
       title: 'Analog Temp °C',
       unit: '°C'
-    })
+    });
+
+    var measurement = Types.insert({
+      title: 'Measurement'
+    });
 }
+
+var room1Temp;
+var outsideTemp;
 
 if(Resources.find().count() === 0){
   var stove1 = Resources.insert({
@@ -77,7 +84,46 @@ if(Resources.find().count() === 0){
     plcVar: 'MAIN.bathroomVentilation'
   });
 
+  room1Temp = Resources.insert({
+    title: 'Room temperature',
+    typeId: measurement,
+    value: 0,
+    unit: '°C',
+    plcVar: 'MAIN.room1Temp'
+  });
+
+  outsideTemp = Resources.insert({
+    title: 'Outside temperature',
+    typeId: measurement,
+    value: 0,
+    unit: '°C',
+    plcVar: 'MAIN.outsideTemp'
+  });
 }
+
+function populateData(data){
+  console.log(data);
+}
+if (Plotdata.find().count() === 0) {
+  var jsonurl = "http://api.openweathermap.org/data/2.5/history/city/?id=2711537&cnt=30";
+
+  var getreq = HTTP.get(jsonurl, function(error, result){
+    if(!error){
+      parsedContent = EJSON.parse(result.content);
+      //console.log(.length);
+      var samples = parsedContent.list;
+      for(var i = 0; i<samples.length; i++){
+        var time = new Date(parseInt(samples[i].dt)*1000).getTime();
+        var value = samples[i].main.temp-273.15;
+        var maxvalue = samples[i].main.temp_max-273.15;
+        var minvalue = samples[i].main.temp_min-273.15;
+        Plotdata.insert({datetime: time, value: value, maxvalue: maxvalue, minvalue: minvalue, resourceId: outsideTemp}); 
+      }
+    }
+  });
+}
+
+
 
 // Fixture data 
 if (Scenarios.find().count() === 0) {
