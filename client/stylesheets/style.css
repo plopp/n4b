@@ -1,4 +1,8 @@
 
+.nav .divider-vertical{
+    height: 43px;
+}
+
 .onoffswitch {
     position: relative; width: 90px;
     -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
@@ -48,15 +52,24 @@
 
 
 
-
-
-
 .grid-block, .main, .scenario, .rules li, .rule-form {
     background: #fff;
     border-radius: 3px;
     padding: 10px;
     margin-bottom: 10px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+}
+
+.panel .scenario {
+    background-color : transparent;
+    border: 0px;
+    box-shadow: 0px 0px 0px rgba(0,0,0,0);
+    margin-bottom: 0px;
+}
+
+.panel .scenario {
+    list-style:none;
+    padding: 0 0 0 0;
 }
 body {
     background: #eee;
@@ -91,7 +104,9 @@ body {
     margin: 7px 12px 0 0;
     float: left;
 }
-.scenario .scenario-content { float: left }
+.scenario .scenario-content { 
+    float: left;
+}
 .scenario .scenario-content h3 {
     margin: 0;
     line-height: 1.4;
@@ -99,7 +114,7 @@ body {
 }
 .scenario .scenario-content h3 a {
     display: inline-block;
-    margin-right: 5px;
+    margin: 5px 5px 0px 5px;
 }
 .scenario .scenario-content h4 a {
     display: inline-block;
@@ -113,6 +128,14 @@ body {
 }
 .scenario .scenario-content p { margin: 0 }
 
+.rule-content li{
+    min-height: 54px;
+}
+
+.rule-content{
+    margin: 10px 0px 0px 0px;
+    margin-left: 34px;
+}
 
 
 .scenario .discuss {
@@ -124,16 +147,16 @@ body {
     list-style-type: none;
     margin: 0;
 }
-.rules li h4 {
+.rules h4 {
     font-size: 16px;
     margin: 0;
 }
-.rules li h4 .date {
+.rules h4 .date {
     font-size: 12px;
     font-weight: normal;
 }
-.rules li h4 a { font-size: 16px; color: #666666; }
-.rules li p:last-child { margin-bottom: 0 }
+.rules h4 a { font-size: 16px; color: #666666; }
+.rules p:last-child { margin-bottom: 0 }
 
 .dropdown-menu span {
     display: block;

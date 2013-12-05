@@ -1,8 +1,30 @@
 <template name="resourceList">
   <div class="resources">
-    {{#each resource}}
-      {{> resourceItem}}
-    {{/each}}
+  	<div class="panel panel-success">
+	  <!-- Default panel contents -->
+	  <div class="panel-heading">Measurements<span class="glyphicon glyphicon-arrow-left" style="float: right"></span></div>
+		  <table class="table">
+		    {{#each resource}}
+		    	{{#if isInput}}
+			    <tr>
+		    	<td>{{> resourceItem}}</td>
+		    	</tr>
+		    	{{/if}}
+	    	{{/each}}
+		  </table>
+	</div>
+	<div class="panel panel-warning">
+		<div class="panel-heading">Output<span class="glyphicon glyphicon-arrow-right" style="float: right"></div>
+		  <table class="table">
+		    {{#each resource}}
+		    	{{#if isOutput}}
+			    <tr>
+		    	<td>{{> resourceItem}}</td>
+		    	</tr>
+		    	{{/if}}
+	    	{{/each}}
+		  </table>
+		</div>
   </div>
 	<form>
 	  <div class="control-group">

@@ -39,6 +39,7 @@ Template.ruleItem.events({
     $(evt.target).removeClass("btn-danger");
   },
   'click #view-occurrences' : function(evt){
-    $("#occ-"+this._id).toggle();
+    //TODO error if array length is larger than zero
+    $($.find("#occ-"+this._id)[0]).toggle();
   }
 });

@@ -1,12 +1,19 @@
 <template name="scenarioPage">
   {{#with currentScenario}}
-    {{> scenarioItem}}
-	
-    <ul class="rules">
-      {{#each rules}}
-        {{> ruleItem}}
+
+    <div class="panel panel-default">
+      <!-- Default panel contents -->
+      <div class="panel-heading">{{> scenarioItem}}</div>
+
+      <!-- Table -->
+      <table class="table">
+        {{#each rules}}
+        <tr>
+        <td>{{> ruleItem}}</td>
+        </tr>
       {{/each}}
-    </ul>
+      </table>
+    </div>
 
     <form>
       <div class="control-group">

@@ -16,6 +16,20 @@ Template.resourceItem.helpers({
   },
   rules: function(){
     return Rules.find({resourceId: this._id});
+  },
+  hasRules : function(){
+    return Rules.find({resourceId: this._id}).count() > 0;
+  },
+  isOutput: function() {
+    var type = Types.findOne(this.typeId);
+    return (type.title === 'Digital' || type.title === 'Analog');
+  },
+  isInput: function() {
+    var type = Types.findOne(this.typeId);
+    return (type.title === 'Measurement');
+  },
+  address : function() {
+    return this.plcVar;
   }
 });
 
@@ -42,6 +56,9 @@ Template.resourceItem.events({
   },
   'mouseleave #delete-btn' : function(evt){
     $(evt.target).removeClass("btn-danger");
+  },
+  'click #view-rules' : function(evt){
+    $("#showRulesDiv-"+this._id).toggle();
   }
 });
 

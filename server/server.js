@@ -49,7 +49,7 @@ var calcOccurrencesFiberTask = Fiber(function(){
 
       console.log("Starting calculation of occurrences...");
 
-      var nextSunday = later.schedule(later.parse.text("at 12:00 on thursday")).next();
+      var nextSunday = later.schedule(later.parse.text("at 12:00 on sunday")).next();
       console.log("nextSunday: "+nextSunday);
       console.log("Scheduling from: "+new Date().toString()+" to "+nextSunday);
 

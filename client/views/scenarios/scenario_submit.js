@@ -7,7 +7,7 @@ Template.scenarioSubmit.events({
     }
     console.log(scenario);
     scenario._id = Scenarios.insert(scenario);
-    Meteor.Router.to('/');
+    Meteor.Router.to('scenarioPage', scenario._id);
   }
 });
 

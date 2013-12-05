@@ -1,15 +1,14 @@
 <template name="scenarioItem">
   <div class="scenario">
-  <div style="float: right; display: block; margin-top: 0px; margin-right: 4px;">
+  <div style="float: left; margin:8px 10px 0px 5px"><span class="glyphicon glyphicon-play"></span></div>
+  <div style="float: right; display: block; margin: 0px 0px 0px 0px">
     <a href="" id="delete-btn-scenario" class="btn delete"><span class="glyphicon glyphicon-trash"></span>  Delete scenario</a>
   </div>
     <div class="scenario-content">
       <h3><a href="{{scenarioPagePath this}}">{{title}}</a>
-         {{#each usedResources}}
-         #<span>
-           {{title}}
+         <span>
+          {{resCount}} rules
          </span>
-         {{/each}}
       </h3>
     </div>
   </div>

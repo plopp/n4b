@@ -1,11 +1,17 @@
 <template name="header">
   <header class="navbar">
     <div class="navbar-inner">
-      <a class="brand" href="/">NEED4B</a>
-      <a class="brand" href="{{scenariosListPath}}">Scenarios</a>
-      <a class="brand" href="{{resourcePagePath}}">Resources</a>
-      <a class="brand" href="/settings">Settings</a>
-      <a class="brand" href="{{documentationPath}}">Docs</a>
+    	<ul class="nav">
+    		<li><a class="navbar-brand" href="/"><span class="glyphicon glyphicon-home"></span> NEED4B</a></li>
+    		<li class="divider-vertical"></li>
+    		<li><a class="" href="{{scenariosListPath}}"><span class="glyphicon glyphicon-play"></span> Scenarios</a></li>
+    		<li class="divider-vertical"></li>
+    		<li><a class="" href="{{resourcePagePath}}"><span class="glyphicon glyphicon-resize-horizontal"></span> Resources</a></li>
+    		<li class="divider-vertical"></li>
+    		<li><a class="" href="/settings"><span class="glyphicon glyphicon-wrench"></span> Settings</a></li>
+    		<li class="divider-vertical"></li>
+    		<li><a class="" href="{{documentationPath}}"><span class="glyphicon glyphicon-book"></span> Docs</a></li>
+    	</ul>
     </div>
   </header>
 </template>
