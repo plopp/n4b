@@ -5,12 +5,6 @@ if(Types.find().count() === 0){
     
     var analog = Types.insert({
       title: 'Analog',
-      unit: ''
-    });
-
-    var analogTempDegreesCelsius = Types.insert({
-      title: 'Analog Temp °C',
-      unit: '°C'
     });
 
     var measurement = Types.insert({
@@ -35,6 +29,9 @@ if(Resources.find().count() === 0){
   var lampKitchen = Resources.insert({
     title: 'Kitchen lamp',
     typeId: digital,
+    max: 1,
+    min: 0,
+    unit: '',
     value: 0,
     plcVar: 'MAIN.kitchenLamp'
   });
@@ -52,6 +49,9 @@ if(Resources.find().count() === 0){
   var outlet1 = Resources.insert({
     title: 'Outlet livingroom',
     typeId: digital,
+    max: 1,
+    min: 0,
+    unit: '',
     value: 0,
     plcVar: 'MAIN.outletLivingroom'
   });
@@ -59,6 +59,9 @@ if(Resources.find().count() === 0){
   var outlet2 = Resources.insert({
     title: 'Outlet bedroom',
     typeId: digital,
+    max: 1,
+    min: 0,
+    unit: '',
     value: 0,
     plcVar: 'MAIN.outletBedroom'
   });
@@ -66,6 +69,9 @@ if(Resources.find().count() === 0){
   var outlet3 = Resources.insert({
     title: 'Outlet bedroom 2',
     typeId: digital,
+    max: 1,
+    min: 0,
+    unit: '',
     value: 0,
     plcVar: 'MAIN.outletBedroom2'
   });
@@ -73,6 +79,9 @@ if(Resources.find().count() === 0){
   var showerWater = Resources.insert({
     title: 'Shower water',
     typeId: digital,
+    max: 1,
+    min: 0,
+    unit: '',
     value: 0,
     plcVar: 'MAIN.showerWater'
   });
@@ -80,6 +89,9 @@ if(Resources.find().count() === 0){
   var bathroomVent = Resources.insert({
     title: 'Bathroom ventilation',
     typeId: digital,
+    max: 1,
+    min: 0,
+    unit: '',
     value: 0,
     plcVar: 'MAIN.bathroomVentilation'
   });

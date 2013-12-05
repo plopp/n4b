@@ -50,14 +50,16 @@
     right: 0px; 
 }
 
-
+input {
+    min-height: 30px;
+}
 
 .grid-block, .main, .scenario, .rules li, .rule-form {
     background: #fff;
     border-radius: 3px;
-    padding: 10px;
+    padding: 18px;
     margin-bottom: 10px;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+    /*box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);*/
 }
 
 .panel .scenario {

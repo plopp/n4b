@@ -37,6 +37,8 @@ Meteor.Router.add({
     }
   },
 
+  '/resources/submit': 'resourceSubmit',
+
   '/documentation': 'documentationPage',
 
   '/settings': 'settingsPage',

@@ -1,4 +1,7 @@
 <template name="ruleEdit">
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">Edit rule<span class="glyphicon glyphicon-pencil" style="float: right"></span></div>
 {{#with rule}}
   <form class="main">
     <div class="control-group">
@@ -60,6 +63,7 @@
         </div>
     </div>
   </form>
+  </div>
   <div class="highlight">
     <h2>Time rule examples</h2>
       <p><span>"on the first day of the week"</span><span>// fires every Sunday</span></p>

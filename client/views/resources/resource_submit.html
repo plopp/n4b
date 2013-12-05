@@ -1,0 +1,63 @@
+<template name="resourceSubmit">
+  <div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">Add resource<span class="glyphicon glyphicon-resize-horizontal" style="float: right"></span></div>
+  
+  <form class="main">
+
+    <div class="control-group">
+        <label class="control-label" for="title">Title</label>
+        <div class="controls">
+            <input name="title" type="text" value="" placeholder="Name your resource" required/>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" for="plcvar">PLC-variable</label>
+        <div class="controls">
+            <input name="plcvar" type="text" value="" placeholder="<program>.<variable_name>" required/>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" for="plcvar">Type</label>
+        <div class="control-group">
+            <select id="type_select" required>
+                {{#each types}}
+                  <option name="resource" value="{{_id}}">{{title}}</option>
+                {{/each}}
+            </select>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" for="max">Max</label>
+        <div class="control-group">
+          <input name="max" type="number" value="" placeholder="1" required/>
+        </div>
+        <label class="control-label" for="min">Min</label>
+        <div class="control-group">
+          <input name="min" type="number" value="" placeholder="0" required/>
+        </div>
+        <label class="control-label" for="unit">Unit</label>
+        <div class="control-group">
+          <input name="unit" type="text" value="" placeholder="°C,#,V,m³/s"/>
+        </div>
+    </div>
+
+    <hr/>
+    <div class="control-group">
+        <div class="controls">
+            <!--<input type="submit" value="Submit" class="btn btn-primary"/>-->
+            <button id="submit-btn" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk"></span>  Save</button>  <button id="cancel-btn" class="btn btn-default">Cancel</button>
+        </div>
+    </div>
+  </form>
+  </div>
+  <div class="highlight">
+    <h2>PLC variable names</h2>
+      <p><span>Variable names are on the form <b>program</b>.<b>variable_name</b></span></p>
+      <p><span>Example 1: If a variable is stored in the "MAIN"-program on the PLC and the variable name is "var1" the resulting variable name to write in the PLC-variable field would be "MAIN.var1".</span></p>
+      <p><span>Example 2: If a variable is stored in the global memory on the PLC and the variable name is "var2" the resulting variable name to write in the PLC-variable field would be ".var1".</span></p>
+  </div>
+</template>

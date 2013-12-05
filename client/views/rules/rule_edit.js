@@ -3,7 +3,8 @@ Template.ruleEdit.helpers({
     return Rules.findOne(Session.get("currentRuleId"));
   },
   resources : function(){
-    return Resources.find();
+    //TODO If Types.find return more than one object there will be problems, that will happen if two Signal types are created with the same name.
+    return Resources.find({typeId: {$ne: Types.findOne({title: 'Measurement'})._id }});
   },
   selRes : function(){
     return Session.get("selectedResource");

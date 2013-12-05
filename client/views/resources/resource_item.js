@@ -34,7 +34,7 @@ Template.resourceItem.helpers({
 });
 
 Template.resourceItem.events({
-  'click #delete-btn' : function(evt){
+  'click .delete-resource' : function(evt){
       //Delete occurrences
       /*var vector = Occurrences.find({ruleId:this._id});
       var numOcc = vector.count();
@@ -49,12 +49,27 @@ Template.resourceItem.events({
       Resources
       */
       /* TODO Handle delete of resource */
+      if(confirm("Deleting this resource will also remove all rules defined for it and also all occurrences created for it. Are you sure you want to delete it?")){      
+        console.log("Deleting resource.");
+        var rulesVector = Rules.find({resourceId:this._id});
+        var rulesArr = rulesVector.fetch();
+        for(var i = 0; i<rulesVector.count(); i++){
+          var occVector = Occurrences.find({ruleId:rulesArr[i]._id});
+          var occArr = occVector.fetch();
+          for(var j = 0; j<occVector.count(); j++){
+            Occurrences.remove(occArr[j]._id);
+          }
+          Rules.remove(rulesArr[i]._id);
+        }
+        Resources.remove(this._id);
+        //Meteor.Router.to("/resources");
+      } 
   },
 
-  'mouseenter #delete-btn' : function(evt){
+  'mouseenter .delete-resource' : function(evt){
     $(evt.target).addClass("btn-danger");
   },
-  'mouseleave #delete-btn' : function(evt){
+  'mouseleave .delete-resource' : function(evt){
     $(evt.target).removeClass("btn-danger");
   },
   'click #view-rules' : function(evt){
