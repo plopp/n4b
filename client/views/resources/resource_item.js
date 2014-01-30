@@ -9,7 +9,14 @@ Template.resourceItem.helpers({
   	return Resources.findOne(this._id).unit;
   },
   getTimestamp: function(){
-    return new Date(this.datetime);
+    //return new Date(this.datetime);
+    unix = Resources.findOne(this._id).timestamp;
+    if(unix){
+      return moment(new Date(unix)).fromNow();
+    }
+    else{
+      return "never updated"
+    }
   },
   getType: function(){
     return Types.findOne(Resources.findOne(this._id).typeId).title;
@@ -30,6 +37,14 @@ Template.resourceItem.helpers({
   },
   address : function() {
     return this.plcVar;
+  },
+  getNiceValue : function(){
+    if(this.formatString){
+      return sprintf(this.formatString,this.value);
+    }
+    else{
+      return sprintf("%.1f",this.value);
+    }
   }
 });
 

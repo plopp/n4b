@@ -18,7 +18,7 @@
 	    <h4>
 	      <span class="author">{{title}}</span>
 	    </h4>
-	    <p>Current value:<b> {{value}} {{#if hasUnit}}{{unit}}{{/if}}</b>, Address:<b> {{address}}</b>, I/O-type:<b> {{getType}}</b></p>
+	    <p>Current value:<b> {{getNiceValue}} {{#if hasUnit}}{{unit}}{{/if}}</b>, Address:<b> {{address}}</b>, I/O-type:<b> {{getType}}</b>, Last updated:<b> {{getTimestamp}}</b></p>
 	    <div id="showRulesDiv-{{_id}}" hidden>
 
 	    	<div class="panel panel-default">

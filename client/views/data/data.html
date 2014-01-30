@@ -1,0 +1,23 @@
+<template name="dataPage">
+<div>
+  <div class="content" style="display: block; float: right; horizontal-align: center">
+    
+      <canvas id="myChart" width="800" height="400"></canvas>
+
+	</div>
+  <div class="content" style="display: block; float: left">
+    <form class="main">
+      {{#each rule}}
+      <div id="div_{{_id}}">
+        <input id="{{_id}}" value="your_value" type="checkbox" {{isChecked isTrue true}}/>
+        <label for="{{_id}}">{{title}}</label><br>
+      </div>
+      {{/each}}
+    </form>
+  </div>
+</div>
+</template>
+
+
+
+

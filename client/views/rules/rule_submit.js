@@ -95,6 +95,7 @@ Template.ruleSubmit.events({
       timerule: $(e.target).find('[name=timerule]').val(),
     }
     rule._id = Rules.insert(rule);
+    Meteor.call('scheduleOccurrences');
     Meteor.Router.to('scenarioPage', Session.get("currentScenarioId"));
   },
   "change #resource_select": function(evt) {

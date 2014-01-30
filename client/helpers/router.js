@@ -37,13 +37,15 @@ Meteor.Router.add({
     }
   },
 
+  '/data': 'dataPage',
+
   '/resources/submit': 'resourceSubmit',
 
   '/documentation': 'documentationPage',
 
   '/settings': 'settingsPage',
 
-  '/logs': 'logsPage'  
+  '/logs': 'logsPage' 
 	/*
   '/scenario/:_id/edit': {
     to: 'scenarioEdit', 

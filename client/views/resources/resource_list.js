@@ -1,7 +1,7 @@
 
 Template.resourceList.helpers({
   resource: function() {
-    return Resources.find();
+    return Resources.find({},{sort: {title: 1}});
   },
   isOutput: function() {
   	var type = Types.findOne(this.typeId);

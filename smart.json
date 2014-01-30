@@ -5,6 +5,7 @@
     "router": {},
     "jqbootstrapvalidation": {},
     "handlebar-helpers": {},
-    "bootstrap-3": {}
+    "bootstrap-3": {},
+    "moment": {}
   }
 }

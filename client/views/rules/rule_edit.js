@@ -111,6 +111,7 @@ Template.ruleEdit.events({
         // display the error to the user
         console.log(error.reason);
       } else {
+        Meteor.call('scheduleOccurrences');
         Meteor.Router.to('scenarioPage', Session.get("currentScenarioId"));
       }
     });

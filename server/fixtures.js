@@ -111,6 +111,66 @@ if(Resources.find().count() === 0){
     unit: '°C',
     plcVar: 'MAIN.outsideTemp'
   });
+
+  /*totalEnergy = Resources.insert({
+    title: 'Total energy',
+    typeId: measurement,
+    value: 0,
+    unit: 'kWh',
+    plcVar: 'MAIN.totalEnergy',
+    logInterval: 1
+  });*/
+
+  waterLevel = Resources.insert({
+    title: 'Water level',
+    typeId: measurement,
+    value: 0,
+    unit: 'm',
+    plcVar: 'MAIN.waterLevelActWeb',
+    logInterval: 1,
+    formatString: "%.3f"
+  });
+
+waterLevel = Resources.insert({
+    title: 'Temp air',
+    typeId: measurement,
+    value: 0,
+    unit: '°C',
+    plcVar: 'MAIN.tempAirWeb',
+    logInterval: 1,
+    formatString: "%.1f"
+  });
+
+waterLevel = Resources.insert({
+    title: 'Temp water',
+    typeId: measurement,
+    value: 0,
+    unit: '°C',
+    plcVar: 'MAIN.tempWaterWeb',
+    logInterval: 5,
+    formatString: "%.1f"
+  });
+
+prepWebIn = Resources.insert({
+    title: 'Precipitation 1h',
+    typeId: measurement,
+    unit: 'mm',
+    value: 0,
+    plcVar: 'MAIN.precipitation1hrWeb',
+    logInterval: 1,
+    formatString: "%d"
+  });
+
+prepWebOut = Resources.insert({
+    title: 'Precipitation 1h',
+    typeId: analog,
+    max: 100,
+    min: 0,
+    unit: 'mm',
+    value: 0,
+    plcVar: 'MAIN.precipitation1hrWeb',
+    formatString: "%d"
+  });
 }
 
 function populateData(data){
