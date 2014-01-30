@@ -8,6 +8,7 @@
       "jqbootstrapvalidation": {},
       "handlebar-helpers": {},
       "bootstrap-3": {},
+      "jq-knob": {},
       "moment": {}
     },
     "packages": {
@@ -41,10 +42,15 @@
         "tag": "v0.3.7",
         "commit": "5dd0d142c870647b910be80bc777b96f0dd45e5e"
       },
+      "jq-knob": {
+        "git": "https://github.com/strikeout/meteor-jq-knob.git",
+        "tag": "v0.0.1",
+        "commit": "41e5422d14b735d9fe6fd11d6bae11f1873f785d"
+      },
       "moment": {
         "git": "https://github.com/acreeger/meteor-moment.git",
-        "tag": "v2.2.1",
-        "commit": "9ee12e714afe56b189f53076447b7b54f3012065"
+        "tag": "v2.5.1",
+        "commit": "8c9bc5d3fc96705057737cb9743d555417f6e551"
       },
       "page-js-ie-support": {
         "git": "https://github.com/tmeasday/meteor-page-js-ie-support.git",

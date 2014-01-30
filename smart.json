@@ -6,6 +6,7 @@
     "jqbootstrapvalidation": {},
     "handlebar-helpers": {},
     "bootstrap-3": {},
+    "jq-knob": {},
     "moment": {}
   }
 }
