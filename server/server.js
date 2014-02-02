@@ -1129,8 +1129,7 @@ function sendToPlc(handlesVarNames, values, method){
             console.log("Starting communication with PLC.");
             var NETID = ""; // Empty string for local machine;
             var PORT = "801"; // TC3 PLC Runtime
-            //var SERVICE_URL = "http://192.168.2.9/TcAdsWebService/TcAdsWebService.dll"; // HTTP path to the TcAdsWebService;
-            var SERVICE_URL = "http://94.234.188.233/TcAdsWebService/TcAdsWebService.dll";
+            var SERVICE_URL = "http://192.168.2.9/TcAdsWebService/TcAdsWebService.dll"; // HTTP path to the TcAdsWebService;
             var client = new TcAdsWebService.Client(SERVICE_URL, null, null);
             var general_timeout = 500;
             var readLoopID = null;
