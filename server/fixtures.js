@@ -127,7 +127,7 @@ if(Resources.find().count() === 0){
     value: 0,
     unit: 'm',
     plcVar: 'MAIN.waterLevelActWeb',
-    logInterval: 1,
+    //logInterval: 1,
     formatString: "%.3f"
   });
 
@@ -137,7 +137,7 @@ waterLevel = Resources.insert({
     value: 0,
     unit: '°C',
     plcVar: 'MAIN.tempAirWeb',
-    logInterval: 1,
+    //logInterval: 1,
     formatString: "%.1f"
   });
 
@@ -147,7 +147,7 @@ waterLevel = Resources.insert({
     value: 0,
     unit: '°C',
     plcVar: 'MAIN.tempWaterWeb',
-    logInterval: 5,
+    //logInterval: 5,
     formatString: "%.1f"
   });
 
@@ -157,7 +157,7 @@ prepWebIn = Resources.insert({
     unit: 'mm',
     value: 0,
     plcVar: 'MAIN.precipitation1hrWeb',
-    logInterval: 1,
+    //logInterval: 1,
     formatString: "%d"
   });
 
@@ -171,12 +171,91 @@ prepWebOut = Resources.insert({
     plcVar: 'MAIN.precipitation1hrWeb',
     formatString: "%d"
   });
+
+
+
+for (var i = 1; i <= 3; i++) {
+  Resources.insert({
+    title: 't'+i.toString(),
+    typeId: measurement,
+    value: 0,
+    unit: '°C',
+    plcVar: 'MAIN.t'+i.toString(),
+    logInterval: 1,
+    formatString: "%.1f"
+  });
+};
+
+/*for (var i = 1; i <= 50; i++) {
+  Resources.insert({
+    title: 'do'+i.toString(),
+    typeId: digital,
+    value: 0,
+    unit: '',
+    plcVar: 'MAIN.do'+i.toString(),
+    logInterval: 0,
+    formatString: "%d"
+  });
+};*/
+
+Resources.insert({
+    title: 'up',
+    typeId: measurement,
+    value: 0,
+    unit: '',
+    plcVar: 'MAIN.up',
+    logInterval: 0,
+    formatString: "%d"
+  });
+
+Resources.insert({
+    title: 'down',
+    typeId: measurement,
+    value: 0,
+    unit: '',
+    plcVar: 'MAIN.down',
+    logInterval: 0,
+    formatString: "%d"
+  });
+
+Resources.insert({
+    title: 'left',
+    typeId: measurement,
+    value: 0,
+    unit: '',
+    plcVar: 'MAIN.left',
+    logInterval: 0,
+    formatString: "%d"
+  });
+
+Resources.insert({
+    title: 'right',
+    typeId: measurement,
+    value: 0,
+    unit: '',
+    plcVar: 'MAIN.right',
+    logInterval: 0,
+    formatString: "%d"
+  });
+
+Resources.insert({
+    title: 'enter',
+    typeId: measurement,
+    value: 0,
+    unit: '',
+    plcVar: 'MAIN.enter',
+    logInterval: 0,
+    formatString: "%d"
+  });
+
 }
 
 function populateData(data){
   console.log(data);
 }
 if (Plotdata.find().count() === 0) {
+  
+/*
   var jsonurl = "http://api.openweathermap.org/data/2.5/history/city/?id=2711537&cnt=30";
 
   var getreq = HTTP.get(jsonurl, function(error, result){
@@ -193,6 +272,7 @@ if (Plotdata.find().count() === 0) {
       }
     }
   });
+  */
 }
 
 

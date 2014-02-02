@@ -1,32 +1,16 @@
 <template name="dashboard">
 <div>
-  <div class="dashboard-content" style="display: block; float: left">
-    <!--<div id="chart">
-      <svg style="height: 500px; width: 100%"></svg>
-    </div>-->
-   	<div style="padding: 100px 30px 30px 30px">
-   	<div style="display: float; text-align: center; width: 500; height: 100 ">Total current power usage</div><br>
-    
-    <canvas id="myChart" width="400" height="400"></canvas>
-
-    <!--<input type="text" class="dial" style="border: 0px solid #cccccc;-webkit-box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0);-moz-box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0);box-shadow: inset 0 1px 0px rgba(0, 0, 0, 0);-webkit-transition: border linear 0.2s, box-shadow linear 0.2s;-moz-transition: border linear 0.2s, box-shadow linear 0.2s;-o-transition: border linear 0.2s, box-shadow linear 0.2s;transition: border linear 0.2s, box-shadow linear 0.2s;"><br>-->
-    <div style="display: float; text-align: center; width: 500; height: 100; font-weight: bold ">kW</div>
-   </div>
-    <!--GRAPH!!! <div id="container" style="height: 610px; margin: auto; min-width: 310px; width: 600px; padding: 80px 40px 0px 60px">-->
+  <div id="graph1" class="aGraph" style="position:relative;width:100%;height:400px"></div>
+  <!--<div id="graph2" class="aGraph" style="float:left;position:relative;width:49%;height:200px"></div>
+  <div id="graph3" class="aGraph" style="float:left;position:relative;width:49%;height:200px"></div>-->
+  <div class="content" style="display: inline; overflow: hidden;">
+      {{#each resource}}
+      <div id="div_{{_id}}" class="clickable" style="display: block; float: left; min-width: 200px; min-height: 30px; border:2px solid; border-radius:3px; padding: 3px 3px 3px 3px; margin: 3px 3px 3px 3px; text-align: center">
+        {{title}}
+      </div>
+      {{/each}}
   </div>
-  </div>
-	<div class="jumbotron">
-		<div class="containter">
-		  <h1>Welcome to NEED4B</h1>
-			  A simple web based control system for the NEED4B-house. The house control is performed through a set of <b>scenarios</b>.
-			  Each scenario contains <b>rules</b>. A rule decides when a given <b>resource</b> should change value, and what value that should be.
-			  A resource can for example be a heat pump, a lamp, an outlet or anything else that is actively controlled by the control
-			  system in the house.
-		  
-		  <p><a href="{{documentationPagePath}}" class="btn btn-primary btn-lg" role="button">Learn more</a></p>
-		</div>
-	</div>
-<div>
+{{plotDataReactive}}
 </template>
 
 

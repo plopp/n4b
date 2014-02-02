@@ -5,13 +5,7 @@ Template.dataPage.helpers({
 });
 
 Template.dataPage.events({
-  'click label' : function(evt){
-    evt.preventDefault();
-    box = $("#"+this._id);
-    //alert(box.prop('checked'));
-    box.prop("checked", !box.prop("checked"));
-    //alert(this.title);
-  }
+  
 })
 
 Template.dataPage.rendered = function(){
