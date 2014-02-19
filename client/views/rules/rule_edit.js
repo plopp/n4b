@@ -28,8 +28,8 @@ Template.ruleEdit.helpers({
     if(selectedResource == undefined){
       selectedResource = resourceId;
     }
-    console.log(selectedResource);
-    console.log(Resources.findOne(selectedResource).title);
+    //console.log("DEBUG5 "+selectedResource);
+    //console.log(Resources.findOne(selectedResource).title);
     return Types.findOne(Resources.findOne(selectedResource).typeId).title === "Digital"; 
     /*var selectedResId = Session.get("resourceId");
     if(selectedResId != undefined && resourceId != selectedResId){ //If selected resource differs form the store resourceId, the user has changed resource.
@@ -43,17 +43,22 @@ Template.ruleEdit.helpers({
   },
   unit : function(){
     var selectedResource = Session.get("selectedResource");
-    return Resources.findOne(selectedResource).unit; 
-    //return Session.get("unit");
+    if(selectedResource){
+      return Resources.findOne(selectedResource).unit; 
+      return Session.get("unit");
+    }
   },
   max : function() {
     var selectedResource = Session.get("selectedResource");
-    return Resources.findOne(selectedResource).max; 
-    //return Session.get("max");
+    if(selectedResource){
+        return Resources.findOne(selectedResource).max;; 
+    }
   },
   min : function() {
     var selectedResource = Session.get("selectedResource");
-    return Resources.findOne(selectedResource).min; 
+    if(selectedResource){
+        return Resources.findOne(selectedResource).min; 
+    }
     //return Session.get("min");
   },
   isTrue : function() {

@@ -24,3 +24,6 @@ bootstrap-3
 http
 jq-knob
 moment
+d3
+node-csv-npm
+underscore

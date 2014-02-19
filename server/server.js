@@ -2,11 +2,107 @@ var schedule = Meteor.require('node-schedule');
 var later = Meteor.require('later');
 later.date.localTime()
 var Fiber = Npm.require('fibers');
-var Future = Npm.require('fibers/future')
+var Future = Npm.require('fibers/future');
 
 //Checks to see if anything should be done this minute
 var minuteRule = new schedule.RecurrenceRule();
 minuteRule.second = 0;
+
+Meteor.Router.add('/exportDataToCsv/:filename', function() {
+    // curl http://localhost:3000/exportUsers/Users.csv
+    // Should get a .csv file
+    return exportCSV(this.response);
+});
+
+Meteor.Router.add('/exportDataToJson/:filename', function() {
+    // curl http://localhost:3000/exportUsers/Users.csv
+    // Should get a .csv file
+    var dobj = Plotdata.find({},{fields: {datetime: 1, value: 1, resourceId: 1}}).fetch();
+    
+    var tempArr = [];
+    for (var i = 0; i < dobj.length; i++) {
+        var curRes = Resources.findOne(dobj[i].resourceId);
+        tempArr.push({timestamp: new Date(dobj[i].datetime).toLocaleString(),title: curRes.title, value: dobj[i].value, unit: curRes.unit})
+    };
+    return JSON.stringify(tempArr);
+});
+
+var exportCSV = function(responseStream){
+
+   var dataStream = createStream();
+    // Set up a future, Stream doesn't work properly without it.
+    var fut = new Future();
+    var samples = {};
+
+    //Here this Package is used to parse a stream from an array to a string of CSVs.
+   CSV().from(dataStream)
+    .to(responseStream)
+    .transform(function(data, index){
+    if(data._id){
+        //var dateCreated = new Date(user.createdAt);
+        curRes = Resources.findOne(data.resourceId);
+        return [new Date(data.datetime).toLocaleString(), curRes.title, data.value, curRes.unit];
+    }else
+        return data;
+    })
+    .on('error', function(error){
+        console.log('Error streaming CSV export: ', error.message);
+    })
+    .on('end', function(count){
+        responseStream.end();
+        fut.return("");
+    });
+
+    //Write table headings for CSV to stream.
+    
+    dataStream.write(["Timestamp","Resource","Value"]);
+
+    samples = Plotdata.find({});
+
+    //Pushing each user into the stream, If we could access the MongoDB driver we could
+    //convert the Cursor into a stream directly, making this a lot cleaner.
+    var count = 0;
+    samples.forEach(function (data) {
+        dataStream.write(data); //Stream transform takes care of cleanup and formatting.
+        count += 1;
+        if(count >= samples.count())
+            dataStream.end();
+    });
+
+    return fut.wait();
+};
+
+//Creates and returns a Duplex(Read/Write) Node stream
+//Used to pipe users from .find() Cursor into our CSV stream parser.
+var createStream = function(){
+
+    var stream = Meteor.require('stream');
+    var myStream = new stream.Stream();
+    myStream.readable = true;
+    myStream.writable = true;
+
+    myStream.write = function (data) {
+        myStream.emit('data', data);
+        return true; // true means 'yes i am ready for more data now'
+        // OR return false and emit('drain') when ready later
+    };
+
+    myStream.end = function (data) {
+        //Node convention to emit last data with end
+        if (arguments.length)
+            myStream.write(data);
+
+        // no more writes after end
+        myStream.writable = false;
+        myStream.emit('end');
+    };
+
+    myStream.destroy = function () {
+        myStream.writable = false;
+    };
+
+    return myStream;
+};
 
 var doJob = function(){
         doJobWithFuture().wait();
@@ -112,7 +208,6 @@ var calcOccWithFuture = function(){//Fiber(function(){
     //Clear existing occurrences that are newer than now - the remaining ones will have been missed and needs
     //to be performed.
 
-
     var rulesArr = Rules.find().fetch();
     var k = 0;
     var m = 0;
@@ -159,6 +254,11 @@ Meteor.methods({
   },
   removeAllOccurrences: function(){
     Occurrences.remove({});
+  },
+  save_pv_records: function(timestamp, ener, pow){
+    if(Pvdata.find({datetime: timestamp}).count()  == 0){
+        Pvdata.insert({datetime: timestamp, energy: ener, power: pow});
+    }
   }
 });
 
@@ -1137,7 +1237,7 @@ function sendToPlc(handlesVarNames, values, method){
             //var PORT = "851"; // TC3 PLC Runtime
             //var SERVICE_URL = "http://192.168.2.9/TcAdsWebService/TcAdsWebService.dll"; // HTTP path to the TcAdsWebService;
             //var SERVICE_URL = "http://plcsp.no-ip.biz/TcAdsWebService/TcAdsWebService.dll";
-            var SERVICE_URL = "http://192.168.1.108/TcAdsWebService/TcAdsWebService.dll";
+            var SERVICE_URL = "http://192.168.0.1:8081/TcAdsWebService/TcAdsWebService.dll";
             var client = new TcAdsWebService.Client(SERVICE_URL, null, null);
             var general_timeout = 500;
             var readLoopID = null;

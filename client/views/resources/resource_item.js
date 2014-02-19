@@ -39,11 +39,12 @@ Template.resourceItem.helpers({
     return this.plcVar;
   },
   getNiceValue : function(){
+    return this.value;
     if(this.formatString){
-      return sprintf(this.formatString,this.value);
+      //return sprintf(this.formatString,this.value);
     }
     else{
-      return sprintf("%.1f",this.value);
+      //return sprintf("%.1f",this.value);
     }
   }
 });

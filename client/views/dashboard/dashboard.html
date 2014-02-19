@@ -1,16 +1,32 @@
 <template name="dashboard">
-<div>
+<div class="content">
+  <div class="btn-group" data-toggle="buttons-radio">
+    <button type="button" class="btn btn-default" id="butDay">day</button>
+    <button type="button" class="btn btn-default" id="butWeek">week</button>
+    <button type="button" class="btn btn-default" id="butMonth">month</button>
+    <button type="button" class="btn btn-default" id="butYear">year</button>
+    <button type="button" class="btn btn-default" id="butAll">all</button>
+  </div>
+  <div class="" style="float: right">
+    <button type="button" class="btn btn-default" id="butCsv">download .csv</button>
+    <button type="button" class="btn btn-default" id="butJson">download .json</button>
+  </div>
+  <div id="noDataDiv" style="position: absolute; left: 38%; text-align: center; vertical-align: middle">
+    <p>No data in the specified time interval.</p>
+  </div>
   <div id="graph1" class="aGraph" style="position:relative;width:100%;height:400px"></div>
-  <!--<div id="graph2" class="aGraph" style="float:left;position:relative;width:49%;height:200px"></div>
-  <div id="graph3" class="aGraph" style="float:left;position:relative;width:49%;height:200px"></div>-->
-  <div class="content" style="display: inline; overflow: hidden;">
+  <div id="#resourcePanel">
       {{#each resource}}
-      <div id="div_{{_id}}" class="clickable" style="display: block; float: left; min-width: 200px; min-height: 30px; border:2px solid; border-radius:3px; padding: 3px 3px 3px 3px; margin: 3px 3px 3px 3px; text-align: center">
-        {{title}}
+      <div id="div_{{_id}}" class="clickable btn btn-default" style="display: relative; float: left; min-width: 100px; min-height: 30px; padding: 6px 8px 6px 6px; margin: 0px 2px 0px 2px;">
+        <span class="glyphicon glyphicon-ok" id="glyph_{{_id}}" style="float:left"></span><span style="float: right">{{title}}</span>
       </div>
       {{/each}}
   </div>
-{{plotDataReactive}}
+</div>
+  <!--<div id="graph2" class="aGraph" style="float:left;position:relative;width:49%;height:200px"></div>
+  <div id="graph3" class="aGraph" style="float:left;position:relative;width:49%;height:200px"></div>-->
+<!--{{plotDataReactive}}-->
+{{timeDepthReactive}}
 </template>
 
 
