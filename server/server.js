@@ -288,7 +288,7 @@ Meteor.methods({
     Occurrences.remove({});
   },
   save_pv_records: function(data){
-    var pvPower = Resources.find({plcVar: 'MAIN.pvPower'}.fetch());
+    var pvPower = Resources.find({plcVar: 'MAIN.pvPower'}).fetch();
     var lastrec = Pvdata.find({},{sort:{datetime: -1}}).fetch()[0];
     if(lastrec){
         latest = lastrec.datetime;
