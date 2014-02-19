@@ -1,5 +1,5 @@
 Meteor.Router.add({
-  '/': 'dashboard',
+  '/': 'dataPage',
 
   '/scenarios': 'scenariosList',
 
@@ -37,7 +37,7 @@ Meteor.Router.add({
     }
   },
 
-  '/data': 'dataPage',
+  '/data': 'dashboardPage',
 
   '/resources/submit': 'resourceSubmit',
 

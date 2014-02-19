@@ -137,19 +137,60 @@ var doJobWithFuture = function(){//Fiber(function(){
 //var minuteJob = schedule.scheduleJob(minuteRule, function(){ //Checks if any resource value should change
 //});
 
-var minute1log = schedule.scheduleJob(minuteRule, function(){ //Checks if any resource value should change
+var oneJob = function(){
     doJob();
     collectLog(1);
-});
-var minute5log = schedule.scheduleJob('*/5 * * * *', function(){ //Checks if any resource value should change
+}
+var fiveJob = function(){
     collectLog(5);
-});
-var minute10log = schedule.scheduleJob('*/10 * * * *', function(){ //Checks if any resource value should change
+}
+var tenJob = function(){
     collectLog(10);
-});
-var minute15log = schedule.scheduleJob('*/15 * * * *', function(){ //Checks if any resource value should change
+}
+var fifteenJob = function(){
     collectLog(15);
-});
+}
+
+var weekJob = function(){
+    console.log("Weekrule");
+    calcOcc();
+}
+
+var ones = later.parse.text('every 1 min');
+
+var onet = later.setInterval(oneJob, ones);
+
+var fives = later.parse.text('every 5 min');
+
+var fivet = later.setInterval(fiveJob, fives);
+
+var tens = later.parse.text('every 10 min');
+
+var tent = later.setInterval(tenJob, tens);
+
+var fifteens = later.parse.text('every 15 min');
+
+var fifteent = later.setInterval(fifteenJob, fifteens);
+
+var weeks = later.parse.text('on the first day of the week at 12:00');
+
+var weekt = later.setInterval(weekJob, weeks);
+
+
+
+// var minute1log = schedule.scheduleJob(minuteRule, function(){ //Checks if any resource value should change
+//     doJob();
+//     collectLog(1);
+// });
+// var minute5log = schedule.scheduleJob('*/5 * * * *', function(){ //Checks if any resource value should change
+//     collectLog(5);
+// });
+// var minute10log = schedule.scheduleJob('*/10 * * * *', function(){ //Checks if any resource value should change
+//     collectLog(10);
+// });
+// var minute15log = schedule.scheduleJob('*/15 * * * *', function(){ //Checks if any resource value should change
+//     collectLog(15);
+// });
 
 var collectLog = function(min){
     doLogWithFuture(min).wait();
@@ -181,12 +222,7 @@ function doLogWithFuture(min){
     return future;
 }
 
-//Calculates the upcoming weeks occurrences
-var weekRule = new schedule.RecurrenceRule(); //Calculates the upcoming weeks occurrences
-weekRule.dayOfWeek = 0;
-weekRule.hour = 12;
-weekRule.minute = 0;
-weekRule.second = 0;
+
 
 var calcOcc = function(){
         calcOccWithFuture().wait();
@@ -231,10 +267,6 @@ var calcOccWithFuture = function(){//Fiber(function(){
 //});
 
 
-var recurSchedJob2 = schedule.scheduleJob(weekRule, function(){
-  console.log("Weekrule");
-  calcOcc();
-  });
 
 
 Meteor.methods({
@@ -255,10 +287,44 @@ Meteor.methods({
   removeAllOccurrences: function(){
     Occurrences.remove({});
   },
-  save_pv_records: function(timestamp, ener, pow){
-    if(Pvdata.find({datetime: timestamp}).count()  == 0){
-        Pvdata.insert({datetime: timestamp, energy: ener, power: pow});
+  save_pv_records: function(data){
+    var pvPower = Resources.find({plcVar: 'MAIN.pvPower'}.fetch());
+    var lastrec = Pvdata.find({},{sort:{datetime: -1}}).fetch()[0];
+    if(lastrec){
+        latest = lastrec.datetime;
+        for(var i = 0; i < data.length; i++){
+            timestamp = data[i][0];
+            ener = data[i][1];
+            pow = data[i][2];
+            if(timestamp > latest){
+                Plotdata.insert({datetime: timestamp, value: pow, maxvalue: pow, minvalue: pow, resourceId: pvPower[0]._id}); //Todo add accurracy
+            }
+        }
+        Resources.update({plcVar: 'MAIN.pvPower'},{$set: {value: pow, timestamp: (new Date).getTime()}});
+        sendToPlc(['MAIN.pvPower'],['pow'],'write');
     }
+    else{
+        for(var i = 0; i < data.length; i++){
+            timestamp = data[i][0];
+            ener = data[i][1];
+            pow = data[i][2];
+            Plotdata.insert({datetime: timestamp, value: pow, maxvalue: pow, minvalue: pow, resourceId: pvPower[0]._id}); //Todo add accurracy
+        }
+        Resources.update({plcVar: 'MAIN.pvPower'},{$set: {value: pow, timestamp: (new Date).getTime()}});
+        sendToPlc(['MAIN.pvPower'],['pow'],'write');
+    }
+  },
+  save_pv_records_forced: function(data){
+    var pvPower = Resources.find({plcVar: 'MAIN.pvPower'}.fetch());
+    //pvEnergy = Resources.find({plcVar: 'pvEnergy'});
+    for (var i = 0; i < data.length; i++) {
+        var timestamp = data[i][0];
+        //var ener = data[i][1];
+        var pow = data[i][2];
+        Plotdata.insert({datetime: timestamp, value: pow, maxvalue: pow, minvalue: pow, resourceId: pvPower[0]._id}); //Todo add accurracy
+    };
+    Resources.update({plcVar: 'MAIN.pvPower'},{$set: {value: pow, timestamp: (new Date).getTime()}});
+    sendToPlc(['MAIN.pvPower'],['pow'],'write');
   }
 });
 
