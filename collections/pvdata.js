@@ -1,0 +1,1 @@
+Pvdata = new Meteor.Collection('pvdata');

@@ -7,17 +7,9 @@ standard-app-packages
 autopublish
 insecure
 preserve-inputs
-bootstrap
-
 npm
-accounts-ui-bootstrap-dropdown
-accounts-password
-
 router
-page-js-ie-support
-HTML5-History-API
-coffeescript
-
+bootstrap
 jqbootstrapvalidation
 handlebar-helpers
 bootstrap-3
@@ -25,3 +17,5 @@ http
 jq-knob
 moment
 d3
+node-csv-npm
+underscore

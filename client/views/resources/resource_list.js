@@ -1,7 +1,16 @@
 
 Template.resourceList.helpers({
-  resource: function() {
-    return Resources.find({},{sort: {title: 1}});
+  resourceMeasurement: function() {
+    var measurementTypeId = Types.find({title: 'Measurement'}).fetch()[0]._id;
+    return Resources.find({typeId: measurementTypeId},{sort: {title: 1}});
+  },
+  resourceDigitalOutput: function() {
+    var digitalTypeId = Types.find({title: 'Digital'}).fetch()[0]._id;
+    return Resources.find({typeId: digitalTypeId},{sort: {plcVar: 1}});
+  },
+  resourceAnalogOutput: function() {
+    var analogTypeId = Types.find({title: 'Analog'}).fetch()[0]._id;
+    return Resources.find({typeId: analogTypeId},{sort: {plcVar: 1}});
   },
   isOutput: function() {
   	var type = Types.findOne(this.typeId);

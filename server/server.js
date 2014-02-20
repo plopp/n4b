@@ -2,11 +2,107 @@ var schedule = Meteor.require('node-schedule');
 var later = Meteor.require('later');
 later.date.localTime()
 var Fiber = Npm.require('fibers');
-var Future = Npm.require('fibers/future')
+var Future = Npm.require('fibers/future');
 
 //Checks to see if anything should be done this minute
 var minuteRule = new schedule.RecurrenceRule();
 minuteRule.second = 0;
+
+Meteor.Router.add('/exportDataToCsv/:filename', function() {
+    // curl http://localhost:3000/exportUsers/Users.csv
+    // Should get a .csv file
+    return exportCSV(this.response);
+});
+
+Meteor.Router.add('/exportDataToJson/:filename', function() {
+    // curl http://localhost:3000/exportUsers/Users.csv
+    // Should get a .csv file
+    var dobj = Plotdata.find({},{fields: {datetime: 1, value: 1, resourceId: 1}}).fetch();
+    
+    var tempArr = [];
+    for (var i = 0; i < dobj.length; i++) {
+        var curRes = Resources.findOne(dobj[i].resourceId);
+        tempArr.push({timestamp: new Date(dobj[i].datetime).toLocaleString(),title: curRes.title, value: dobj[i].value, unit: curRes.unit})
+    };
+    return JSON.stringify(tempArr);
+});
+
+var exportCSV = function(responseStream){
+
+   var dataStream = createStream();
+    // Set up a future, Stream doesn't work properly without it.
+    var fut = new Future();
+    var samples = {};
+
+    //Here this Package is used to parse a stream from an array to a string of CSVs.
+   CSV().from(dataStream)
+    .to(responseStream)
+    .transform(function(data, index){
+    if(data._id){
+        //var dateCreated = new Date(user.createdAt);
+        curRes = Resources.findOne(data.resourceId);
+        return [new Date(data.datetime).toLocaleString(), curRes.title, data.value, curRes.unit];
+    }else
+        return data;
+    })
+    .on('error', function(error){
+        console.log('Error streaming CSV export: ', error.message);
+    })
+    .on('end', function(count){
+        responseStream.end();
+        fut.return("");
+    });
+
+    //Write table headings for CSV to stream.
+    
+    dataStream.write(["Timestamp","Resource","Value"]);
+
+    samples = Plotdata.find({});
+
+    //Pushing each user into the stream, If we could access the MongoDB driver we could
+    //convert the Cursor into a stream directly, making this a lot cleaner.
+    var count = 0;
+    samples.forEach(function (data) {
+        dataStream.write(data); //Stream transform takes care of cleanup and formatting.
+        count += 1;
+        if(count >= samples.count())
+            dataStream.end();
+    });
+
+    return fut.wait();
+};
+
+//Creates and returns a Duplex(Read/Write) Node stream
+//Used to pipe users from .find() Cursor into our CSV stream parser.
+var createStream = function(){
+
+    var stream = Meteor.require('stream');
+    var myStream = new stream.Stream();
+    myStream.readable = true;
+    myStream.writable = true;
+
+    myStream.write = function (data) {
+        myStream.emit('data', data);
+        return true; // true means 'yes i am ready for more data now'
+        // OR return false and emit('drain') when ready later
+    };
+
+    myStream.end = function (data) {
+        //Node convention to emit last data with end
+        if (arguments.length)
+            myStream.write(data);
+
+        // no more writes after end
+        myStream.writable = false;
+        myStream.emit('end');
+    };
+
+    myStream.destroy = function () {
+        myStream.writable = false;
+    };
+
+    return myStream;
+};
 
 var doJob = function(){
         doJobWithFuture().wait();
@@ -41,22 +137,63 @@ var doJobWithFuture = function(){//Fiber(function(){
 //var minuteJob = schedule.scheduleJob(minuteRule, function(){ //Checks if any resource value should change
 //});
 
-var minute1log = schedule.scheduleJob(minuteRule, function(){ //Checks if any resource value should change
+var oneJob = function(){
     doJob();
     collectLog(1);
-});
-var minute5log = schedule.scheduleJob('*/5 * * * *', function(){ //Checks if any resource value should change
+}
+var fiveJob = function(){
     collectLog(5);
-});
-var minute10log = schedule.scheduleJob('*/10 * * * *', function(){ //Checks if any resource value should change
+}
+var tenJob = function(){
     collectLog(10);
-});
-var minute15log = schedule.scheduleJob('*/15 * * * *', function(){ //Checks if any resource value should change
+}
+var fifteenJob = function(){
     collectLog(15);
-});
+}
+
+var weekJob = function(){
+    console.log("Weekrule");
+    calcOcc();
+}
+
+var ones = later.parse.text('every 1 min');
+
+var onet = later.setInterval(oneJob, ones);
+
+var fives = later.parse.text('every 5 min');
+
+var fivet = later.setInterval(fiveJob, fives);
+
+var tens = later.parse.text('every 10 min');
+
+var tent = later.setInterval(tenJob, tens);
+
+var fifteens = later.parse.text('every 15 min');
+
+var fifteent = later.setInterval(fifteenJob, fifteens);
+
+var weeks = later.parse.text('on the first day of the week at 12:00');
+
+var weekt = later.setInterval(weekJob, weeks);
+
+
+
+// var minute1log = schedule.scheduleJob(minuteRule, function(){ //Checks if any resource value should change
+//     doJob();
+//     collectLog(1);
+// });
+// var minute5log = schedule.scheduleJob('*/5 * * * *', function(){ //Checks if any resource value should change
+//     collectLog(5);
+// });
+// var minute10log = schedule.scheduleJob('*/10 * * * *', function(){ //Checks if any resource value should change
+//     collectLog(10);
+// });
+// var minute15log = schedule.scheduleJob('*/15 * * * *', function(){ //Checks if any resource value should change
+//     collectLog(15);
+// });
 
 var collectLog = function(min){
-        doLogWithFuture(min).wait();
+    doLogWithFuture(min).wait();
 }.future();
 
 function doLogWithFuture(min){
@@ -82,12 +219,6 @@ function doLogWithFuture(min){
     return future;
 }
 
-//Calculates the upcoming weeks occurrences
-var weekRule = new schedule.RecurrenceRule(); //Calculates the upcoming weeks occurrences
-weekRule.dayOfWeek = 0;
-weekRule.hour = 12;
-weekRule.minute = 0;
-weekRule.second = 0;
 
 var calcOcc = function(){
         calcOccWithFuture().wait();
@@ -109,7 +240,6 @@ var calcOccWithFuture = function(){//Fiber(function(){
     //Clear existing occurrences that are newer than now - the remaining ones will have been missed and needs
     //to be performed.
 
-
     var rulesArr = Rules.find().fetch();
     var k = 0;
     var m = 0;
@@ -123,8 +253,8 @@ var calcOccWithFuture = function(){//Fiber(function(){
           }
         };
     }
-    console.log("Added "+k+" occurrences. "+Occurrences.find().count()+" in total.");
-    console.log('Calculating new occurrences done.');
+    //console.log("Added "+k+" occurrences. "+Occurrences.find().count()+" in total.");
+    //console.log('Calculating new occurrences done.');
     return future
 };
 
@@ -133,10 +263,6 @@ var calcOccWithFuture = function(){//Fiber(function(){
 //});
 
 
-var recurSchedJob2 = schedule.scheduleJob(weekRule, function(){
-  console.log("Weekrule");
-  calcOcc();
-  });
 
 
 Meteor.methods({
@@ -156,6 +282,45 @@ Meteor.methods({
   },
   removeAllOccurrences: function(){
     Occurrences.remove({});
+  },
+  save_pv_records: function(data){
+    var pvPower = Resources.find({plcVar: 'MAIN.pvPower'}).fetch();
+    var lastrec = Pvdata.find({},{sort:{datetime: -1}}).fetch()[0];
+    if(lastrec){
+        latest = lastrec.datetime;
+        for(var i = 0; i < data.length; i++){
+            timestamp = data[i][0];
+            ener = data[i][1];
+            pow = data[i][2];
+            if(timestamp > latest){
+                Plotdata.insert({datetime: timestamp, value: pow, maxvalue: pow, minvalue: pow, resourceId: pvPower[0]._id}); //Todo add accurracy
+            }
+        }
+        Resources.update({plcVar: 'MAIN.pvPower'},{$set: {value: pow, timestamp: (new Date).getTime()}});
+        sendToPlc(['MAIN.pvPower'],['pow'],'write');
+    }
+    else{
+        for(var i = 0; i < data.length; i++){
+            timestamp = data[i][0];
+            ener = data[i][1];
+            pow = data[i][2];
+            Plotdata.insert({datetime: timestamp, value: pow, maxvalue: pow, minvalue: pow, resourceId: pvPower[0]._id}); //Todo add accurracy
+        }
+        Resources.update({plcVar: 'MAIN.pvPower'},{$set: {value: pow, timestamp: (new Date).getTime()}});
+        sendToPlc(['MAIN.pvPower'],['pow'],'write');
+    }
+  },
+  save_pv_records_forced: function(data){
+    var pvPower = Resources.find({plcVar: 'MAIN.pvPower'}.fetch());
+    //pvEnergy = Resources.find({plcVar: 'pvEnergy'});
+    for (var i = 0; i < data.length; i++) {
+        var timestamp = data[i][0];
+        //var ener = data[i][1];
+        var pow = data[i][2];
+        Plotdata.insert({datetime: timestamp, value: pow, maxvalue: pow, minvalue: pow, resourceId: pvPower[0]._id}); //Todo add accurracy
+    };
+    Resources.update({plcVar: 'MAIN.pvPower'},{$set: {value: pow, timestamp: (new Date).getTime()}});
+    sendToPlc(['MAIN.pvPower'],['pow'],'write');
   }
 });
 
@@ -179,7 +344,7 @@ var TcAdsWebService = new (function () {
     });
 
     this.Error = (function (errorMessage, errorCode) {
-        console.log("TcAdsWebService.Error: "+errorMessage+" Code: "+errorCode);
+        //console.log("TcAdsWebService.Error: "+errorMessage+" Code: "+errorCode);
         this.errorMessage = errorMessage;
         this.errorCode = errorCode;
         this.getTypeString = (function () {
@@ -189,7 +354,7 @@ var TcAdsWebService = new (function () {
     });
 
     this.ResquestError = (function (requestStatus, requestStatusText) {
-        console.log("TcAdsWebService.ResquestError: "+requestStatus+" Code: "+requestStatusText);
+        //console.log("TcAdsWebService.ResquestError: "+requestStatus+" Code: "+requestStatusText);
         this.requestStatus = requestStatus;
         this.requestStatusText = requestStatusText;
         this.getTypeString = (function () {
@@ -199,7 +364,7 @@ var TcAdsWebService = new (function () {
     });
 
     this.Client = (function (sServiceUrl, sServiceUser, sServicePassword) {
-        console.log("Creating a client to "+sServiceUrl+" User: "+sServiceUser+" Pass: "+sServicePassword);
+        //console.log("Creating a client to "+sServiceUrl+" User: "+sServiceUser+" Pass: "+sServicePassword);
         this.getTypeString = (function () {
             return "TcAdsWebService.Client";
         });
@@ -221,7 +386,7 @@ var TcAdsWebService = new (function () {
                     "<cbRdLen xsi:type=\"xsd:int\">" + cbRdLen + "</cbRdLen>" +
                     "<pwrData xsi:type=\"xsd:base64Binary\">" + pwrData + "</pwrData>" +
                     "</q1:ReadWrite></SOAP-ENV:Body></SOAP-ENV:Envelope>";
-            console.log(message);
+            //console.log(message);
             return sendMessage(message, "http://beckhoff.org/action/TcAdsSync.Readwrite", pCallback, userState, ajaxTimeout, ajaxTimeoutCallback, async);
 
         });
@@ -304,7 +469,7 @@ var TcAdsWebService = new (function () {
         });
 
         var handleSyncResponse = function (xhr) {
-            console.log("Handle sync response...");
+            //console.log("Handle sync response...");
             var errorMessage = undefined, errorCode = 0;
 
             if (xhr.readyState != 4 || xhr.status != 200) {
@@ -382,8 +547,8 @@ var TcAdsWebService = new (function () {
         }
 
         var handleAsyncResponse = function (xhr, pCallback, userState) {
-          console.log("Handle async response...");
-          console.log("xhr.readystate: "+xhr.readyState);
+          //console.log("Handle async response...");
+          //console.log("xhr.readystate: "+xhr.readyState);
             if (xhr.readyState < 4) {
                 if (pCallback) {
                     var resp = new TcAdsWebService.Response(false, undefined, undefined, true);
@@ -396,11 +561,11 @@ var TcAdsWebService = new (function () {
 
                     var errorMessage = undefined, errorCode = 0;
                     var DOMParser = Meteor.require('xmldom').DOMParser;
-                    console.log("xhr.responseText: "+xhr.responseText);
-                    fixResponse = xhr.responseText.replace(" >",">"); //Bug detected in Beckhoff SOAP-serialization
+
+                    fixResponse = xhr.responseText.replace(" >",">"); //Bug detected in Beckhoff SOAP-serialization, might affect actual data if it contains " >".
                     var sSoapResponse = new DOMParser().parseFromString(fixResponse, "application/xml");
 
-                    console.log("Status: "+xhr.status+" Response: "+sSoapResponse);
+                    // console.log("Status: "+xhr.status+" Response: "+sSoapResponse);
                     var faultstringNodes = sSoapResponse.getElementsByTagName('faultstring');
                     
                     if (faultstringNodes.length != 0) {
@@ -423,11 +588,11 @@ var TcAdsWebService = new (function () {
                     } else {
 
                         var ppDataNodes = sSoapResponse.getElementsByTagName('ppData');
-                        console.log("ppDataNodes: "+ppDataNodes);
+                        // console.log("ppDataNodes: "+ppDataNodes);
                         var ppRdDataNodes = sSoapResponse.getElementsByTagName('ppRdData');
                         var pAdsStateNodes = sSoapResponse.getElementsByTagName('pAdsState');
                         var pDeviceStateNodes = sSoapResponse.getElementsByTagName('pDeviceState');
-                        console.log("Tags read...");
+                        // console.log("Tags read...");
                         var soapData = undefined;
                         if (ppDataNodes.length != 0) {
                             //read
@@ -446,7 +611,7 @@ var TcAdsWebService = new (function () {
 
                             soapData = writer.getBase64EncodedData();
                         }
-                        console.log("Base64 encoded soapData: "+soapData);
+                        // console.log("Base64 encoded soapData: "+soapData);
 
 
                         if (soapData) {
@@ -471,7 +636,7 @@ var TcAdsWebService = new (function () {
                 } else {
                     // Request has been aborted.
                     //  Maybe because of timeout.
-                    console.log("Request aborted...xhr.status: "+xhr.status);
+                    // console.log("Request aborted...xhr.status: "+xhr.status);
                     if (pCallback) {
 
                         var resp = undefined;
@@ -490,7 +655,7 @@ var TcAdsWebService = new (function () {
         }
 
         var sendMessage = function (message, method, pCallback, userState, ajaxTimeout, ajaxTimeoutCallback, async) {
-            console.log("Sending message...");
+            // console.log("Sending message...");
             if (async == null || async == undefined)
                 async = true;
 
@@ -499,50 +664,50 @@ var TcAdsWebService = new (function () {
 
             if (xhr == undefined)
                 return null;
-            console.log("XHR object is OK...");
+            // console.log("XHR object is OK...");
             if (async) {
-                console.log("Async callback...");
+                // console.log("Async callback...");
                 xhr.onreadystatechange = Meteor.bindEnvironment(function () {
                     handleAsyncResponse(xhr, pCallback, userState);
                 });
             }
 
             if (sServiceUser && sServicePassword) {
-                console.log("Opening XHR with password and user...");
+                // console.log("Opening XHR with password and user...");
                 xhr.open("POST", sServiceUrl, async, sServiceUser, sServicePassword);
             } else {
-                console.log("Opening XHR...");
+                // console.log("Opening XHR...");
                 xhr.open("POST", sServiceUrl, async);
             }
 
             if ("timeout" in xhr && ajaxTimeout)
-               console.log("Timeout in XHR...");
+               // console.log("Timeout in XHR...");
                 xhr.timeout = ajaxTimeout;
 
             if ("ontimeout" in xhr && ajaxTimeoutCallback) {
-                console.log("Timeout in XHR...");
+                // console.log("Timeout in XHR...");
                 xhr.ontimeout = ajaxTimeoutCallback;
             }
 
-            console.log("Setting request header...");
+            // console.log("Setting request header...");
             xhr.setRequestHeader("Content-Type", "text/xml; charset=utf-8");
 
-            console.log("xhr.send...");
+            console.log("Nof Bytes: "+2*message.length);
             xhr.send(message);
 
             if (!async) {
-                console.log("Returning non async response handler.");
+                // console.log("Returning non async response handler.");
                 return handleSyncResponse(xhr);
             }
             else {
-                console.log("Returning null since response handler is async.");
+                // console.log("Returning null since response handler is async.");
                 return null;
             }
         }
     });
 
     this.DataReader = (function (data) {
-        console.log("Datareader..."+data);
+        // console.log("Datareader..."+data);
         this.offset = 0;
         this.decodedData = Base64.decode(data);
 
@@ -588,7 +753,7 @@ var TcAdsWebService = new (function () {
 
         this.readBOOL = (function () {
             var res = this.decodedData.substr(this.offset, 1).charCodeAt(0);
-            this.offset = this.offset + 1;
+            this.offset = this.offset + 4;
             return res;
         });
 
@@ -653,7 +818,7 @@ var TcAdsWebService = new (function () {
     });
 
     this.DataWriter = (function () {
-        console.log("DataWriter");
+        // console.log("DataWriter");
         this.getTypeString = (function () {
             return "TcAdsWebService.DataWriter";
         });
@@ -1128,8 +1293,11 @@ function sendToPlc(handlesVarNames, values, method){
 
             console.log("Starting communication with PLC.");
             var NETID = ""; // Empty string for local machine;
-            var PORT = "801"; // TC3 PLC Runtime
-            var SERVICE_URL = "http://192.168.2.9/TcAdsWebService/TcAdsWebService.dll"; // HTTP path to the TcAdsWebService;
+            //var PORT = "801"; // TC2 PLC Runtime
+            var PORT = "851"; // TC3 PLC Runtime
+            //var SERVICE_URL = "http://192.168.2.9/TcAdsWebService/TcAdsWebService.dll"; // HTTP path to the TcAdsWebService;
+            //var SERVICE_URL = "http://plcsp.no-ip.biz/TcAdsWebService/TcAdsWebService.dll";
+            var SERVICE_URL = "http://10.90.0.1:8081/TcAdsWebService/TcAdsWebService.dll";
             var client = new TcAdsWebService.Client(SERVICE_URL, null, null);
             var general_timeout = 500;
             var readLoopID = null;
@@ -1159,18 +1327,18 @@ function sendToPlc(handlesVarNames, values, method){
 
             // Occurs if the read-read-write command has finished;
             var ReadCallback = (function (e, s) {
-                console.log("= Running ReadCallback =");
+                // console.log("= Running ReadCallback =");
                 if (e && e.isBusy) {
                     // HANDLE PROGRESS TASKS HERE;
                     // Exit callback function because request is still busy;
-                    console.log("Communication link to PLC is busy. Communication attempt aborted.")
+                     //console.log("Communication link to PLC is busy. Communication attempt aborted.")
                     return;
                 }
 
                 if (e && !e.hasError) {
 
                     var reader = e.reader;
-                    
+                    var time = new Date().getTime();
                     // Read error codes from begin of TcAdsWebService.DataReader object;
                     for (var i = 0; i < handlesVarNames.length; i++) {
                         var err = reader.readDWORD();
@@ -1181,20 +1349,21 @@ function sendToPlc(handlesVarNames, values, method){
                     }
 
                     for(var i = 0 ; i < handlesVarNames.length; i++){
-                      var varValue = reader.readREAL();
+                      var varValue = reader.readLREAL();
                       //DO SOMETHING WITH THE READ VALUES -> STORE TO DATABASE FOR EXAMPLE
                       console.log("Read PLC-variable: "+handlesVarNames[i]+"="+varValue);
                       Resources.update({plcVar: handlesVarNames[i]},{$set: {value: varValue, timestamp: (new Date).getTime()}});
+                      Plotdata.insert({datetime: time, value: varValue, maxvalue: varValue, minvalue: varValue, resourceId: Resources.find({plcVar: handlesVarNames[i]}).fetch()[0]._id}); //Todo add accurracy
                     }
                 } else {
 
                     if (e.error.getTypeString() == "TcAdsWebService.ResquestError") {
                         // HANDLE TcAdsWebService.ResquestError HERE;
-                        console.log("Error: StatusText = " + e.error.statusText + " Status: " + e.error.status);
+                        // console.log("Error: StatusText = " + e.error.statusText + " Status: " + e.error.status);
                     }
                     else if (e.error.getTypeString() == "TcAdsWebService.Error") {
                         // HANDLE TcAdsWebService.Error HERE;
-                        console.log("Error: ErrorMessage = " + e.error.errorMessage + " ErrorCode: " + e.error.errorCode);
+                        // console.log("Error: ErrorMessage = " + e.error.errorMessage + " ErrorCode: " + e.error.errorCode);
                     }
                 }
 
@@ -1208,7 +1377,7 @@ function sendToPlc(handlesVarNames, values, method){
 
             // Occurs if the read-read-write command has finished;
             var WriteCallback = (function (e, s) {
-                console.log("+ Running WriteCallback +");
+                // console.log("+ Running WriteCallback +");
                 if (e && e.isBusy) {
                     // HANDLE PROGRESS TASKS HERE;
                     // Exit callback function because request is still busy;
@@ -1217,11 +1386,11 @@ function sendToPlc(handlesVarNames, values, method){
 
                 if (e && !e.hasError) {
 
-                    console.log("Writing values finished.");
+                    // console.log("Writing values finished.");
                     //Resources.update({plcVar: handlesVarNames[i]},{value: varValue, $addToSet: {timestamp: (new Date).getTime()}});
 
                     for(var i = 0 ; i < handlesVarNames.length; i++){
-                      console.log("Written to PLC: "+handlesVarNames[i]+"="+values[i]);
+                      // console.log("Written to PLC: "+handlesVarNames[i]+"="+values[i]);
                       Resources.update({plcVar: handlesVarNames[i]},{$set: {value: values[i], timestamp: (new Date).getTime()}});
                     }
                 } else {
@@ -1248,11 +1417,11 @@ function sendToPlc(handlesVarNames, values, method){
             //Callbacks
             var RequestHandlesCallback = (function (e, s) {
                 var elapsed = new Date().getTime() - start;
-                console.log("Received response, now in RequestHandlesCallback. Response time: "+elapsed.toString());
+                // console.log("Received response, now in RequestHandlesCallback. Response time: "+elapsed.toString());
                 if (e && e.isBusy) {
                     // HANDLE PROGRESS TASKS HERE;
                     var message = "Requesting handles...";
-                    console.log(message);
+                    // console.log(message);
                     return;
                 }
 
@@ -1287,14 +1456,14 @@ function sendToPlc(handlesVarNames, values, method){
                     for(var i = 0; i < handlesVarNames.length; i++){
                       readSymbolValuesWriter.writeDINT(TcAdsWebService.TcAdsReservedIndexGroups.SymbolValueByHandle);
                       readSymbolValuesWriter.writeDINT(handles[i]); // IndexOffset = The target handle
-                      readSymbolValuesWriter.writeDINT(4); // size to read
-                      size += 4;
+                      readSymbolValuesWriter.writeDINT(8); // size to read
+                      size += 8;
                     }
 
                     if(method == 'write'){
                       //Assign the values to the writer
                       for(var i = 0; i < values.length; i++){
-                        readSymbolValuesWriter.writeREAL(values[i]);
+                        readSymbolValuesWriter.writeLREAL(values[i]);
                       }
 
                       client.readwrite(
@@ -1341,7 +1510,7 @@ function sendToPlc(handlesVarNames, values, method){
                 }
 
             });   
-            console.log("Sending handle request");
+            // console.log("Sending handle request");
             start = new Date().getTime();
             client.readwrite(
                       NETID,

@@ -2,16 +2,16 @@
   <div class="rules">
   	  <div style="float: left; margin: 0px 10px 0px 5px"><span class="glyphicon glyphicon-chevron-right"></span></div>
 	  <div style="float: right; margin: 0px 10px 10px 10px">
-	    <a href="" class="btn" id="view-occurrences"><span class="glyphicon glyphicon-time"></span></a>
-	  	<a href="{{ruleEditPath this}}" id="edit-btn-rule" class="discuss btn edit-rule"><span class="glyphicon glyphicon-pencil"></span></a>
-	  	<a href="" class="btn delete delete-rule" id="delete-btn"><span class="glyphicon glyphicon-trash"></span></a>
+	    <a href="" class="btn btn-default" id="view-occurrences"><span class="glyphicon glyphicon-time"></span></a>
+	  	<a href="{{ruleEditPath this}}" id="edit-btn-rule" class="discuss btn edit-rule btn-default"><span class="glyphicon glyphicon-pencil"></span></a>
+	  	<a href="" class="btn delete delete-rule btn-default" id="delete-btn"><span class="glyphicon glyphicon-trash"></span></a>
 	  </div>
 	  <div class="rule-content">
 	    <h4>
 	      <a href="{{ruleEditPath this}}" id="" class="author"><span class="author">{{title}}</span></a>
 	    </h4>
 	    <p>Set <b>{{resourceTitle}}</b> to <b>{{value}} {{#if hasUnit}}{{unit}}{{/if}}</b> {{timerule}}</p> 
-		<div id="occ-{{_id}}" hidden>
+		<div id="occ-{{_id}}" style="margin: 20px 10px 20px 20px" hidden>
 		    <div class="panel panel-default">
 			  <!-- Default panel contents -->
 			  <div class="panel-heading">Occurrences</div>
