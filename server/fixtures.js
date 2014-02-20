@@ -274,7 +274,7 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'MAIN.k01'
+    plcVar: 'GVL.k1'
   });
 
   Resources.insert({
@@ -284,7 +284,7 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'MAIN.k02'
+    plcVar: 'GVL.k2'
   });
 
   Resources.insert({
@@ -294,7 +294,7 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'MAIN.k03'
+    plcVar: 'GVL.k3'
   });
 
   Resources.insert({
@@ -304,148 +304,148 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'MAIN.k04'
+    plcVar: 'GVL.k4'
   });
 
   Resources.insert({
-    title: '9:1 Vardagsrum',
+    title: '10:1 Vardagsrum',
     typeId: digital,
     max: 1,
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'MAIN.r20'
+    plcVar: 'GVL.r20'
   });
 
   Resources.insert({
-    title: '9:2 Vardagsrum',
+    title: '10:2 Vardagsrum',
     typeId: digital,
     max: 1,
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'MAIN.r21'
+    plcVar: 'GVL.r21'
   });
 
   Resources.insert({
-    title: '9:3 Pentry',
+    title: '10:3 Pentry',
     typeId: digital,
     max: 1,
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'MAIN.r22'
+    plcVar: 'GVL.r22'
   });
 
   Resources.insert({
-    title: '9:14 Uterum',
+    title: '10:14 Uterum',
     typeId: digital,
     max: 1,
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'MAIN.r23'
+    plcVar: 'GVL.r23'
   });
 
   Resources.insert({
-    title: '9:5 HWC',
+    title: '10:5 HWC',
     typeId: digital,
     max: 1,
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'MAIN.r24'
+    plcVar: 'GVL.r24'
   });
 
   Resources.insert({
-    title: '9:6 Entré',
+    title: '10:6 Entré',
     typeId: digital,
     max: 1,
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'MAIN.r25'
+    plcVar: 'GVL.r25'
   });
 
   Resources.insert({
-    title: '9:7 Vindfång',
+    title: '10:7 Vindfång',
     typeId: digital,
     max: 1,
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'MAIN.r26'
+    plcVar: 'GVL.r26'
   });
 
   Resources.insert({
-    title: '9:8 Teknikrum',
+    title: '10:8 Teknikrum',
     typeId: digital,
     max: 1,
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'MAIN.r27'
+    plcVar: 'GVL.r27'
   });
 
   Resources.insert({
-    title: '9:9 Teknikrum',
+    title: '10:9 Teknikrum',
     typeId: digital,
     max: 1,
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'MAIN.r28'
+    plcVar: 'GVL.r28'
   });
 
   Resources.insert({
-    title: '9:10 Teknikrum',
+    title: '10:10 Teknikrum',
     typeId: digital,
     max: 1,
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'MAIN.r29'
+    plcVar: 'GVL.r29'
   });
 
   Resources.insert({
-    title: '9:11 Teknikrum',
+    title: '10:11 Teknikrum',
     typeId: digital,
     max: 1,
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'MAIN.r30'
+    plcVar: 'GVL.r30'
   });
 
   Resources.insert({
-    title: '9:12 Teknikrum',
+    title: '10:12 Teknikrum',
     typeId: digital,
     max: 1,
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'MAIN.r31'
+    plcVar: 'GVL.r31'
   });
 
 
   Resources.insert({
-    title: '9:13 Teknikrum',
+    title: '10:13 Teknikrum',
     typeId: digital,
     max: 1,
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'MAIN.r32'
+    plcVar: 'GVL.r32'
   });
 
   Resources.insert({
-    title: '9:4 Teknikrum',
+    title: '10:4 Teknikrum',
     typeId: digital,
     max: 1,
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'MAIN.r33'
+    plcVar: 'GVL.r33'
   });
 
   Resources.insert({
@@ -455,7 +455,7 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'MAIN.r34'
+    plcVar: 'GVL.r34'
   });
 
   Resources.insert({
@@ -465,7 +465,7 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'MAIN.r35'
+    plcVar: 'GVL.r35'
   });
 
   Resources.insert({
@@ -475,7 +475,7 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'MAIN.r36'
+    plcVar: 'GVL.r36'
   });
 
   Resources.insert({
@@ -485,7 +485,7 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'MAIN.r37'
+    plcVar: 'GVL.r37'
   });
 
   Resources.insert({
@@ -495,7 +495,7 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'MAIN.r38'
+    plcVar: 'GVL.r38'
   });
 
   Resources.insert({
@@ -505,7 +505,7 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'MAIN.r39'
+    plcVar: 'GVL.r39'
   });
 
   Resources.insert({
@@ -515,7 +515,7 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'MAIN.r40'
+    plcVar: 'GVL.r40'
   });
 
   Resources.insert({
@@ -525,7 +525,7 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'MAIN.r41'
+    plcVar: 'GVL.r41'
   });
 
   Resources.insert({
@@ -535,7 +535,7 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'MAIN.r42'
+    plcVar: 'GVL.r42'
   });
 
   Resources.insert({
@@ -545,7 +545,7 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'MAIN.r43'
+    plcVar: 'GVL.r43'
   });
 
   Resources.insert({
@@ -555,7 +555,7 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'MAIN.r44'
+    plcVar: 'GVL.r44'
   });
 
   Resources.insert({
@@ -565,7 +565,7 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'MAIN.r45'
+    plcVar: 'GVL.r45'
   });
 
   Resources.insert({
@@ -575,7 +575,7 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'MAIN.r46'
+    plcVar: 'GVL.r46'
   });
 
   Resources.insert({
@@ -585,7 +585,7 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'MAIN.r47'
+    plcVar: 'GVL.r47'
   });
 
   Resources.insert({
@@ -595,7 +595,7 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'MAIN.r48'
+    plcVar: 'GVL.r48'
   });
 
   Resources.insert({
@@ -605,7 +605,7 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'MAIN.r49'
+    plcVar: 'GVL.r49'
   });
 
   Resources.insert({
@@ -615,7 +615,7 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'MAIN.r50'
+    plcVar: 'GVL.r50'
   });
 
   Resources.insert({
@@ -625,7 +625,7 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'MAIN.r51'
+    plcVar: 'GVL.r51'
   });
 
   Resources.insert({
@@ -635,7 +635,7 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'MAIN.r52'
+    plcVar: 'GVL.r52'
   });
 /*
   var centralHeating = Resources.insert({
@@ -645,7 +645,7 @@ if(Resources.find().count() === 0){
     min: 5,
     unit: '°C',
     value: 0,
-    plcVar: 'MAIN.centralHeating'
+    plcVar: '.centralHeating'
   });
 */
   
@@ -654,29 +654,21 @@ if(Resources.find().count() === 0){
     typeId: measurement,
     value: 0,
     unit: '°C',
-    plcVar: 'MAIN.room1Temp',
+    plcVar: 'MAIN.tempControlRoom',
     formatString: "%.1f"
   });
 
-  Resources.insert({
-    title: 'Analogtest',
-    typeId: analog,
-    value: 0,
-    unit: 'mV',
-    plcVar: 'MAIN.analogtest',
-    formatString: "%.1f"
-  });
-
+  
   outsideTemp = Resources.insert({
     title: 'Temperatur utomhus',
     typeId: measurement,
     value: 0,
     unit: '°C',
-    plcVar: 'MAIN.outsideTemp',
+    plcVar: 'MAIN.tempOutside',
     formatString: "%.1f"
   });
 
-  Resources.insert({
+  var res1 = Resources.insert({
     title: 'Effekt elnät in',
     typeId: measurement,
     value: 0,
@@ -686,16 +678,17 @@ if(Resources.find().count() === 0){
     formatString: "%.0f"
   });
 
-  Resources.insert({
+  var res2 = Resources.insert({
     title: 'Effekt solpanel in',
     typeId: measurement,
     value: 0,
     unit: 'W',
     plcVar: 'MAIN.pvPower',
+    logInterval: 1,
     formatString: "%.0f"
   });
 
-  Resources.insert({
+  var res3 = Resources.insert({
     title: 'Effekt uppmätta uttag',
     typeId: measurement,
     value: 0,
@@ -705,7 +698,7 @@ if(Resources.find().count() === 0){
     formatString: "%.0f"
   });
 
-  Resources.insert({
+  var res4 = Resources.insert({
     title: 'Effektförbr. hushållsel',
     typeId: measurement,
     value: 0,
@@ -772,8 +765,8 @@ prepWebOut = Resources.insert({
 
 */
 
-/*for (var i = 1; i < 3; i++) {
-  tempInsert = Resources.insert({
+for (var i = 1; i < 3; i++) {
+  /*tempInsert = Resources.insert({
     title: 't'+i.toString(),
     typeId: measurement,
     value: 0,
@@ -781,13 +774,19 @@ prepWebOut = Resources.insert({
     plcVar: 'MAIN.t'+i.toString(),
     logInterval: 1,
     formatString: "%.1f"
-  });
+  });*/
 
   for (var j = 0; j < 200; j++) {
     value = 2*Math.sin(j)*j*Math.cos(j)+3*i;
-    Plotdata.insert({datetime: 1392577993000-j*60000, value: value, maxvalue: value, minvalue: value, resourceId: tempInsert});   
+    Plotdata.insert({datetime: (new Date())-j*60000, value: value, maxvalue: value, minvalue: value, resourceId: res1});   
+    value = 2*Math.sin(j)*j*Math.cos(j)+3*i;
+    Plotdata.insert({datetime: (new Date())-j*60000, value: value, maxvalue: value, minvalue: value, resourceId: res2});   
+    value = 2*Math.sin(j)*j*Math.cos(j)+3*i;
+    Plotdata.insert({datetime: (new Date())-j*60000, value: value, maxvalue: value, minvalue: value, resourceId: res3});   
+    value = 2*Math.sin(j)*j*Math.cos(j)+3*i;
+    Plotdata.insert({datetime: (new Date())-j*60000, value: value, maxvalue: value, minvalue: value, resourceId: res4});   
   };
-*/
+
 
 };
 
@@ -855,12 +854,13 @@ Resources.insert({
   });
 */
 
+/*
 function populateData(data){
   console.log(data);
 }
 if (Plotdata.find().count() === 0) {
   
-/*
+
   var jsonurl = "http://api.openweathermap.org/data/2.5/history/city/?id=2711537&cnt=30";
 
   var getreq = HTTP.get(jsonurl, function(error, result){

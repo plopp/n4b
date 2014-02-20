@@ -219,6 +219,27 @@ function doLogWithFuture(min){
     return future;
 }
 
+var readAllPlcVar = function(){
+    readAllPlcVarWithFuture().wait();
+}.future();
+
+function readAllPlcVarWithFuture(){
+    var future = new Future;
+
+    var plcHandleNames = new Array();
+    var plcValues = new Array();
+    //Fetch all resources that have been configured to be sampled
+        res = Resources.find({}).fetch();
+        for (var i = res.length - 1; i >= 0; i--) {
+            curResource = res[i];
+            plcHandleNames.push(curResource.plcVar);
+            plcValues.push(curResource.value);
+        };
+        if(plcHandleNames.length > 0){
+            future.return(sendToPlc(plcHandleNames, plcValues, 'read'));
+        }
+    return future;
+}
 
 var calcOcc = function(){
         calcOccWithFuture().wait();
@@ -283,7 +304,12 @@ Meteor.methods({
   removeAllOccurrences: function(){
     Occurrences.remove({});
   },
+  readAllPlcVarOnStartupMethod: function(){
+    console.log("Reading all PLC resources.");
+    readAllPlcVar();
+  },
   save_pv_records: function(data){
+    console.log("Got sun data!")
     var pvPower = Resources.find({plcVar: 'MAIN.pvPower'}).fetch();
     var lastrec = Pvdata.find({},{sort:{datetime: -1}}).fetch()[0];
     if(lastrec){
@@ -307,6 +333,7 @@ Meteor.methods({
             Plotdata.insert({datetime: timestamp, value: pow, maxvalue: pow, minvalue: pow, resourceId: pvPower[0]._id}); //Todo add accurracy
         }
         Resources.update({plcVar: 'MAIN.pvPower'},{$set: {value: pow, timestamp: (new Date).getTime()}});
+        console.log("Writing sun data to PLC.");
         sendToPlc(['MAIN.pvPower'],['pow'],'write');
     }
   },
@@ -1450,13 +1477,13 @@ function sendToPlc(handlesVarNames, values, method){
                       handles[i] = reader.readDWORD();
                     }
 
-                    // Create sum commando to read symbol values based on the handle
+                    // Create sum commando to write symbol values based on the handle
                     var readSymbolValuesWriter = new TcAdsWebService.DataWriter();
                     var size = 0;
                     for(var i = 0; i < handlesVarNames.length; i++){
                       readSymbolValuesWriter.writeDINT(TcAdsWebService.TcAdsReservedIndexGroups.SymbolValueByHandle);
                       readSymbolValuesWriter.writeDINT(handles[i]); // IndexOffset = The target handle
-                      readSymbolValuesWriter.writeDINT(8); // size to read
+                      readSymbolValuesWriter.writeDINT(8); // size to write
                       size += 8;
                     }
 

@@ -37,7 +37,13 @@ Meteor.Router.add({
     }
   },
 
-  '/data': 'dataPage',
+  '/data': {
+    to: 'dataPage',
+    and: function() {
+      Session.set("timeDepth",3600000*24);
+    }
+  }
+  ,
 
   '/resources/submit': 'resourceSubmit',
 
