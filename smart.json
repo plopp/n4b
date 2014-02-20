@@ -1,13 +1,14 @@
 {
   "packages": {
     "npm": {},
-    "accounts-ui-bootstrap-dropdown": {},
     "router": {},
+    "accounts-ui-bootstrap-dropdown": {},
     "jqbootstrapvalidation": {},
     "handlebar-helpers": {},
     "bootstrap-3": {},
     "jq-knob": {},
     "moment": {},
-    "node-csv-npm": {}
+    "node-csv-npm": {},
+    "require": {}
   }
 }

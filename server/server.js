@@ -1299,11 +1299,11 @@ function sendToPlc(handlesVarNames, values, method){
 
             console.log("Starting communication with PLC.");
             var NETID = ""; // Empty string for local machine;
-            var PORT = "801"; // TC2 PLC Runtime
-            //var PORT = "851"; // TC3 PLC Runtime
+            //var PORT = "801"; // TC2 PLC Runtime
+            var PORT = "851"; // TC3 PLC Runtime
             //var SERVICE_URL = "http://192.168.2.9/TcAdsWebService/TcAdsWebService.dll"; // HTTP path to the TcAdsWebService;
             //var SERVICE_URL = "http://plcsp.no-ip.biz/TcAdsWebService/TcAdsWebService.dll";
-            var SERVICE_URL = "http://192.168.0.1:8081/TcAdsWebService/TcAdsWebService.dll";
+            var SERVICE_URL = "http://10.90.0.1:8081/TcAdsWebService/TcAdsWebService.dll";
             var client = new TcAdsWebService.Client(SERVICE_URL, null, null);
             var general_timeout = 500;
             var readLoopID = null;
@@ -1355,7 +1355,7 @@ function sendToPlc(handlesVarNames, values, method){
                     }
 
                     for(var i = 0 ; i < handlesVarNames.length; i++){
-                      var varValue = reader.readREAL();
+                      var varValue = reader.readLREAL();
                       //DO SOMETHING WITH THE READ VALUES -> STORE TO DATABASE FOR EXAMPLE
                       console.log("Read PLC-variable: "+handlesVarNames[i]+"="+varValue);
                       Resources.update({plcVar: handlesVarNames[i]},{$set: {value: varValue, timestamp: (new Date).getTime()}});
@@ -1462,14 +1462,14 @@ function sendToPlc(handlesVarNames, values, method){
                     for(var i = 0; i < handlesVarNames.length; i++){
                       readSymbolValuesWriter.writeDINT(TcAdsWebService.TcAdsReservedIndexGroups.SymbolValueByHandle);
                       readSymbolValuesWriter.writeDINT(handles[i]); // IndexOffset = The target handle
-                      readSymbolValuesWriter.writeDINT(4); // size to read
-                      size += 4;
+                      readSymbolValuesWriter.writeDINT(8); // size to read
+                      size += 8;
                     }
 
                     if(method == 'write'){
                       //Assign the values to the writer
                       for(var i = 0; i < values.length; i++){
-                        readSymbolValuesWriter.writeREAL(values[i]);
+                        readSymbolValuesWriter.writeLREAL(values[i]);
                       }
 
                       client.readwrite(

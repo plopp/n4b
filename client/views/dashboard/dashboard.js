@@ -1196,6 +1196,9 @@ Template.dashboard.helpers({
   resource : function(){
     return Resources.find({logInterval: {$gt: 0}},{sort: {title: 1}});
   },
+  sunPower : function(){
+    return Resources.find({plcVar: 'MAIN.pvPower'});
+  },
   timeDepthReactive : function(){
     return Session.get("timeDepth");
   }/*,
