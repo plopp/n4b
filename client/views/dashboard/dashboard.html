@@ -3,20 +3,30 @@
   <div class="dashboard-content" style="display: block; float: left">
     <!--<div id="chart">
       <svg style="height: 500px; width: 100%"></svg>
-    </div>-->
-    <div style="padding: 100px 30px 30px 30px">
-    <div style="display: float; text-align: center; width: 500; height: 100 ">Total average power usage</div><br>
+    </div>
+    -->
+    <div style="position: relative; padding: 100px 30px 30px 30px">
+    <div style="position: absolute; left: 30px; top: 0px">
+    <span class="glyphicon glyphicon-home" style= "font-size: 200px; margin: 120px 50px 50px 50px"></span>
+    </div>
+    <div style="position: absolute; left: 80px; top: 260px">
+      <svg style="float: right;" height="80" width="80" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+            <image x="0" y="0" height="80" width="80"  xlink:href="/Icons/SVG/leaf.svg"></image>
+      </svg>
+    </div>
+    <!--<div style="display: float; text-align: center; width: 500; height: 100 ">Total average power usage</div><br>-->
     
-    <canvas id="myChart" width="400" height="400"></canvas>
+    <!--<canvas id="myChart" width="400" height="400"></canvas>-->
 
     <!--<input type="text" class="dial" style="border: 0px solid #cccccc;-webkit-box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0);-moz-box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0);box-shadow: inset 0 1px 0px rgba(0, 0, 0, 0);-webkit-transition: border linear 0.2s, box-shadow linear 0.2s;-moz-transition: border linear 0.2s, box-shadow linear 0.2s;-o-transition: border linear 0.2s, box-shadow linear 0.2s;transition: border linear 0.2s, box-shadow linear 0.2s;"><br>-->
-    <div style="display: float; text-align: center; width: 500; height: 100; font-weight: bold ">Watt</div>
+    <!--<div style="display: float; text-align: center; width: 500; height: 100; font-weight: bold ">Watt</div>-->
+
    </div>
     <!--GRAPH!!! <div id="container" style="height: 610px; margin: auto; min-width: 310px; width: 600px; padding: 80px 40px 0px 60px">-->
   </div>
   </div>
   <div class="jumbotron">
-    <div class="containter">
+    <div class="containter" style="margin: 0px 0px 0px 300px">
       <h1>Welcome to NEED4B</h1>
         A simple web based control system for the NEED4B-house. The house control is performed through a set of <b>scenarios</b>.
         Each scenario contains <b>rules</b>. A rule decides when a given <b>resource</b> should change value, and what value that should be.

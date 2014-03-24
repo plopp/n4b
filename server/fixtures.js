@@ -102,8 +102,8 @@ DI
   p38 = 9:19 Sovrum 1
   p39 = 9:20? Uttag uterum
   p40 = 9:21= Uttag Vindfång
-  p41 = 10:1 Uttag WC
-  p42 = 10:2 uttag Teknikrum
+  p41 = Varmvatten //10:1 Uttag WC
+  p42 = Kallvatten //10:2 uttag Teknikrum
   p43 = 10:3 Uttag vinfgång
   p44 = 10:4 Uttag kök
   p45 = Spisfläkt
@@ -274,7 +274,8 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'GVL.k1'
+    plcVar: 'GVL.k1',
+    logInterval: 1
   });
 
   Resources.insert({
@@ -284,7 +285,8 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'GVL.k2'
+    plcVar: 'GVL.k2',
+    logInterval: 1
   });
 
   Resources.insert({
@@ -294,7 +296,8 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'GVL.k3'
+    plcVar: 'GVL.k3',
+    logInterval: 1
   });
 
   Resources.insert({
@@ -304,7 +307,8 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'GVL.k4'
+    plcVar: 'GVL.k4',
+    logInterval: 1
   });
 
   Resources.insert({
@@ -314,7 +318,8 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'GVL.r20'
+    plcVar: 'GVL.r20',
+    logInterval: 1
   });
 
   Resources.insert({
@@ -324,7 +329,8 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'GVL.r21'
+    plcVar: 'GVL.r21',
+    logInterval: 1
   });
 
   Resources.insert({
@@ -334,7 +340,8 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'GVL.r22'
+    plcVar: 'GVL.r22',
+    logInterval: 1
   });
 
   Resources.insert({
@@ -344,7 +351,8 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'GVL.r23'
+    plcVar: 'GVL.r23',
+    logInterval: 1
   });
 
   Resources.insert({
@@ -354,7 +362,8 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'GVL.r24'
+    plcVar: 'GVL.r24',
+    logInterval: 1
   });
 
   Resources.insert({
@@ -364,7 +373,8 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'GVL.r25'
+    plcVar: 'GVL.r25',
+    logInterval: 1
   });
 
   Resources.insert({
@@ -374,7 +384,8 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'GVL.r26'
+    plcVar: 'GVL.r26',
+    logInterval: 1
   });
 
   Resources.insert({
@@ -384,7 +395,8 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'GVL.r27'
+    plcVar: 'GVL.r27',
+    logInterval: 1
   });
 
   Resources.insert({
@@ -394,7 +406,8 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'GVL.r28'
+    plcVar: 'GVL.r28',
+    logInterval: 1
   });
 
   Resources.insert({
@@ -404,7 +417,8 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'GVL.r29'
+    plcVar: 'GVL.r29',
+    logInterval: 1
   });
 
   Resources.insert({
@@ -414,7 +428,8 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'GVL.r30'
+    plcVar: 'GVL.r30',
+    logInterval: 1
   });
 
   Resources.insert({
@@ -424,7 +439,8 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'GVL.r31'
+    plcVar: 'GVL.r31',
+    logInterval: 1
   });
 
 
@@ -435,7 +451,8 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'GVL.r32'
+    plcVar: 'GVL.r32',
+    logInterval: 1
   });
 
   Resources.insert({
@@ -445,7 +462,8 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'GVL.r33'
+    plcVar: 'GVL.r33',
+    logInterval: 1
   });
 
   Resources.insert({
@@ -455,7 +473,8 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'GVL.r34'
+    plcVar: 'GVL.r34',
+    logInterval: 1
   });
 
   Resources.insert({
@@ -465,7 +484,8 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'GVL.r35'
+    plcVar: 'GVL.r35',
+    logInterval: 1
   });
 
   Resources.insert({
@@ -475,7 +495,8 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'GVL.r36'
+    plcVar: 'GVL.r36',
+    logInterval: 1
   });
 
   Resources.insert({
@@ -485,7 +506,8 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'GVL.r37'
+    plcVar: 'GVL.r37',
+    logInterval: 1
   });
 
   Resources.insert({
@@ -495,7 +517,8 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'GVL.r38'
+    plcVar: 'GVL.r38',
+    logInterval: 1
   });
 
   Resources.insert({
@@ -505,7 +528,8 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'GVL.r39'
+    plcVar: 'GVL.r39',
+    logInterval: 1
   });
 
   Resources.insert({
@@ -515,7 +539,8 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'GVL.r40'
+    plcVar: 'GVL.r40',
+    logInterval: 1
   });
 
   Resources.insert({
@@ -525,7 +550,8 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'GVL.r41'
+    plcVar: 'GVL.r41',
+    logInterval: 1
   });
 
   Resources.insert({
@@ -535,7 +561,8 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'GVL.r42'
+    plcVar: 'GVL.r42',
+    logInterval: 1
   });
 
   Resources.insert({
@@ -545,7 +572,8 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'GVL.r43'
+    plcVar: 'GVL.r43',
+    logInterval: 1
   });
 
   Resources.insert({
@@ -555,7 +583,8 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'GVL.r44'
+    plcVar: 'GVL.r44',
+    logInterval: 1
   });
 
   Resources.insert({
@@ -565,7 +594,8 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'GVL.r45'
+    plcVar: 'GVL.r45',
+    logInterval: 1
   });
 
   Resources.insert({
@@ -575,7 +605,8 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'GVL.r46'
+    plcVar: 'GVL.r46',
+    logInterval: 1
   });
 
   Resources.insert({
@@ -585,7 +616,8 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'GVL.r47'
+    plcVar: 'GVL.r47',
+    logInterval: 1
   });
 
   Resources.insert({
@@ -595,7 +627,8 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'GVL.r48'
+    plcVar: 'GVL.r48',
+    logInterval: 1
   });
 
   Resources.insert({
@@ -605,7 +638,8 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'GVL.r49'
+    plcVar: 'GVL.r49',
+    logInterval: 1
   });
 
   Resources.insert({
@@ -615,7 +649,8 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'GVL.r50'
+    plcVar: 'GVL.r50',
+    logInterval: 1
   });
 
   Resources.insert({
@@ -625,7 +660,8 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'GVL.r51'
+    plcVar: 'GVL.r51',
+    logInterval: 1
   });
 
   Resources.insert({
@@ -635,8 +671,11 @@ if(Resources.find().count() === 0){
     min: 0,
     unit: '',
     value: 0,
-    plcVar: 'GVL.r52'
+    plcVar: 'GVL.r52',
+    logInterval: 1
   });
+
+
 /*
   var centralHeating = Resources.insert({
     title: 'Central heating',
@@ -650,26 +689,28 @@ if(Resources.find().count() === 0){
 */
   
   Resources.insert({
-    title: 'Temperatur teknikrum',
+    title: 'Temp control room',
     typeId: measurement,
     value: 0,
     unit: '°C',
     plcVar: 'MAIN.tempControlRoom',
+    logInterval: 1,
     formatString: "%.1f"
   });
 
   
   outsideTemp = Resources.insert({
-    title: 'Temperatur utomhus',
+    title: 'Temp outside',
     typeId: measurement,
     value: 0,
     unit: '°C',
     plcVar: 'MAIN.tempOutside',
+    logInterval: 1,
     formatString: "%.1f"
   });
 
   var res1 = Resources.insert({
-    title: 'Effekt elnät in',
+    title: 'Power in',
     typeId: measurement,
     value: 0,
     unit: 'W',
@@ -679,7 +720,7 @@ if(Resources.find().count() === 0){
   });
 
   var res2 = Resources.insert({
-    title: 'Effekt solpanel in',
+    title: 'Sunpower',
     typeId: measurement,
     value: 0,
     unit: 'W',
@@ -689,7 +730,7 @@ if(Resources.find().count() === 0){
   });
 
   var res3 = Resources.insert({
-    title: 'Effekt uppmätta uttag',
+    title: 'Measured outlets sum',
     typeId: measurement,
     value: 0,
     unit: 'W',
@@ -699,11 +740,31 @@ if(Resources.find().count() === 0){
   });
 
   var res4 = Resources.insert({
-    title: 'Effektförbr. hushållsel',
+    title: 'Household power',
     typeId: measurement,
     value: 0,
     unit: 'W',
     plcVar: 'MAIN.totalPowerNotMeasured',
+    logInterval: 1,
+    formatString: "%.0f"
+  });
+
+  var res4 = Resources.insert({
+    title: 'Outlet gr47',
+    typeId: measurement,
+    value: 0,
+    unit: 'W',
+    plcVar: 'GVL.p47_power',
+    logInterval: 1,
+    formatString: "%.0f"
+  });
+
+  var res4 = Resources.insert({
+    title: 'Heat pump',
+    typeId: measurement,
+    value: 0,
+    unit: 'W',
+    plcVar: 'GVL.k6_power',
     logInterval: 1,
     formatString: "%.0f"
   });
@@ -765,7 +826,9 @@ prepWebOut = Resources.insert({
 
 */
 
-for (var i = 1; i < 3; i++) {
+
+
+//for (var i = 1; i < 3; i++) {
   /*tempInsert = Resources.insert({
     title: 't'+i.toString(),
     typeId: measurement,
@@ -776,7 +839,7 @@ for (var i = 1; i < 3; i++) {
     formatString: "%.1f"
   });*/
 
-  for (var j = 0; j < 200; j++) {
+  /*for (var j = 0; j < 200; j++) {
     value = 2*Math.sin(j)*j*Math.cos(j)+3*i;
     Plotdata.insert({datetime: (new Date())-j*60000, value: value, maxvalue: value, minvalue: value, resourceId: res1});   
     value = 2*Math.sin(j)*j*Math.cos(j)+3*i;
@@ -786,9 +849,9 @@ for (var i = 1; i < 3; i++) {
     value = 2*Math.sin(j)*j*Math.cos(j)+3*i;
     Plotdata.insert({datetime: (new Date())-j*60000, value: value, maxvalue: value, minvalue: value, resourceId: res4});   
   };
+*/
 
-
-};
+//};
 
 /*for (var i = 1; i <= 50; i++) {
   Resources.insert({

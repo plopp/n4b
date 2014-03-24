@@ -1,20 +1,6 @@
 <template name="settingsPage">
     <div class="panel panel-default">
       <!-- Default panel contents -->
-      <div class="panel-heading">Time</div>
-
-      <!-- Table -->
-      <table class="table">
-        <tr>
-        <td>Time horizon</td>
-        </tr>
-        <tr>
-        <td>Clock</td>
-        </tr>
-      </table>
-    </div>
-    <div class="panel panel-default">
-      <!-- Default panel contents -->
       <div class="panel-heading">PLC</div>
 
       <!-- Table -->
@@ -25,6 +11,9 @@
         <tr>
         <td>Current time: {{plcTime}}</td>
         </tr>
+        <tr>
+        <td>Scheduled occurrences: {{getNofOccurrences}}</td>
+        </tr>        
       </table>
     </div>
 </template>

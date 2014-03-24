@@ -5,7 +5,10 @@ Template.settingsPage.helpers({
   },
   plcIpAddress : function(){
     //TODO Make editable and store in database
-    return "192.168.0.87";
+    return "10.90.1.10";
+  },
+  getNofOccurrences : function(){
+  	return Occurrences.find().count();
   }
 });
 

@@ -17,6 +17,11 @@
 * which is expected to come from the data itself (even though it can be done via CSS as well if wanted)
 */
 
+.values {color: #468847;text-align: center;background: #dff0d8; clear: none; float: left; height: 100px; margin: 2px 2px 2px 2px; border: solid 1px border-color: #d6e9c6; padding: 10px; -webkit-border-radius: 10px; -moz-border-radius: 10px; border-radius: 10px;}
+
+.values .subtitle{font-size: 10px;}
+
+.values .glyphicon{font-size: 36px;}
 
 div .selected{
 	background-color: #DDDDDD;

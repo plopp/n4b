@@ -156,7 +156,7 @@ var weekJob = function(){
     calcOcc();
 }
 
-var ones = later.parse.text('every 1 min');
+var ones = later.parse.text('every 10 seconds');
 
 var onet = later.setInterval(oneJob, ones);
 
@@ -319,22 +319,22 @@ Meteor.methods({
             ener = data[i][1];
             pow = data[i][2];
             if(timestamp > latest){
-                Plotdata.insert({datetime: timestamp, value: pow, maxvalue: pow, minvalue: pow, resourceId: pvPower[0]._id}); //Todo add accurracy
+                //Plotdata.insert({datetime: timestamp, value: pow, maxvalue: pow, minvalue: pow, resourceId: pvPower[0]._id}); //Todo add accurracy
             }
         }
         Resources.update({plcVar: 'MAIN.pvPower'},{$set: {value: pow, timestamp: (new Date).getTime()}});
-        sendToPlc(['MAIN.pvPower'],['pow'],'write');
+        sendToPlc(['MAIN.pvPower'],[pow*1000],'write');
     }
     else{
         for(var i = 0; i < data.length; i++){
             timestamp = data[i][0];
             ener = data[i][1];
             pow = data[i][2];
-            Plotdata.insert({datetime: timestamp, value: pow, maxvalue: pow, minvalue: pow, resourceId: pvPower[0]._id}); //Todo add accurracy
+            //Plotdata.insert({datetime: timestamp, value: pow, maxvalue: pow, minvalue: pow, resourceId: pvPower[0]._id}); //Todo add accurracy
         }
         Resources.update({plcVar: 'MAIN.pvPower'},{$set: {value: pow, timestamp: (new Date).getTime()}});
         console.log("Writing sun data to PLC.");
-        sendToPlc(['MAIN.pvPower'],['pow'],'write');
+        sendToPlc(['MAIN.pvPower'],[pow*1000],'write');
     }
   },
   save_pv_records_forced: function(data){
@@ -344,10 +344,10 @@ Meteor.methods({
         var timestamp = data[i][0];
         //var ener = data[i][1];
         var pow = data[i][2];
-        Plotdata.insert({datetime: timestamp, value: pow, maxvalue: pow, minvalue: pow, resourceId: pvPower[0]._id}); //Todo add accurracy
+        //Plotdata.insert({datetime: timestamp, value: pow, maxvalue: pow, minvalue: pow, resourceId: pvPower[0]._id}); //Todo add accurracy
     };
     Resources.update({plcVar: 'MAIN.pvPower'},{$set: {value: pow, timestamp: (new Date).getTime()}});
-    sendToPlc(['MAIN.pvPower'],['pow'],'write');
+    sendToPlc(['MAIN.pvPower'],[pow*1000],'write');
   }
 });
 
@@ -1320,11 +1320,12 @@ function sendToPlc(handlesVarNames, values, method){
 
             console.log("Starting communication with PLC.");
             var NETID = ""; // Empty string for local machine;
-            //var PORT = "801"; // TC2 PLC Runtime
-            var PORT = "851"; // TC3 PLC Runtime
+            var PORT = "801"; // TC2 PLC Runtime
+            //var PORT = "851"; // TC3 PLC Runtime
             //var SERVICE_URL = "http://192.168.2.9/TcAdsWebService/TcAdsWebService.dll"; // HTTP path to the TcAdsWebService;
             //var SERVICE_URL = "http://plcsp.no-ip.biz/TcAdsWebService/TcAdsWebService.dll";
-            var SERVICE_URL = "http://10.90.0.1:8081/TcAdsWebService/TcAdsWebService.dll";
+            //var SERVICE_URL = "http://10.90.0.1:8081/TcAdsWebService/TcAdsWebService.dll";
+            var SERVICE_URL = "http://192.168.1.100/TcAdsWebService/TcAdsWebService.dll";
             var client = new TcAdsWebService.Client(SERVICE_URL, null, null);
             var general_timeout = 500;
             var readLoopID = null;
@@ -1374,23 +1375,33 @@ function sendToPlc(handlesVarNames, values, method){
                             return;
                         }
                     }
-
                     for(var i = 0 ; i < handlesVarNames.length; i++){
                       var varValue = reader.readLREAL();
                       //DO SOMETHING WITH THE READ VALUES -> STORE TO DATABASE FOR EXAMPLE
                       console.log("Read PLC-variable: "+handlesVarNames[i]+"="+varValue);
-                      Resources.update({plcVar: handlesVarNames[i]},{$set: {value: varValue, timestamp: (new Date).getTime()}});
-                      Plotdata.insert({datetime: time, value: varValue, maxvalue: varValue, minvalue: varValue, resourceId: Resources.find({plcVar: handlesVarNames[i]}).fetch()[0]._id}); //Todo add accurracy
-                    }
+                      var resId = Resources.find({plcVar: handlesVarNames[i]},{fields:{_id: 1}}).fetch()[0]._id;
+                      //console.log(resId);
+                      Resources.update({_id: resId},{$set: {value: varValue, timestamp: (new Date).getTime()}});
+                      
+
+                      /*Plotdata.insert({
+                            datetime: time, 
+                            value: varValue, 
+                            maxvalue: varValue, 
+                            minvalue: varValue, 
+                            resourceId: resId
+                      }); //Todo add accurracy*/
+
+                     }
                 } else {
 
                     if (e.error.getTypeString() == "TcAdsWebService.ResquestError") {
                         // HANDLE TcAdsWebService.ResquestError HERE;
-                        // console.log("Error: StatusText = " + e.error.statusText + " Status: " + e.error.status);
+                         console.log("Error: StatusText = " + e.error.statusText + " Status: " + e.error.status);
                     }
                     else if (e.error.getTypeString() == "TcAdsWebService.Error") {
                         // HANDLE TcAdsWebService.Error HERE;
-                        // console.log("Error: ErrorMessage = " + e.error.errorMessage + " ErrorCode: " + e.error.errorCode);
+                         console.log("Error: ErrorMessage = " + e.error.errorMessage + " ErrorCode: " + e.error.errorCode);
                     }
                 }
 

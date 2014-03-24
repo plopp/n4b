@@ -14,24 +14,32 @@
   <div id="noDataDiv" style="position: absolute; left: 38%; text-align: center; vertical-align: middle">
     <p>No data in the specified time interval.</p>
   </div>
-  <div id="graph1" class="aGraph" style="position:relative;width:100%;height:400px"></div>
+  <br>
+  <br>
+  
+  <div id="graph1" class="aGraph" style="position:relative;width:100%;height:400px">
+    <!-- Graph here -->
+  </div>
+
   <div id="#resourcePanel">
       {{#each resource}}
       <div id="div_{{_id}}" class="clickable btn btn-default" style="display: relative; float: left; min-width: 100px; min-height: 30px; padding: 6px 8px 6px 6px; margin: 2px 2px 2px 2px;">
       <table>
       	<tr>
-		    <td width="20px"><span class="glyphicon glyphicon-ok" id="glyph_{{_id}}" style="float:left"></span></td>
+		    <td width="20px"><span class="glyphicon glyphicon-ok" id="glyph_{{_id}}" style="float:left" hidden></span></td>
 		    <td><span style="float: right">{{title}}</span></td>
 		</tr>
       </table>
       </div>
       {{/each}}
   </div>
+ 
 </div>
   <!--<div id="graph2" class="aGraph" style="float:left;position:relative;width:49%;height:200px"></div>
   <div id="graph3" class="aGraph" style="float:left;position:relative;width:49%;height:200px"></div>-->
 <!--{{plotDataReactive}}-->
-<div hidden>{{timeDepthReactive}}</div>
+<!--<div hidden>{{timeDepthReactive}}</div>-->
+
 </template>
 
 

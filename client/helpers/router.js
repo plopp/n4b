@@ -38,9 +38,8 @@ Meteor.Router.add({
   },
 
   '/data': {
-    to: 'dataPage',
+    to: 'cardsPage',
     and: function() {
-      Session.set("timeDepth",3600000*24);
     }
   }
   ,
