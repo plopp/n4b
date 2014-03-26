@@ -1,59 +1,101 @@
 <template name="cardsPage">
   <div class="content">
-  	<div class="panel panel-warning" style="width: 49.5%;float: left; overflow: hidden; margin: 0px 8px 8px 0px">
+    <div class="panel panel-warning panel-wrapper-small-shim">
 	  <div class="panel-heading">
 	  	Total power usage
 	  	<svg style="float: right;" height="20" width="20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
 	        <image x="0" y="0" height="20" width="20"  xlink:href="/Icons/SVG/lightning-brown.svg"></image>
 		</svg>
 	  </div>
-	  <div class="panel-body" style="overflow: hidden;">
-	  	{{#constant}}
-	  	<div id="cons-chart" style="float: right; width: 180px; height: 180px; border: 1px"></div>
-	  	{{/constant}}
-	  	<span style="float:left; font-size: 72px; margin: 56px 0px 0px 80px">{{getCurCons}}</span><span style="float:left; font-size: 24px; margin: 104px 0px 0px 0px">W</span>
+	  <div class="panel-body">
+	  	<span class="span-unit">W</span><span class="span-value">{{getTotCons}}</span>
+	  </div>
+	</div>	
+	
+	<div class="panel-wrapper-shim">=</div>	
+	
+  	<div class="panel panel-warning panel-wrapper-small-shim">
+	  <div class="panel-heading">
+	  	Used grid power
+	  	<svg style="float: right;" height="20" width="20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+	        <image x="0" y="0" height="20" width="20"  xlink:href="/Icons/SVG/lightning-brown.svg"></image>
+		</svg>
+	  </div>
+	  <div class="panel-body">
+	  	<span class="span-unit">W</span><span class="span-value">{{getCurCons}}</span>
 	  </div>
 	</div>
-	<div class="panel panel-success" style="width: 49.5%; overflow: hidden; margin: 0px 0px 8px 8px">
+	
+	<div class="panel-wrapper-shim">+</div>	
+	
+	<div class="panel panel-success panel-wrapper-small">
 	  <div class="panel-heading">
-	  	Produced power
+	  	Produced solar power
 	  	<svg style="float: right;" height="20" width="20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
 	        <image x="0" y="0" height="20" width="20"  xlink:href="/Icons/SVG/lightning-green.svg"></image>
 		</svg>
 	  </div>
-	  <div class="panel-body" style="overflow: hidden;">
-	  	{{#constant}}
-	  	<div id="prod-chart" style="float: right; width: 180px; height: 180px; border: 1px"></div>
-	  	{{/constant}}
-	  	<span style="float:left; font-size: 72px; margin: 56px 0px 0px 80px">{{getCurProd}}</span><span style="float:left; font-size: 24px; margin: 104px 0px 0px 0px">W</span>
+	  <div class="panel-body">
+	  	<span class="span-unit">W</span><span class="span-value">{{getCurProd}}</span>
 	  </div>
 	</div>
-	<div class="panel panel-info" style="width: 24.5%;float: left; overflow: hidden; margin: 0px 8px 0px 0px">
+	<div style="clear:both"></div>
+	<div class="panel panel-warning panel-wrapper-small">
 	  <div class="panel-heading">
-	  	Temperature
+	  	Used grid energy
+	  	<svg style="float: right;" height="20" width="20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+	        <image x="0" y="0" height="20" width="20"  xlink:href="/Icons/SVG/lightning-brown.svg"></image>
+		</svg>
+	  </div>
+	  <div class="panel-body">
+	  	<span class="span-unit">kWh</span><span class="span-value">{{getCurGridEnergy}}</span>
+	  </div>
+	</div>
+	
+	<div class="panel panel-success panel-wrapper-small">
+	  <div class="panel-heading">
+	  	Produced solar energy
+	  	<svg style="float: right;" height="20" width="20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+	        <image x="0" y="0" height="20" width="20"  xlink:href="/Icons/SVG/lightning-green.svg"></image>
+		</svg>
+	  </div>
+	  <div class="panel-body">
+	  	<span class="span-unit">kWh</span><span class="span-value">{{getCurSolarEnergy}}</span>
+	  </div>
+	</div>		
+	
+	<div class="panel panel-info panel-wrapper-small">
+	  <div class="panel-heading">
+	  	Indoor temperature
 	  	<svg style="float: right;" height="20" width="20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
 	        <image x="0" y="0" height="20" width="20"  xlink:href="/Icons/SVG/fire.svg"></image>
 		</svg>
 	  </div>
-	  <div class="panel-body" style="overflow: hidden;">
-	  	<span style="float:left; font-size: 72px; margin: 0px 0px 0px 80px">{{getCurTemp}}</span><span style="float:left; font-size: 24px; margin: 25px 0px 0px 0px">°C</span>
+	  <div class="panel-body">
+	  	<span class="span-unit">°C</span><span class="span-value">{{getCurTemp}}</span>
 	  </div>
 	</div>
-	<div class="panel panel-success" style="overflow: hidden">
-	  <div class="panel-heading" style="width: 100%; overflow: hidden;">
-	  	Outlets On
+	<div class="panel panel-success panel-wrapper-large">
+	  <div class="panel-heading">
+	  	Outlets
 	  	<svg style="float: right;" height="20" width="20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
 	        <image x="0" y="0" height="20" width="20"  xlink:href="/Icons/SVG/power-cord-green.svg"></image>
 		</svg>
 	  </div>
 	  <div class="panel-body">
-	  {{#each outletsOn}}
-		{{> cardItemOnOff}}
-	  {{/each}}
+		<h3>On</h3>
+		{{#each outletsOn}}
+			{{> cardItemOnOff}}
+		{{/each}}		
+	  <hr>
+	    <h3>Off</h3>
+	    {{#each outletsOff}}
+			{{> cardItemOnOff}}
+	    {{/each}}
 	  </div>
 	</div>
-	<div class="panel panel-success" style="overflow: hidden">
-	  <div class="panel-heading" style="width: 100%; overflow: hidden;">
+	<div class="panel panel-success panel-wrapper-large">
+	  <div class="panel-heading">
 	  	Outlet power
 	  	<svg style="float: right;" height="20" width="20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
 	        <image x="0" y="0" height="20" width="20"  xlink:href="/Icons/SVG/power-cord-green.svg"></image>
@@ -65,14 +107,14 @@
 	  {{/each}}
 	  </div>
 	</div>
-<div class="" style="float: right">
-    <button type="button" class="btn btn-default" id="butCsv">download .csv</button>
-    <button type="button" class="btn btn-default" id="butJson">download .json</button>
-  </div>
+	<!--<div class="" style="float: right">
+		<button type="button" class="btn btn-default" id="butCsv">download .csv</button>
+		<button type="button" class="btn btn-default" id="butJson">download .json</button>
+	</div>-->
 
   </div>
 
-  <div class="demo-container">
+  <!--<div class="demo-container">
       <div id="placeholder" style="width:600px;height:300px"></div>
     </div>
 
@@ -80,5 +122,5 @@
 
     <p>If you combine it with listening on hover events, you can use it to track the intersection on the curves by interpolating the data points (look at the legend).</p>
 
-    <p id="hoverdata"></p>
+    <p id="hoverdata"></p>-->
 </template>

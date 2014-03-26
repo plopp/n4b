@@ -1,4 +1,4 @@
-if(Types.find().count() === 0){
+﻿if(Types.find().count() === 0){
     var digital = Types.insert({
       title: 'Digital'
     });
@@ -720,14 +720,13 @@ if(Resources.find().count() === 0){
   });
 
   var res2 = Resources.insert({
-    title: 'Sunpower',
+    title: 'Solar power',
     typeId: measurement,
     value: 0,
     unit: 'W',
     plcVar: 'MAIN.pvPower',
-    logInterval: 1,
     formatString: "%.0f"
-  });
+  });    
 
   var res3 = Resources.insert({
     title: 'Measured outlets sum',
@@ -764,11 +763,29 @@ if(Resources.find().count() === 0){
     typeId: measurement,
     value: 0,
     unit: 'W',
-    plcVar: 'GVL.k6_power',
+    plcVar: 'GVL.p6_power',
     logInterval: 1,
     formatString: "%.0f"
   });
+  
+  var res5 = Resources.insert({
+    title: 'Solar energy',
+    typeId: measurement,
+    value: 0,
+    unit: 'kWh',
+    plcVar: 'MAIN.pvEnergy',
+    formatString: "%.1f"
+  });
 
+  var res1 = Resources.insert({
+    title: 'Energy in',
+    typeId: measurement,
+    value: 0,
+    unit: 'kWh',
+    plcVar: 'MAIN.totalEnergyFromAbbMeter',
+    logInterval: 1,
+    formatString: "%.1f"
+  });
 
 /*
 

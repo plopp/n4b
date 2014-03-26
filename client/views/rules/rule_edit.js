@@ -156,9 +156,9 @@ Template.ruleEdit.events({
     console.log(val);
   },
   "change #valcheckbox": function(evt){
+	$(evt.target).attr('checked') ? $(evt.target).attr('checked',false) : $(evt.target).attr('checked',true);
     val = $(evt.target).attr('checked') ? 1 : 0;
     Session.set("val", val);
-    console.log(Session.get("val"));
   },
   'click #verify': function(e) {
     e.preventDefault();

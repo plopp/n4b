@@ -1,7 +1,7 @@
 Template.ruleSubmit.helpers({
   resources : function(){
     //TODO If Types.find return more than one object there will be problems, that will happen if two Signal types are created with the same name.
-    return Resources.find({typeId: {$ne: Types.findOne({title: 'Measurement'})._id }});
+    return Resources.find({typeId: {$ne: Types.findOne({title: 'Measurement'})._id }},{fields: {title: 1}});
   },
   valueTypeIsAnalog : function(){
     var selectedResource = Session.get("selectedResource");
@@ -130,10 +130,10 @@ Template.ruleSubmit.events({
 Template.ruleSubmit.rendered = function() {
     
   Meteor.defer(function() {
-    var selVal = $('#resource_select').val();
+    /*var selVal = $('#resource_select').val();
     Session.set("selectedResource", selVal);
     console.log("Selected resource: "+Resources.findOne(selVal).title);
     $("[name=title]").focus();
-    console.log("Rendered submit form.");
+    console.log("Rendered submit form.");*/
   });
 };

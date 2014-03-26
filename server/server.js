@@ -27,6 +27,12 @@ Meteor.Router.add('/exportDataToJson/:filename', function() {
     return JSON.stringify(tempArr);
 });
 
+Meteor.setInterval(function(){
+	var pvPower = Resources.findOne({plcVar: 'MAIN.pvPower'});	
+	var pvEnergy = Resources.findOne({plcVar: 'MAIN.pvEnergy'});	
+	sendToPlc(['MAIN.pvPower','MAIN.pvEnergy'],[pvPower.value,pvEnergy.value],'write');
+},10000);
+
 var exportCSV = function(responseStream){
 
    var dataStream = createStream();
@@ -131,7 +137,7 @@ var doJobWithFuture = function(){//Fiber(function(){
       //We have data to write...do it
       future.return(sendToPlc(plcHandleNames, plcValues, 'write'));
     }
-    console.log('Minute check done.');
+    //console.log('Minute check done.');
 };
 
 //var minuteJob = schedule.scheduleJob(minuteRule, function(){ //Checks if any resource value should change
@@ -141,7 +147,7 @@ var oneJob = function(){
     doJob();
     collectLog(1);
 }
-var fiveJob = function(){
+/* var fiveJob = function(){
     collectLog(5);
 }
 var tenJob = function(){
@@ -149,7 +155,7 @@ var tenJob = function(){
 }
 var fifteenJob = function(){
     collectLog(15);
-}
+} */
 
 var weekJob = function(){
     console.log("Weekrule");
@@ -160,7 +166,7 @@ var ones = later.parse.text('every 10 seconds');
 
 var onet = later.setInterval(oneJob, ones);
 
-var fives = later.parse.text('every 5 min');
+/* var fives = later.parse.text('every 5 min');
 
 var fivet = later.setInterval(fiveJob, fives);
 
@@ -170,7 +176,7 @@ var tent = later.setInterval(tenJob, tens);
 
 var fifteens = later.parse.text('every 15 min');
 
-var fifteent = later.setInterval(fifteenJob, fifteens);
+var fifteent = later.setInterval(fifteenJob, fifteens); */
 
 var weeks = later.parse.text('on the first day of the week at 12:00');
 
@@ -201,7 +207,7 @@ function doLogWithFuture(min){
 
     var plcHandleNames = new Array();
     var plcValues = new Array();
-    console.log(min.toString()+" minute log");
+    //console.log(min.toString()+" minute log");
     //Fetch all resources that have been configured to be sampled
     if(min > 0){
         res = Resources.find({logInterval: min}).fetch();
@@ -211,7 +217,7 @@ function doLogWithFuture(min){
             plcValues.push(curResource.value);
         };
         if(plcHandleNames.length > 0){
-            console.log("Logging these resources: "+plcHandleNames.toString());
+            //console.log("Logging these resources: "+plcHandleNames.toString());
             future.return(sendToPlc(plcHandleNames, plcValues, 'read'));
         }
     }
@@ -719,7 +725,7 @@ var TcAdsWebService = new (function () {
             // console.log("Setting request header...");
             xhr.setRequestHeader("Content-Type", "text/xml; charset=utf-8");
 
-            console.log("Nof Bytes: "+2*message.length);
+            //console.log("Nof Bytes: "+2*message.length);
             xhr.send(message);
 
             if (!async) {
@@ -1318,14 +1324,15 @@ function sendToPlc(handlesVarNames, values, method){
               return 2;
             }
 
-            console.log("Starting communication with PLC.");
-            var NETID = ""; // Empty string for local machine;
-            var PORT = "801"; // TC2 PLC Runtime
-            //var PORT = "851"; // TC3 PLC Runtime
+            //console.log("Starting communication with PLC.");
+            var NETID = "10.90.1.10.1.1"; // Empty string for local machine;
+            //var PORT = "801"; // TC2 PLC Runtime
+            var PORT = "851"; // TC3 PLC Runtime
             //var SERVICE_URL = "http://192.168.2.9/TcAdsWebService/TcAdsWebService.dll"; // HTTP path to the TcAdsWebService;
             //var SERVICE_URL = "http://plcsp.no-ip.biz/TcAdsWebService/TcAdsWebService.dll";
-            //var SERVICE_URL = "http://10.90.0.1:8081/TcAdsWebService/TcAdsWebService.dll";
-            var SERVICE_URL = "http://192.168.1.100/TcAdsWebService/TcAdsWebService.dll";
+            var SERVICE_URL = "http://10.90.0.1:8081/TcAdsWebService/TcAdsWebService.dll";
+            //var SERVICE_URL = "http://192.168.1.100/TcAdsWebService/TcAdsWebService.dll";
+	    //var SERVICE_URL = "http://192.168.1.100/TcAdsWebService/TcAdsWebService.dll";
             var client = new TcAdsWebService.Client(SERVICE_URL, null, null);
             var general_timeout = 500;
             var readLoopID = null;
@@ -1378,7 +1385,7 @@ function sendToPlc(handlesVarNames, values, method){
                     for(var i = 0 ; i < handlesVarNames.length; i++){
                       var varValue = reader.readLREAL();
                       //DO SOMETHING WITH THE READ VALUES -> STORE TO DATABASE FOR EXAMPLE
-                      console.log("Read PLC-variable: "+handlesVarNames[i]+"="+varValue);
+                      //console.log("Read PLC-variable: "+handlesVarNames[i]+"="+varValue);
                       var resId = Resources.find({plcVar: handlesVarNames[i]},{fields:{_id: 1}}).fetch()[0]._id;
                       //console.log(resId);
                       Resources.update({_id: resId},{$set: {value: varValue, timestamp: (new Date).getTime()}});

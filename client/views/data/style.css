@@ -17,11 +17,92 @@
 * which is expected to come from the data itself (even though it can be done via CSS as well if wanted)
 */
 
-.values {color: #468847;text-align: center;background: #dff0d8; clear: none; float: left; height: 100px; margin: 2px 2px 2px 2px; border: solid 1px border-color: #d6e9c6; padding: 10px; -webkit-border-radius: 10px; -moz-border-radius: 10px; border-radius: 10px;}
+hr {
+  -moz-border-bottom-colors: none;
+  -moz-border-image: none;
+  -moz-border-left-colors: none;
+  -moz-border-right-colors: none;
+  -moz-border-top-colors: none;
+  border-color: #EEEEEE -moz-use-text-color #FFFFFF;
+  border-style: solid none;
+  border-width: 1px 0;
+  margin: 9px 0;
+  clear: both;
+}
+
+
+.values {
+	display: auto;
+	color: #468847;
+	text-align: center;	
+	background: #dff0d8; 
+	clear: none; 
+	float: left; 
+	margin: 2px 2px 2px 2px; 
+	border: solid 1px border-color: #d6e9c6; 
+	padding: 10px; 
+	-webkit-border-radius: 10px; 
+	-moz-border-radius: 10px; 
+	border-radius: 10px;}
 
 .values .subtitle{font-size: 10px;}
 
 .values .glyphicon{font-size: 36px;}
+
+.panel-wrapper-shim{
+	display: table-cell;
+	width: auto;
+	height: 124px;
+	float: left; 		
+	padding: 56px 0px 0px 0px;
+	margin: 0px 8px -8px 0px;
+	padding: 0px 0px 8px 0px;
+	vertical-align: middle;
+	font-size: 36px;
+}
+.panel-wrapper-small{
+	width: 253px;
+	float: left; 		
+	margin: 0px 8px 8px 0px;
+	white-space: nowrap;	
+}
+
+.panel-wrapper-small-shim{
+	width: 224px;
+	float: left; 		
+	margin: 0px 8px 8px 0px;
+	white-space: nowrap;	
+}
+
+.panel-wrapper-large{
+	width: 100%;
+	float: left; 		
+	margin: 0px 8px 8px 0px;
+}
+
+.panel-body{
+	width: 100%;
+	display: inline;
+	float: left;
+	min-width: 224px;
+}
+
+.span-value{
+	font-size: 36px; 
+	margin: 0px 8px 0px 0px;
+	display: inline-block;	
+	vertical-align:bottom;	
+	text-align: right;
+	float: right;
+}
+
+.span-unit{
+	font-size: 24px; 
+	margin: 14px 0px 0px 0px; 
+	display: inline-block;
+	vertical-align:bottom;	
+	float: right;
+}
 
 div .selected{
 	background-color: #DDDDDD;

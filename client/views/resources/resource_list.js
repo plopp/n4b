@@ -1,16 +1,25 @@
 
 Template.resourceList.helpers({
-  resourceMeasurement: function() {
-    var measurementTypeId = Types.find({title: 'Measurement'}).fetch()[0]._id;
-    return Resources.find({typeId: measurementTypeId},{sort: {title: 1}});
+  resourceMeasurement: function() { 	
+	var cursor = Types.find({title: "Measurement"});
+	if(cursor.count() > 0){
+		var id = cursor.fetch()[0]._id;
+		return Resources.find({typeId: id},{sort: {title: 1}});
+	}	
   },
   resourceDigitalOutput: function() {
-    var digitalTypeId = Types.find({title: 'Digital'}).fetch()[0]._id;
-    return Resources.find({typeId: digitalTypeId},{sort: {plcVar: 1}});
+	var cursor = Types.find({title: "Digital"});
+	if(cursor.count() > 0){
+		var id = cursor.fetch()[0]._id;
+		return Resources.find({typeId: id},{sort: {plcVar: 1}});
+	}	
   },
   resourceAnalogOutput: function() {
-    var analogTypeId = Types.find({title: 'Analog'}).fetch()[0]._id;
-    return Resources.find({typeId: analogTypeId},{sort: {plcVar: 1}});
+	var cursor = Types.find({title: "Analog"});
+	if(cursor.count() > 0){
+		var id = cursor.fetch()[0]._id;
+		return Resources.find({typeId: id},{sort: {plcVar: 1}});
+	}
   },
   isOutput: function() {
   	var type = Types.findOne(this.typeId);

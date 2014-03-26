@@ -1,30 +1,86 @@
 Template.cardsPage.helpers({
   outletsOn : function(){
-    return Resources.find({value: 1},{sort: {title: 1}});
+	var type = Types.findOne({title: 'Digital'});
+	if(type){
+		return Resources.find({value: 1, typeId: type._id},{sort: {title: 1}});
+	}
   },
   outletsOff : function(){
-    return Resources.find({value: 0},{sort: {title: 1}});
+	var type = Types.findOne({title: 'Digital'});
+	if(type){
+		return Resources.find({value: 0, typeId: type._id},{sort: {title: 1}});
+	}
   },
-  timeDepthReactive : function(){
+  getCurSolarEnergy : function(){
+  //return 11;
+	var cursor = Resources.find({plcVar: "MAIN.pvEnergy"});
+	if(cursor && cursor.count() > 0){
+		var val = cursor.fetch()[0].value;
+		return sprintf("%.1f", val);
+	}			
+	else{
+		return "Loading...";
+	}
+  },
+  getCurGridEnergy : function(){
+  //return 11;
+	var cursor = Resources.find({plcVar: "MAIN.totalEnergyFromAbbMeter"});
+	if(cursor && cursor.count() > 0){
+		var val = cursor.fetch()[0].value;
+		return sprintf("%.1f", val);
+	}			
+	else{
+		return "Loading...";
+	}
+  },
+  //timeDepthReactive : function(){
     //return Session.get("timeDepth");
-  },
+  //},
   getCurCons : function(){
-  	//Meteor.defer(function(){
-  		var val = Resources.find({plcVar: "MAIN.totalPowerFromAbbMeter"}).fetch()[0].value;
-  		return sprintf("%.0f", val);
-  	//});
+		//return 10;
+		var cursor = Resources.find({plcVar: "MAIN.totalPowerFromAbbMeter"});
+		if(cursor && cursor.count() > 0){
+			var val = cursor.fetch()[0].value;
+			return sprintf("%.0f", val);
+		}			
+		else{
+			return "Loading...";
+		}				
+  },
+  getTotCons : function(){
+		//return 10;
+		var cursor1 = Resources.find({plcVar: "MAIN.totalPowerFromAbbMeter"});
+		var cursor2 = Resources.find({plcVar: "MAIN.pvPower"});
+		if(cursor1 && cursor1.count() > 0 && cursor2 && cursor2.count() > 0){
+			var val1 = cursor1.fetch()[0].value;
+			var val2 = cursor2.fetch()[0].value;
+			return sprintf("%.0f", val1+val2);
+		}			
+		else{
+			return "Loading...";
+		}		
   },
   getCurProd : function(){
-  	//Meteor.defer(function(){
-  		var val = Resources.find({plcVar: "MAIN.pvPower"}).fetch()[0].value;
-  		return sprintf("%.0f", val);
-  	//});
+		//return 11;
+  		var cursor = Resources.find({plcVar: "MAIN.pvPower"});
+		if(cursor && cursor.count() > 0){
+			var val = cursor.fetch()[0].value;
+			return sprintf("%.0f", val);
+		}			
+		else{
+			return "Loading...";
+		}
   },
   getCurTemp : function(){
-  	//Meteor.defer(function(){
-  		var val = Resources.find({plcVar: "MAIN.tempControlRoom"}).fetch()[0].value;
-  		return sprintf("%.1f", val);
-  	//});
+		//return 20;
+		var cursor = Resources.find({plcVar: "MAIN.tempControlRoom"});
+		if(cursor && cursor.count() > 0){
+			var val = cursor.fetch()[0].value;
+			return sprintf("%.1f", val);
+		}			
+		else{
+			return "Loading...";
+		}
   },
   getPowerMeters : function(){
   		return Resources.find({unit: "W"});
@@ -32,53 +88,6 @@ Template.cardsPage.helpers({
 });
 
 Template.cardsPage.events({
-  'click div .clickable' : function(evt){
-    //evt.preventDefault();
-    box = $("#div_"+this._id);
-    box.toggleClass( "selected" );
-
-    glyph = $("#glyph_"+this._id);
-
-    //console.log("cklick");
-    var newVal = box.hasClass("selected");
-    
-    if(newVal){
-        $(".resource_"+this._id).show();
-        glyph.show();
-    }
-    else{
-        $(".resource_"+this._id).hide();
-        glyph.hide();
-    }
-  
-    //Resources.update({_id: this._id}, {$set: {showInLog: newVal}});
-    //console.log(Resources.findOne(this._id).showInLog);
-    
-    //console.log(resourceIndex);
-    //box.prop("checked", !box.prop("checked"));
-    //alert(this.title);
-  },
-  'click #butDay' : function(evt){
-    //xTimeDepth = 36000000*240;
-    Session.set("timeDepth",3600000*24);
-    console.log("butDay");
-  },
-  'click #butWeek' : function(evt){
-    Session.set("timeDepth",3600000*24*7);
-    console.log("butWeek");
-  },
-  'click #butMonth' : function(evt){
-    Session.set("timeDepth",3600000*24*30);
-    console.log("butMonth");
-  },
-  'click #butYear' : function(evt){
-    Session.set("timeDepth",3600000*24*365);
-    console.log("butYear");
-  },
-  'click #butAll' : function(evt){
-    Session.set("timeDepth",0);
-    console.log("butYear");
-  },
   'click #butCsv' : function(evt){
     Meteor.Router.to('/exportDataToCsv/data.csv');
   },
@@ -88,115 +97,111 @@ Template.cardsPage.events({
 });
 
 Template.cardsPage.rendered = function(){
+	//console.log("REndered!");
+
+    // var sin = [], cos = [];
+    // for (var i = 0; i < 14; i += 0.1) {
+      // sin.push([i, Math.sin(i)]);
+      // cos.push([i, Math.cos(i)]);
+
+    // }
+
+    // datArr = [];
+    // curdat = Plotdata.find().fetch()
+    // for (var i = 0; i < curdat.length; i++) {
+      // datArr.push([curdat[i].datetime,curdat[i].value]);
+    // };
+
+    // plot = $.plot($("#placeholder"), [
+      // { data: datArr, label: "sin(x) = -0.00"}
+    // ], {
+      // series: {
+        // lines: {
+          // show: true
+        // }
+      // },
+      // crosshair: {
+        // mode: "x"
+      // },
+      // grid: {
+        // hoverable: true,
+        // autoHighlight: false
+      // },
+      // yaxis: {
+        // min: -2,
+        // max: 20
+      // },
+      // xaxis: { mode: "time" }
+    // });
+
+    // var legends = $("#placeholder .legendLabel");
+
+    // legends.each(function () {
+      // $(this).css('width', $(this).width());
+    // });
+
+    // var updateLegendTimeout = null;
+    // var latestPosition = null;
+
+    // function updateLegend() {
+
+      // updateLegendTimeout = null;
+
+      // var pos = latestPosition;
+
+      // var axes = plot.getAxes();
+      // if (pos.x < axes.xaxis.min || pos.x > axes.xaxis.max ||
+        // pos.y < axes.yaxis.min || pos.y > axes.yaxis.max) {
+        // return;
+      // }
+
+      // var i, j, dataset = plot.getData();
+      // for (i = 0; i < dataset.length; ++i) {
+
+        // var series = dataset[i];
 
 
-    var sin = [], cos = [];
-    for (var i = 0; i < 14; i += 0.1) {
-      sin.push([i, Math.sin(i)]);
-      cos.push([i, Math.cos(i)]);
-
-    }
-
-    datArr = [];
-    curdat = Plotdata.find().fetch()
-    for (var i = 0; i < curdat.length; i++) {
-      datArr.push([curdat[i].datetime,curdat[i].value]);
-    };
-    console.log(datArr);
-
-    plot = $.plot($("#placeholder"), [
-      { data: datArr, label: "sin(x) = -0.00"}
-    ], {
-      series: {
-        lines: {
-          show: true
-        }
-      },
-      crosshair: {
-        mode: "x"
-      },
-      grid: {
-        hoverable: true,
-        autoHighlight: false
-      },
-      yaxis: {
-        min: -2,
-        max: 20
-      },
-      xaxis: { mode: "time" }
-    });
-
-    var legends = $("#placeholder .legendLabel");
-
-    legends.each(function () {
-      // fix the widths so they don't jump around
-      $(this).css('width', $(this).width());
-    });
-
-    var updateLegendTimeout = null;
-    var latestPosition = null;
-
-    function updateLegend() {
-
-      updateLegendTimeout = null;
-
-      var pos = latestPosition;
-
-      var axes = plot.getAxes();
-      if (pos.x < axes.xaxis.min || pos.x > axes.xaxis.max ||
-        pos.y < axes.yaxis.min || pos.y > axes.yaxis.max) {
-        return;
-      }
-
-      var i, j, dataset = plot.getData();
-      for (i = 0; i < dataset.length; ++i) {
-
-        var series = dataset[i];
-
-        // Find the nearest points, x-wise
-
-        for (j = 0; j < series.data.length; ++j) {
-          if (series.data[j][0] > pos.x) {
-            break;
-          }
-        }
-
-        // Now Interpolate
-
-        var y,
-          p1 = series.data[j - 1],
-          p2 = series.data[j];
-
-        if (p1 == null) {
-          y = p2[1];
-        } else if (p2 == null) {
-          y = p1[1];
-        } else {
-          y = p1[1] + (p2[1] - p1[1]) * (pos.x - p1[0]) / (p2[0] - p1[0]);
-        }
-
-        legends.eq(i).text(series.label.replace(/=.*/, "= " + y.toFixed(2)));
-      }
-    }
-
-    $("#placeholder").bind("plothover",  function (event, pos, item) {
-      latestPosition = pos;
-      if (!updateLegendTimeout) {
-        updateLegendTimeout = setTimeout(updateLegend, 50);
-      }
-    });
+        // for (j = 0; j < series.data.length; ++j) {
+          // if (series.data[j][0] > pos.x) {
+            // break;
+          // }
+        // }
 
 
-	if (!this.rendered){
+        // var y,
+          // p1 = series.data[j - 1],
+          // p2 = series.data[j];
+
+        // if (p1 == null) {
+          // y = p2[1];
+        // } else if (p2 == null) {
+          // y = p1[1];
+        // } else {
+          // y = p1[1] + (p2[1] - p1[1]) * (pos.x - p1[0]) / (p2[0] - p1[0]);
+        // }
+
+        // legends.eq(i).text(series.label.replace(/=.*/, "= " + y.toFixed(2)));
+      // }
+    // }
+
+    // $("#placeholder").bind("plothover",  function (event, pos, item) {
+      // latestPosition = pos;
+      // if (!updateLegendTimeout) {
+        // updateLegendTimeout = setTimeout(updateLegend, 50);
+      // }
+    // });
+
+
+	// if (!this.rendered){
 			
-			renderGraph();
+			// renderGraph();
 	    	
-	    this.rendered = true;
-	 }
-	Meteor.defer(function(){
+	    // this.rendered = true;
+	 // }
+	// Meteor.defer(function(){
 		
 	   
-	});
+	// });
 }
 
 var renderGraph = function(){
