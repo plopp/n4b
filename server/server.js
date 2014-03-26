@@ -28,9 +28,11 @@ Meteor.Router.add('/exportDataToJson/:filename', function() {
 });
 
 Meteor.setInterval(function(){
-	var pvPower = Resources.findOne({plcVar: 'MAIN.pvPower'});	
-	var pvEnergy = Resources.findOne({plcVar: 'MAIN.pvEnergy'});	
-	sendToPlc(['MAIN.pvPower','MAIN.pvEnergy'],[pvPower.value,pvEnergy.value],'write');
+	var pvPower = Resources.findOne({plcVar: 'MAIN.pvPower'});
+	var pvEnergy = Resources.findOne({plcVar: 'MAIN.pvEnergy'});
+    if(pvPower && pvPower.value && pvEnergy && pvEnergy.value){	
+	   sendToPlc(['MAIN.pvPower','MAIN.pvEnergy'],[pvPower.value,pvEnergy.value],'write');
+    }
 },10000);
 
 var exportCSV = function(responseStream){
