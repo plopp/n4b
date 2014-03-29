@@ -1,14 +1,12 @@
 {
   "packages": {
     "npm": {},
-    "router": {},
-    "accounts-ui-bootstrap-dropdown": {},
     "jqbootstrapvalidation": {},
-    "handlebar-helpers": {},
     "bootstrap-3": {},
     "jq-knob": {},
     "moment": {},
     "node-csv-npm": {},
-    "require": {}
+    "require": {},
+    "iron-router": {}
   }
 }

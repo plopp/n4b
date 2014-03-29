@@ -1,43 +1,54 @@
 <template name="resourceList">
-  <div class="resources">
-  	<div class="panel panel-success">
-	  <!-- Default panel contents -->
-	  <div class="panel-heading">Measurements<span class="glyphicon glyphicon-arrow-left" style="float: right"></span></div>
-		  <table class="table">
-		    {{#each resourceMeasurement}}
-			    <tr>
-		    	<td>{{> resourceItem}}</td>
-		    	</tr>
-	    	{{/each}}
-		  </table>
+  	<div class="resources">
+	  	<div class="panel panel-success">
+	  		<!-- Default panel contents -->
+		  	<div class="panel-heading">
+		  		Measurements<span class="glyphicon glyphicon-arrow-left" style="float: right"></span>
+		  	</div>
+		  	<div class="panel-body">
+				<table class="table">
+			    {{#each resourceMeasurement}}
+				    <tr>
+			    	<td>{{> resourceItem}}</td>
+			    	</tr>
+		    	{{/each}}
+			  	</table>
+			</div>
+		</div>
+		<div class="panel panel-warning">
+			<div class="panel-heading">
+				Digital Output<span class="glyphicon glyphicon-arrow-right" style="float: right"></span>
+			</div>
+			<div class="panel-body">
+			  <table class="table">
+			    {{#each resourceDigitalOutput}}
+				    <tr>
+			    	<td>{{> resourceItem}}</td>
+			    	</tr>
+		    	{{/each}}
+			  </table>
+			</div>
+	  	</div>
+	 	<div class="panel panel-warning">
+			<div class="panel-heading">
+				Analog Output<span class="glyphicon glyphicon-arrow-right" style="float: right"></span>
+			</div>
+			<div class="panel-body">
+			  <table class="table">
+			    {{#each resourceAnalogOutput}}
+				    <tr>
+			    	<td>{{> resourceItem}}</td>
+			    	</tr>
+		    	{{/each}}
+			  </table>
+			</div>
+	  	</div>
+		<form>
+		  	<div class="control-group">
+			    <div class="controls">
+			        <input type="submit" value="+ Add resource" class="btn btn-primary"/>
+			    </div>
+			</div>
+		</form>
 	</div>
-	<div class="panel panel-warning">
-		<div class="panel-heading">Digital Output<span class="glyphicon glyphicon-arrow-right" style="float: right"></div>
-		  <table class="table">
-		    {{#each resourceDigitalOutput}}
-			    <tr>
-		    	<td>{{> resourceItem}}</td>
-		    	</tr>
-	    	{{/each}}
-		  </table>
-		</div>
-  </div>
-  <div class="panel panel-warning">
-		<div class="panel-heading">Analog Output<span class="glyphicon glyphicon-arrow-right" style="float: right"></div>
-		  <table class="table">
-		    {{#each resourceAnalogOutput}}
-			    <tr>
-		    	<td>{{> resourceItem}}</td>
-		    	</tr>
-	    	{{/each}}
-		  </table>
-		</div>
-  </div>
-	<form>
-	  <div class="control-group">
-		    <div class="controls">
-		        <input type="submit" value="+ Add resource" class="btn btn-primary"/>
-		    </div>
-		</div>
-	</form>
 </template>

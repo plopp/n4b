@@ -6,12 +6,9 @@
 standard-app-packages
 autopublish
 insecure
-preserve-inputs
 npm
-router
 bootstrap
 jqbootstrapvalidation
-handlebar-helpers
 bootstrap-3
 http
 jq-knob
@@ -19,3 +16,4 @@ moment
 d3
 node-csv-npm
 underscore
+iron-router

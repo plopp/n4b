@@ -8,24 +8,24 @@ var Future = Npm.require('fibers/future');
 var minuteRule = new schedule.RecurrenceRule();
 minuteRule.second = 0;
 
-Meteor.Router.add('/exportDataToCsv/:filename', function() {
-    // curl http://localhost:3000/exportUsers/Users.csv
-    // Should get a .csv file
-    return exportCSV(this.response);
-});
+// Meteor.Router.add('/exportDataToCsv/:filename', function() {
+//     // curl http://localhost:3000/exportUsers/Users.csv
+//     // Should get a .csv file
+//     return exportCSV(this.response);
+// });
 
-Meteor.Router.add('/exportDataToJson/:filename', function() {
-    // curl http://localhost:3000/exportUsers/Users.csv
-    // Should get a .csv file
-    var dobj = Plotdata.find({},{fields: {datetime: 1, value: 1, resourceId: 1}}).fetch();
+// Meteor.Router.add('/exportDataToJson/:filename', function() {
+//     // curl http://localhost:3000/exportUsers/Users.csv
+//     // Should get a .csv file
+//     var dobj = Plotdata.find({},{fields: {datetime: 1, value: 1, resourceId: 1}}).fetch();
     
-    var tempArr = [];
-    for (var i = 0; i < dobj.length; i++) {
-        var curRes = Resources.findOne(dobj[i].resourceId);
-        tempArr.push({timestamp: new Date(dobj[i].datetime).toLocaleString(),title: curRes.title, value: dobj[i].value, unit: curRes.unit})
-    };
-    return JSON.stringify(tempArr);
-});
+//     var tempArr = [];
+//     for (var i = 0; i < dobj.length; i++) {
+//         var curRes = Resources.findOne(dobj[i].resourceId);
+//         tempArr.push({timestamp: new Date(dobj[i].datetime).toLocaleString(),title: curRes.title, value: dobj[i].value, unit: curRes.unit})
+//     };
+//     return JSON.stringify(tempArr);
+// });
 
 Meteor.setInterval(function(){
 	var pvPower = Resources.findOne({plcVar: 'MAIN.pvPower'});
