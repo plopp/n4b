@@ -1,3 +1,4 @@
+<template name="layout">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
@@ -7,10 +8,9 @@
   <title>NEED4B</title>
 </head>
 <body>
-  <div class="container">
-    {{> header}}
-    <div id="main">
-      {{renderPage}}
-    </div>
+  {{> header}}
+  <div id="main">
+    {{yield}}
   </div>
 </body>
+</template>

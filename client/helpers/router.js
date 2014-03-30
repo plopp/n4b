@@ -1,7 +1,20 @@
+
+Router.configure({
+  autoRender: true,
+  debug: true,
+  layoutTemplate: 'layout',
+  before: function() {
+    console.log('before all')
+  }
+});
+
 Router.map(function(){
   this.route('dashboardPage', 
     {
-      path: '/'
+      path: '/',
+      action: function () {
+        // render the main template
+      }
     });
   this.route('scenariosList', 
     {
@@ -20,7 +33,7 @@ Router.map(function(){
     });
   this.route('ruleSubmit', 
     {
-      path:'/submit/:_id/rule',
+      path:'/rule/:_id/submit',
       data: function(){
         Session.set('currentScenarioId', id);
       }
@@ -33,14 +46,20 @@ Router.map(function(){
         Session.set('val', Rules.findOne(this.params._id).value);
       }
     });
-  
+  this.route('graphItem', 
+    {
+      path:'/resource/:_id/graph',
+      data: function(){
+        Session.set('currentResourceGraphId', this.params._id); 
+      }
+    });
   this.route('resourcePage', {
       path: '/resources'
     });
   this.route('resourceSubmit', {
       path: '/resources/submit'
     });
-  this.route('documentationOage', {
+  this.route('documentationPage', {
       path: '/documentation'
     });
   this.route('settingsPage', {
