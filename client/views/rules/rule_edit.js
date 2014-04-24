@@ -1,10 +1,19 @@
 Template.ruleEdit.helpers({
   rule : function(){
-    return Rules.findOne(Session.get("currentRuleId"));
+    var ruleId = Session.get("currentRuleId");
+    if(ruleId){
+      return Rules.findOne(ruleId);
+    }
   },
   resources : function(){
     //TODO If Types.find return more than one object there will be problems, that will happen if two Signal types are created with the same name.
-    return Resources.find({typeId: {$ne: Types.findOne({title: 'Measurement'})._id }});
+    var type = Types.findOne({title: 'Measurement'});
+    console.log("Fetching resources...");
+    if(type){
+      var resCurs = Resources.find({typeId: {$ne: type._id }});
+      console.log(resCurs.count());
+      return resCurs;
+    }
   },
   selRes : function(){
     return Session.get("selectedResource");
@@ -14,8 +23,13 @@ Template.ruleEdit.helpers({
     if(selectedResource == undefined){
       selectedResource = resourceId;
     }
-    return Types.findOne(Resources.findOne(selectedResource).typeId).title === "Analog"; 
-    
+    var res = Resources.findOne(selectedResource);
+    if(res){
+      var type = Types.findOne(res.typeId);
+      if(type){
+        return type.title === "Analog"; 
+      }
+    }
     /*var selectedResId = Session.get("currentRuleId")
     if(selectedResId != undefined && resourceId != selectedResId){ //If selected resource differs form the store resourceId, the user has changed resource.
       return Types.findOne(Resources.findOne(selectedResId).typeId).title === "Analog";  
@@ -28,9 +42,13 @@ Template.ruleEdit.helpers({
     if(selectedResource == undefined){
       selectedResource = resourceId;
     }
-    //console.log("DEBUG5 "+selectedResource);
-    //console.log(Resources.findOne(selectedResource).title);
-    return Types.findOne(Resources.findOne(selectedResource).typeId).title === "Digital"; 
+    var res = Resources.findOne(selectedResource);
+    if(res){
+      var type = Types.findOne(res.typeId);
+      if(type){
+        return type.title === "Digital"; 
+      }
+    }
     /*var selectedResId = Session.get("resourceId");
     if(selectedResId != undefined && resourceId != selectedResId){ //If selected resource differs form the store resourceId, the user has changed resource.
       return Types.findOne(Resources.findOne(selectedResId).typeId).title === "Digital";  
@@ -62,10 +80,26 @@ Template.ruleEdit.helpers({
     //return Session.get("min");
   },
   isTrue : function() {
-    return (Rules.findOne(Session.get("currentRuleId")).value != 0 ? true : false);
+    var curRule = Session.get("currentRuleId");
+    if(curRule){
+      var rule = Rules.findOne(curRule);
+      if(rule){
+        console.log("Value: "+rule.value);
+        return (rule.value != 0 ? true : false);
+      }
+    }
   },
   getSelected : function(){
-    return Rules.findOne(Session.get("currentRuleId")).resourceId;
+    var curRule = Session.get("currentRuleId");
+    if(curRule){
+      var rule = Rules.findOne(curRule);
+      if(rule){
+        var res = Resources.findOne(rule.resourceId);
+        if(res){
+          return res;
+        }
+      }
+    }
   }
 });
 
@@ -110,14 +144,14 @@ Template.ruleEdit.events({
       Occurrences.remove(arrOcc[i]._id);
     }
     console.log("Removed "+numOcc+" occurrences.");
-
+    console.log("Updating rule: "+Session.get("currentRuleId"));
     rule._id = Rules.update(Session.get("currentRuleId"), {$set: rule}, function(error) {
       if (error) {
         // display the error to the user
         console.log(error.reason);
       } else {
         Meteor.call('scheduleOccurrences');
-        Meteor.Router.to('scenarioPage', Session.get("currentScenarioId"));
+        Router.go('/scenario/:_id',  {_id: Session.get("currentScenarioId")});
       }
     });
 
@@ -147,17 +181,17 @@ Template.ruleEdit.events({
   },
 
   "change #resource_select": function(evt) {
-    resourceId = $(evt.target).val(); //The resource ID is stored in the value property in every option.
+    var resourceId = $(evt.target).val(); //The resource ID is stored in the value property in every option.
     Session.set("selectedResource", resourceId)
   },
   "change #valrange": function(evt){
-    val = $(evt.target).val();
+    var val = $(evt.target).val();
     Session.set("val",val);
     console.log(val);
   },
   "change #valcheckbox": function(evt){
 	$(evt.target).attr('checked') ? $(evt.target).attr('checked',false) : $(evt.target).attr('checked',true);
-    val = $(evt.target).attr('checked') ? 1 : 0;
+    var val = $(evt.target).attr('checked') ? 1 : 0;
     Session.set("val", val);
   },
   'click #verify': function(e) {
@@ -181,10 +215,18 @@ Template.ruleEdit.events({
 });
 
 Template.ruleEdit.rendered = function() {
-    
-  Meteor.defer(function() {
-    var selVal = $('#resource_select').val();
-    Session.set("selectedResource", selVal);
-    console.log("Selected resource: "+Resources.findOne(selVal).title);
-  });
+  //$('#resource_select').val("ccQbR8dnmi4voHRtq");
+  // Meteor.defer(function() {
+  //   console.log("redrawn...");
+  //   console.log("Selected resource id: "+Session.get("selectedResource"));
+  //   console.log("Text name: "+Resources.findOne(Session.get("selectedResource")).title);
+  //   $('#resource_select').val("ccQbR8dnmi4voHRtq");
+  //   $('#resource_select').val("ccQbR8dnmi4voHRtq");
+  //   $('#resource_select').val("ccQbR8dnmi4voHRtq");
+  //   $('#resource_select').val("ccQbR8dnmi4voHRtq");
+  //   //var selVal = $('#resource_select').val();
+  //   //console.log("DEBUG: Selected value:"+$('#resource_select').val();
+  //   //Session.set("selectedResource", selVal);
+  //   //console.log("Selected resource: "+Resources.findOne(selVal).title);
+  // });
 };

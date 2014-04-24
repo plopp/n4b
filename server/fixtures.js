@@ -12,8 +12,7 @@
     });
 }
 
-var room1Temp;
-var outsideTemp;
+
 
 /*
 
@@ -699,7 +698,7 @@ if(Resources.find().count() === 0){
   });
 
   
-  outsideTemp = Resources.insert({
+  var outsideTemp = Resources.insert({
     title: 'Temp outside',
     typeId: measurement,
     value: 0,

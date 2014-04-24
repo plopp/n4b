@@ -8,7 +8,6 @@ Template.scenariosList.helpers({
 Template.scenariosList.events({
   'submit form': function(e) {
     e.preventDefault();
-    console.log("submit");
-    Meteor.Router.to('scenarioSubmit');
+    Router.go('scenarioSubmit');
   }
 });

@@ -65,7 +65,7 @@ var exportCSV = function(responseStream){
     
     dataStream.write(["Timestamp","Resource","Value"]);
 
-    samples = Plotdata.find({});
+    var samples = Plotdata.find({});
 
     //Pushing each user into the stream, If we could access the MongoDB driver we could
     //convert the Cursor into a stream directly, making this a lot cleaner.
@@ -128,11 +128,11 @@ var doJobWithFuture = function(){//Fiber(function(){
         var curRule = Rules.findOne(occurrences[h].ruleId);
         Resources.update(curRule.resourceId, {$set: {value:curRule.value}});
         var curResource = Resources.findOne(curRule.resourceId);
-        console.log(curResource.title + " has changed value to "+curResource.value);
+        //console.log(curResource.title + " has changed value to "+curResource.value);
         plcHandleNames.push(curResource.plcVar);
         plcValues.push(curResource.value);
         Occurrences.remove(occurrences[h]._id);
-        console.log("Occurrence "+occurrences[h]._id+" has been removed. Remaining: "+Occurrences.find().count());
+        //console.log("Occurrence "+occurrences[h]._id+" has been removed. Remaining: "+Occurrences.find().count());
       }
     };
     if(plcHandleNames.length > 0){
@@ -160,7 +160,7 @@ var fifteenJob = function(){
 } */
 
 var weekJob = function(){
-    console.log("Weekrule");
+    //console.log("Weekrule");
     calcOcc();
 }
 
@@ -212,7 +212,7 @@ function doLogWithFuture(min){
     //console.log(min.toString()+" minute log");
     //Fetch all resources that have been configured to be sampled
     if(min > 0){
-        res = Resources.find({logInterval: min}).fetch();
+        var res = Resources.find({logInterval: min}).fetch();
         for (var i = res.length - 1; i >= 0; i--) {
             curResource = res[i];
             plcHandleNames.push(curResource.plcVar);
@@ -237,7 +237,7 @@ function readAllPlcVarWithFuture(){
     var plcHandleNames = new Array();
     var plcValues = new Array();
     //Fetch all resources that have been configured to be sampled
-        res = Resources.find({}).fetch();
+        var res = Resources.find({}).fetch();
         for (var i = res.length - 1; i >= 0; i--) {
             curResource = res[i];
             plcHandleNames.push(curResource.plcVar);
@@ -260,11 +260,11 @@ var calcOccWithFuture = function(){//Fiber(function(){
     var schedule = Meteor.require('node-schedule');
     var later = Meteor.require('later');
 
-    console.log("Starting calculation of occurrences...");
+    //console.log("Starting calculation of occurrences...");
 
     var nextSunday = later.schedule(later.parse.text("at 12:00 on sunday")).next();
-    console.log("nextSunday: "+nextSunday);
-    console.log("Scheduling from: "+new Date().toString()+" to "+nextSunday);
+    //console.log("nextSunday: "+nextSunday);
+    //console.log("Scheduling from: "+new Date().toString()+" to "+nextSunday);
 
     //Clear existing occurrences that are newer than now - the remaining ones will have been missed and needs
     //to be performed.
@@ -284,7 +284,7 @@ var calcOccWithFuture = function(){//Fiber(function(){
     }
     //console.log("Added "+k+" occurrences. "+Occurrences.find().count()+" in total.");
     //console.log('Calculating new occurrences done.');
-    return future
+    return future;
 };
 
 //var calcOccurrencesFiberTask = Fiber(function(){
@@ -296,8 +296,9 @@ var calcOccWithFuture = function(){//Fiber(function(){
 
 Meteor.methods({
   verifyTimerule: function(rule){
+    console.log("Rnning verifyTimerule");
     var sched = later.parse.text(rule);
-    occurrence = later.schedule(sched).next(1);
+    var occurrence = later.schedule(sched).next(1);
 
     return {
       result: sched.error,
@@ -313,19 +314,19 @@ Meteor.methods({
     Occurrences.remove({});
   },
   readAllPlcVarOnStartupMethod: function(){
-    console.log("Reading all PLC resources.");
+    //console.log("Reading all PLC resources.");
     readAllPlcVar();
   },
   save_pv_records: function(data){
-    console.log("Got sun data!")
+    //console.log("Got sun data!")
     var pvPower = Resources.find({plcVar: 'MAIN.pvPower'}).fetch();
     var lastrec = Pvdata.find({},{sort:{datetime: -1}}).fetch()[0];
     if(lastrec){
-        latest = lastrec.datetime;
+        var latest = lastrec.datetime;
         for(var i = 0; i < data.length; i++){
-            timestamp = data[i][0];
-            ener = data[i][1];
-            pow = data[i][2];
+            var timestamp = data[i][0];
+            var ener = data[i][1];
+            var pow = data[i][2];
             if(timestamp > latest){
                 //Plotdata.insert({datetime: timestamp, value: pow, maxvalue: pow, minvalue: pow, resourceId: pvPower[0]._id}); //Todo add accurracy
             }
@@ -335,13 +336,13 @@ Meteor.methods({
     }
     else{
         for(var i = 0; i < data.length; i++){
-            timestamp = data[i][0];
-            ener = data[i][1];
-            pow = data[i][2];
+            var timestamp = data[i][0];
+            var ener = data[i][1];
+            var pow = data[i][2];
             //Plotdata.insert({datetime: timestamp, value: pow, maxvalue: pow, minvalue: pow, resourceId: pvPower[0]._id}); //Todo add accurracy
         }
         Resources.update({plcVar: 'MAIN.pvPower'},{$set: {value: pow, timestamp: (new Date).getTime()}});
-        console.log("Writing sun data to PLC.");
+        //console.log("Writing sun data to PLC.");
         sendToPlc(['MAIN.pvPower'],[pow*1000],'write');
     }
   },
@@ -1359,7 +1360,7 @@ function sendToPlc(handlesVarNames, values, method){
 
             // Occurs if the readwrite for the sumcommando to request symbol handles runs into timeout;
             var RequestHandlesTimeoutCallback = (function () {
-                console.log("RequestHandlesTimeoutCallback");
+                //console.log("RequestHandlesTimeoutCallback");
             });
 
             // Occurs if the read-read-write command has finished;
@@ -1380,7 +1381,7 @@ function sendToPlc(handlesVarNames, values, method){
                     for (var i = 0; i < handlesVarNames.length; i++) {
                         var err = reader.readDWORD();
                         if (err != 0) {
-                            console.log("Symbol error!");
+                            //console.log("Symbol error!");
                             return;
                         }
                     }
@@ -1406,11 +1407,11 @@ function sendToPlc(handlesVarNames, values, method){
 
                     if (e.error.getTypeString() == "TcAdsWebService.ResquestError") {
                         // HANDLE TcAdsWebService.ResquestError HERE;
-                         console.log("Error: StatusText = " + e.error.statusText + " Status: " + e.error.status);
+                         //console.log("Error: StatusText = " + e.error.statusText + " Status: " + e.error.status);
                     }
                     else if (e.error.getTypeString() == "TcAdsWebService.Error") {
                         // HANDLE TcAdsWebService.Error HERE;
-                         console.log("Error: ErrorMessage = " + e.error.errorMessage + " ErrorCode: " + e.error.errorCode);
+                         //console.log("Error: ErrorMessage = " + e.error.errorMessage + " ErrorCode: " + e.error.errorCode);
                     }
                 }
 
@@ -1444,11 +1445,11 @@ function sendToPlc(handlesVarNames, values, method){
 
                     if (e.error.getTypeString() == "TcAdsWebService.ResquestError") {
                         // HANDLE TcAdsWebService.ResquestError HERE;
-                        console.log("Error: StatusText = " + e.error.statusText + " Status: " + e.error.status);
+                        //console.log("Error: StatusText = " + e.error.statusText + " Status: " + e.error.status);
                     }
                     else if (e.error.getTypeString() == "TcAdsWebService.Error") {
                         // HANDLE TcAdsWebService.Error HERE;
-                        console.log("Error: ErrorMessage = " + e.error.errorMessage + " ErrorCode: " + e.error.errorCode);
+                        //console.log("Error: ErrorMessage = " + e.error.errorMessage + " ErrorCode: " + e.error.errorCode);
                     }
                 }
 
@@ -1457,7 +1458,7 @@ function sendToPlc(handlesVarNames, values, method){
             // Occurs if the read-read-write command runs into timeout;
             var WriteTimeoutCallback = (function () {
                 // HANDLE TIMEOUT HERE;
-                console.log("Write timeout!");
+                //console.log("Write timeout!");
             });
 
             var start;
@@ -1484,7 +1485,7 @@ function sendToPlc(handlesVarNames, values, method){
                         var len = reader.readDWORD();
 
                         if (err != 0) {
-                            console.log("Handle error: "+err);
+                            //console.log("Handle error: "+err);
                             return;
                         }
 
@@ -1544,14 +1545,14 @@ function sendToPlc(handlesVarNames, values, method){
                     }
 
                 } else if(e) {
-                    console.log(e.toString+" "+e.error);
+                    //console.log(e.toString+" "+e.error);
                     //if (e.error.getTypeString() == "TcAdsWebService.ResquestError") {
                         // HANDLE TcAdsWebService.ResquestError HERE;
-                        console.log("Error: StatusText = " + e.error.statusText + " Status: " + e.error.status);
+                    //    console.log("Error: StatusText = " + e.error.statusText + " Status: " + e.error.status);
                     //}
                     //else if (e.error.getTypeString() == "TcAdsWebService.Error") {
                         // HANDLE TcAdsWebService.Error HERE;
-                        console.log("Error: ErrorMessage = " + e.error.errorMessage + " ErrorCode: " + e.error.errorCode);
+                    //    console.log("Error: ErrorMessage = " + e.error.errorMessage + " ErrorCode: " + e.error.errorCode);
                     //}
 
                 }

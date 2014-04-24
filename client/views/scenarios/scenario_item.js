@@ -25,7 +25,7 @@ Template.scenarioItem.events({
         Rules.remove(rulesArr[i]._id);
       }
       Scenarios.remove(this._id);
-      Meteor.Router.to("/scenarios");
+      //Router.go("/scenarios");
   },
   'mouseenter #delete-btn-scenario' : function(evt){
     $(evt.target).addClass("btn-danger");

@@ -5,15 +5,14 @@ Template.scenarioSubmit.events({
     var scenario = {
       title: $(e.target).find('[name=title]').val()
     }
-    console.log(scenario);
     scenario._id = Scenarios.insert(scenario);
-    Meteor.Router.to('scenarioPage', scenario._id);
+    console.log("Routing to the new scenario: "+Router.path('scenarioPage'));
+    Router.go("scenarioPage", {_id: scenario._id});
   }
 });
 
 Template.scenarioSubmit.rendered = function(){
   Meteor.defer(function(){
     $("[name=title]").focus();
-    console.log("Rendered submit form.");
   });
 };

@@ -1,6 +1,4 @@
 <template name="scenarioPage">
-  {{#with currentScenario}}
-
     <div class="panel panel-default">
       <!-- Default panel contents -->
       <div class="panel-heading">{{> scenarioItem}}</div>
@@ -8,25 +6,23 @@
       <!-- Table -->
       <table class="table">
         {{#each rules}}
-        <tr>
-        <td>{{> ruleItem}}</td>
-        </tr>
-      {{/each}}
+          <tr>
+          <td>{{> ruleItem}}</td>
+          </tr>
+        {{/each}}
       </table>
     </div>
-
-    <form>
-      <div class="control-group">
-          <div class="controls">
-              <input type="submit" value="+ Add rule" class="btn btn-primary"/>
-          </div>
-      </div>
-    </form>
     <!--
     {{#if currentUser}}
       {{> ruleSubmit}}
     {{else}}
       <p>Please log in to create a rule.</p>
     {{/if}}-->
-  {{/with}}
+
+    <div class="control-group">
+        <div class="controls">
+            <a href="{{pathFor 'ruleSubmit'}}" class="btn btn-primary">+ Add rule</a>
+        </div>
+    </div>
+  
 </template>

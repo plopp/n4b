@@ -3,13 +3,22 @@ Template.ruleItem.helpers({
     return new Date(this.submitted).toString();
   },
   resourceTitle: function() {
-  	return Resources.findOne(this.resourceId).title.toLowerCase();
+    var res = Resources.findOne(this.resourceId);
+    if(res){
+  	 return res.title.toLowerCase();
+    }
   },
   hasUnit: function(){
-  	return Resources.findOne(this.resourceId).unit != null;
+    var res = Resources.findOne(this.resourceId);
+    if(res){
+  	 return (res.unit != null);
+    }
   },
   unit: function(){
-  	return Resources.findOne(this.resourceId).unit;
+    var res = Resources.findOne(this.resourceId);
+    if(res){
+     return res.unit;
+    }  	
   },
   occurrences: function(){
   	return Occurrences.find({ruleId: this._id},{sort: {datetime: 1}});

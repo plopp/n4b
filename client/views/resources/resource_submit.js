@@ -38,7 +38,7 @@ Template.resourceSubmit.events({
     Meteor.Router.to('resourcePage');
   },
   "change #type_select": function(evt) {
-    typeId = $(evt.target).val(); //The resource ID is stored in the value property in every option.
+    var typeId = $(evt.target).val(); //The resource ID is stored in the value property in every option.
     Session.set("selectedType", typeId)
     console.log(typeId);
   }

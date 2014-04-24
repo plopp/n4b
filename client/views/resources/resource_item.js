@@ -10,7 +10,7 @@ Template.resourceItem.helpers({
   },
   getTimestamp: function(){
     //return new Date(this.datetime);
-    unix = Resources.findOne(this._id).timestamp;
+    var unix = Resources.findOne(this._id).timestamp;
     if(unix){
       return moment(new Date(unix)).fromNow();
     }

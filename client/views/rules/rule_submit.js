@@ -1,18 +1,30 @@
 Template.ruleSubmit.helpers({
   resources : function(){
-    //TODO If Types.find return more than one object there will be problems, that will happen if two Signal types are created with the same name.
-    return Resources.find({typeId: {$ne: Types.findOne({title: 'Measurement'})._id }},{fields: {title: 1}});
+    var digId = Types.findOne({title: 'Digital'});
+    //var anaId = Types.findOne({title: 'Digital'});
+    if(digId){
+      var firstResource = Resources.findOne({typeId: digId._id});
+      if(firstResource){
+        Session.set("selectedResource", firstResource._id);
+        //TODO If Types.find return more than one object there will be problems, that will happen if two Signal types are created with the same name.
+        return Resources.find({typeId: digId._id},{fields: {title: 1}});
+      }
+    }
   },
   valueTypeIsAnalog : function(){
+
     var selectedResource = Session.get("selectedResource");
     if(selectedResource == undefined){
       return false; //Error, default to false
     }
-    console.log(selectedResource);
+
     var res = Resources.findOne(selectedResource);
-    if(res != undefined){
+    if(res){
       var typeId = res.typeId;
-      return Types.findOne(typeId).title === "Analog"; 
+      var type = Types.findOne(typeId);
+      if(type){
+        return type.title === "Analog"; 
+      }
     }
     else{
       return false;
@@ -26,14 +38,20 @@ Template.ruleSubmit.helpers({
     //return Session.get("resourceType") === "Analog"; //Is Either Analog or Digital*/
   },
   valueTypeIsDigital : function(){
+
     var selectedResource = Session.get("selectedResource");
+    
     if(selectedResource == undefined){
       return true; //Error, default to true
     }
     var res = Resources.findOne(selectedResource);
-    if(res != undefined){
+    
+    if(res){
       var typeId = res.typeId;
-      return Types.findOne(typeId).title === "Digital"; 
+      var type = Types.findOne(typeId);
+      if(type){
+        return type.title === "Digital"; 
+      }
     }
     else{
       return true;
@@ -77,7 +95,7 @@ Template.ruleSubmit.events({
         val = Session.get("val");
         break;
       case "Digital":
-        val = $(e.target).find('[name=Value]').attr('checked') ? 1 : 0;
+        val = $(e.target).find('[name=Value]').val() ? 1 : 0;
         break;
       default:
         val = 0;
@@ -94,20 +112,22 @@ Template.ruleSubmit.events({
       value: val,
       timerule: $(e.target).find('[name=timerule]').val(),
     }
+    console.log("DEBUG: "+rule.title);
     rule._id = Rules.insert(rule);
     Meteor.call('scheduleOccurrences');
-    Meteor.Router.to('scenarioPage', Session.get("currentScenarioId"));
+    console.log("Scenario ID: "+Session.get("currentScenarioId"));
+    Router.go("scenarioPage", {_id: Session.get("currentScenarioId")});
   },
   "change #resource_select": function(evt) {
-    resourceId = $(evt.target).val(); //The resource ID is stored in the value property in every option.
+    var resourceId = $(evt.target).val(); //The resource ID is stored in the value property in every option.
     Session.set("selectedResource", resourceId)
   },
   "change #valrange": function(evt){
-    val = $(evt.target).val();
+    var val = $(evt.target).val();
     Session.set("val",val);
   },
   "change #valcheckbox": function(evt){
-    val = $(evt.target).attr('checked') ? 1 : 0;
+    var val = $(evt.target).attr('checked') ? 1 : 0;
     Session.set("val", val);
   },
   'click #verify': function(e) {
@@ -129,11 +149,11 @@ Template.ruleSubmit.events({
 
 Template.ruleSubmit.rendered = function() {
     
-  Meteor.defer(function() {
+  //Meteor.defer(function() {
     /*var selVal = $('#resource_select').val();
     Session.set("selectedResource", selVal);
     console.log("Selected resource: "+Resources.findOne(selVal).title);
     $("[name=title]").focus();
     console.log("Rendered submit form.");*/
-  });
+  //});
 };

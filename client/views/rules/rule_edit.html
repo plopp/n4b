@@ -12,12 +12,16 @@
     </div>
 
     <div class="control-group">
-        <label class="control-label" for="resource">Resource</label>
+        {{#with getSelected}}
+        <b>Current resource: {{title}}</b>
+        {{/with}}
+        <br>
+        <label class="control-label" for="resource">New resource</label>
         <div class="control-group">
             <select id="resource_select">
                 {{#each resources}}
-                  <option name="resource" value="{{_id}}" {{isSelected _id getSelected}}>{{title}}</option>
-                {{/each}}
+                  <option name="resource" value="{{_id}}">{{title}}</option>
+                {{/each}} 
             </select>
         </div>
     </div>
