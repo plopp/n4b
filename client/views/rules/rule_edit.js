@@ -79,25 +79,25 @@ Template.ruleEdit.helpers({
     }
     //return Session.get("min");
   },
-  isTrue : function() {
+  getChecked : function() {
     var curRule = Session.get("currentRuleId");
     if(curRule){
       var rule = Rules.findOne(curRule);
-      if(rule){
-        console.log("Value: "+rule.value);
-        return (rule.value != 0 ? true : false);
+      if(rule){        
+        Session.set("checkboxVal",rule.value == 1 ? true : false);
+        return (rule.value == 0 ? "" : "checked");
       }
     }
   },
-  getSelected : function(){
+  getVal : function() {
+    return (Session.get("checkboxVal") == 0 ? "Off" : "On");
+  },
+  getResource : function(){
     var curRule = Session.get("currentRuleId");
     if(curRule){
       var rule = Rules.findOne(curRule);
       if(rule){
-        var res = Resources.findOne(rule.resourceId);
-        if(res){
-          return res;
-        }
+        return (rule.resourceId == this._id);        
       }
     }
   }
@@ -119,7 +119,8 @@ Template.ruleEdit.events({
         val = Session.get("val");
         break;
       case "Digital":
-        val = $(e.target).find('[name=Value]').attr('checked') ? 1 : 0;
+        //val = $(e.target).find('[name=Value]').attr('checked') ? 1 : 0;
+        val = Session.get("checkboxVal") ? 1 : 0; 
         break;
       default:
         val = 0;
@@ -133,6 +134,9 @@ Template.ruleEdit.events({
       value: val,
       timerule: $(e.target).find('[name=timerule]').val(),
     }
+
+    console.log("Updated rule: ");
+    console.log(rule);
 
     //Occurrences.remove({ruleId: this._id});
 
@@ -151,7 +155,7 @@ Template.ruleEdit.events({
         console.log(error.reason);
       } else {
         Meteor.call('scheduleOccurrences');
-        Router.go('/scenario/:_id',  {_id: Session.get("currentScenarioId")});
+        Router.go("scenarioPage", {_id: Session.get("currentScenarioId")});
       }
     });
 
@@ -190,9 +194,11 @@ Template.ruleEdit.events({
     console.log(val);
   },
   "change #valcheckbox": function(evt){
-	$(evt.target).attr('checked') ? $(evt.target).attr('checked',false) : $(evt.target).attr('checked',true);
-    var val = $(evt.target).attr('checked') ? 1 : 0;
-    Session.set("val", val);
+
+    Session.set("checkboxVal",!Session.get("checkboxVal"));    
+	// $(evt.target).attr('checked') ? $(evt.target).attr('checked',false) : $(evt.target).attr('checked',true);
+ //  var val = $(evt.target).attr('checked') ? 1 : 0;
+ //  Session.set("val", val);
   },
   'click #verify': function(e) {
     e.preventDefault();
