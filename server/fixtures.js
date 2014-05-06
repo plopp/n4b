@@ -786,6 +786,16 @@ if(Resources.find().count() === 0){
     formatString: "%.1f"
   });
 
+
+  console.log("Resources:");
+  Resources.find().forEach(function(res,j){
+    //console.log(j);
+    for (var i = 0; i < 100; i++) {
+      var value = 40+10*Math.random();
+      Plotdata.insert({datetime: (new Date())-i*60000000, value: value, maxvalue: value, minvalue: value, resourceId: res._id})
+    };
+  })
+
 /*
 
   waterLevel = Resources.insert({

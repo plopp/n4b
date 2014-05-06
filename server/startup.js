@@ -1,7 +1,7 @@
 Meteor.startup(function(){
   console.log("Startup..");
   //Meteor.call('readAllPlcVarOnStartupMethod');
-  //Meteor.call('scheduleOccurrences');
+  Meteor.call('scheduleOccurrences');
 });
 
 Meteor.publish('jobs', function(){

@@ -164,7 +164,7 @@ var weekJob = function(){
     calcOcc();
 }
 
-var ones = later.parse.text('every 10 seconds');
+var ones = later.parse.text('every 1 seconds');
 
 var onet = later.setInterval(oneJob, ones);
 
@@ -1317,6 +1317,9 @@ Sends data to the PLC, the handlesVarNames should be an Array of strings contain
 the handle name-strings. All communication is done using REAL-value type.
 */
 function sendToPlc(handlesVarNames, values, method){
+
+            console.log("Send to PLC")
+
             if(handlesVarNames.length != values.length){
               console.log("ERROR! Number of handles sent to the PLC must equal the number of values! Communication with PLC aborted.")
               return 1;
@@ -1392,7 +1395,7 @@ function sendToPlc(handlesVarNames, values, method){
                       var resId = Resources.find({plcVar: handlesVarNames[i]},{fields:{_id: 1}}).fetch()[0]._id;
                       //console.log(resId);
                       Resources.update({_id: resId},{$set: {value: varValue, timestamp: (new Date).getTime()}});
-                      
+                      console.log("Updating RESOURCE here!");
 
                       /*Plotdata.insert({
                             datetime: time, 
@@ -1529,6 +1532,8 @@ function sendToPlc(handlesVarNames, values, method){
                       );
                     }
                     else if(method == 'read'){
+
+                        console.log("Sending read command.");
                       client.readwrite(
                         NETID,
                         PORT,
@@ -1545,6 +1550,7 @@ function sendToPlc(handlesVarNames, values, method){
                     }
 
                 } else if(e) {
+                    console.log("Could not get handles, is system reachable from this network?");
                     //console.log(e.toString+" "+e.error);
                     //if (e.error.getTypeString() == "TcAdsWebService.ResquestError") {
                         // HANDLE TcAdsWebService.ResquestError HERE;
@@ -1558,7 +1564,7 @@ function sendToPlc(handlesVarNames, values, method){
                 }
 
             });   
-            // console.log("Sending handle request");
+            console.log("Requesting handles.");
             start = new Date().getTime();
             client.readwrite(
                       NETID,
