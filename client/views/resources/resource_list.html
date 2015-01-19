@@ -1,9 +1,88 @@
 <template name="resourceList">
 	<!-- <div class="resources"> -->
+	<form>
+		  <div class="control-group">
+				<div class="controls">
+					<input type="submit" value="+ Add resource" class="btn btn-primary"/>
+				</div>
+			</div>
+		</form>
+	<div class="panel panel-success">
+	  <!-- Default panel contents -->
+	  <div class="panel-heading">Measurements<span class="glyphicon glyphicon-arrow-left" style="float: right"></span></div>
+	  <!--<div class="panel-body">
+		panelkropp
+	  </div>-->
+
+	  <!-- Table -->
+	  <table class="table">
+		<thead>
+			<tr>
+				<th>Resource</th>
+				<th>Value</th>
+				<th>Last updated</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>			
+			{{#each resourceMeasurement}}
+				{{> resourceItem}}
+			{{/each}}			
+		</tbody>
+	  </table>
+	</div>
+	<div class="panel panel-success">
+	  <!-- Default panel contents -->
+	  <div class="panel-heading">Digital Outputs<span class="glyphicon glyphicon-arrow-right" style="float: right"></span></div>
+	  <!--<div class="panel-body">
+		panelkropp
+	  </div>-->
+
+	  <!-- Table -->
+	  <table class="table">
+		<thead>
+			<tr>
+				<th>Resource</th>
+				<th>Value</th>
+				<th>Last updated</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>			
+			{{#each resourceDigitalOutput}}
+				{{> resourceItem}}
+			{{/each}}			
+		</tbody>
+	  </table>
+	</div>
+	<div class="panel panel-success">
+	  <!-- Default panel contents -->
+	  <div class="panel-heading">Analog Outputs<span class="glyphicon glyphicon-arrow-right" style="float: right"></span></div>
+	  <!--<div class="panel-body">
+		panelkropp
+	  </div>-->
+
+	  <!-- Table -->
+	  <table class="table">
+		<thead>
+			<tr>
+				<th>Resource</th>
+				<th>Value</th>
+				<th>Last updated</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>			
+			{{#each resourceAnalogOutput}}
+				{{> resourceItem}}
+			{{/each}}			
+		</tbody>
+	  </table>
+	</div>
+	<!--
 		<div class="panel panel-success">
-			<!-- Default panel contents -->
 			<div class="panel-heading">Measurements<span class="glyphicon glyphicon-arrow-left" style="float: right"></span></div>
-			<!-- <div class="panel-body">				 -->
+			
 				<table class="table">
 				{{#each resourceMeasurement}}
 				<tr>
@@ -11,11 +90,10 @@
 				</tr>
 				{{/each}}
 				</table>
-			<!-- </div> -->
 		</div>
 		<div class="panel panel-warning">
 			<div class="panel-heading">Digital Output<span class="glyphicon glyphicon-arrow-right" style="float: right"></span></div>
-			<!-- <div class="panel-body"> -->
+		
 				<table class="table">
 				{{#each resourceDigitalOutput}}
 				<tr>
@@ -23,11 +101,10 @@
 				</tr>
 				{{/each}}
 				</table>
-			<!-- </div> -->
 		</div>
 		<div class="panel panel-warning">
 			<div class="panel-heading">Analog Output<span class="glyphicon glyphicon-arrow-right" style="float: right"></span></div>
-			<!-- <div class="panel-body"> -->
+			
 				<table class="table">
 				{{#each resourceAnalogOutput}}
 				<tr>
@@ -35,14 +112,6 @@
 				</tr>
 				{{/each}}
 				</table>
-			<!-- </div> -->
 		</div>
-		<form>
-		  <div class="control-group">
-				<div class="controls">
-					<input type="submit" value="+ Add resource" class="btn btn-primary"/>
-				</div>
-			</div>
-		</form>
-	<!-- </div> -->
+		-->		
 </template>

@@ -35,16 +35,31 @@ Template.resourceItem.helpers({
     var type = Types.findOne(this.typeId);
     return (type.title === 'Measurement');
   },
+  isZeroAndDigital: function() {
+	var type = Types.findOne(this.typeId);
+    return (this.value == 0 && type.title === 'Digital');
+  },
   address : function() {
     return this.plcVar;
   },
   getNiceValue : function(){
-    if(this.formatString){
-      return sprintf(this.formatString,this.value);
-    }
-    else{
-      return sprintf("%.1f",this.value);
-    }
+	var type = Types.findOne(this.typeId);
+	if(type.title === 'Measurement' || type.title === 'Analog'){
+		if(this.formatString){
+		  return sprintf(this.formatString,this.value);
+		}
+		else{
+		  return sprintf("%.1f",this.value);
+		}
+	}
+	else{
+		if(this.value === 1){
+			return "On";
+		}
+		else{
+			return "Off";
+		}
+	}
   }
 });
 
@@ -77,7 +92,7 @@ Template.resourceItem.events({
           Rules.remove(rulesArr[i]._id);
         }
         Resources.remove(this._id);
-        //Meteor.Router.to("/resources");
+        Router.go("/resources");
       } 
   },
 

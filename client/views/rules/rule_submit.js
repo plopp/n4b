@@ -81,6 +81,10 @@ Template.ruleSubmit.helpers({
     var selectedResource = Session.get("selectedResource");
     return Resources.findOne(selectedResource).min; 
     //return Session.get("min");
+  },
+  getVal : function() {
+	return (Session.get("checkboxVal") == 0 ? "Off" : "On");
+    //return ($('input[name=Value]').prop("checked") ? "On" : "Off");
   }
 });
 
@@ -95,7 +99,7 @@ Template.ruleSubmit.events({
         val = Session.get("val");
         break;
       case "Digital":
-        val = $(e.target).find('[name=Value]').val() ? 1 : 0;
+        val = $(e.target).find('[name=Value]').prop("checked") ? 1 : 0;		
         break;
       default:
         val = 0;
@@ -127,8 +131,7 @@ Template.ruleSubmit.events({
     Session.set("val",val);
   },
   "change #valcheckbox": function(evt){
-    var val = $(evt.target).attr('checked') ? 1 : 0;
-    Session.set("val", val);
+	Session.set("checkboxVal",!Session.get("checkboxVal"));    
   },
   'click #verify': function(e) {
     e.preventDefault();
@@ -148,7 +151,7 @@ Template.ruleSubmit.events({
 });
 
 Template.ruleSubmit.rendered = function() {
-    
+    Session.set("checkboxVal",false);    
   //Meteor.defer(function() {
     /*var selVal = $('#resource_select').val();
     Session.set("selectedResource", selVal);

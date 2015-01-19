@@ -27,13 +27,13 @@ minuteRule.second = 0;
 //     return JSON.stringify(tempArr);
 // });
 
-Meteor.setInterval(function(){
-	var pvPower = Resources.findOne({plcVar: 'MAIN.pvPower'});
-	var pvEnergy = Resources.findOne({plcVar: 'MAIN.pvEnergy'});
-    if(pvPower && pvPower.value && pvEnergy && pvEnergy.value){	
-	   sendToPlc(['MAIN.pvPower','MAIN.pvEnergy'],[pvPower.value,pvEnergy.value],'write');
-    }
-},10000);
+//Meteor.setInterval(function(){
+//	var pvPower = Resources.findOne({plcVar: 'MAIN.pvPower'});
+//	var pvEnergy = Resources.findOne({plcVar: 'MAIN.pvEnergy'});
+    //if(pvPower && pvPower.value && pvEnergy && pvEnergy.value){	
+	   //sendToPlc(['MAIN.pvPower','MAIN.pvEnergy'],[pvPower.value,pvEnergy.value],'write');
+    //}
+//},10000);
 
 var exportCSV = function(responseStream){
 
@@ -164,7 +164,7 @@ var weekJob = function(){
     calcOcc();
 }
 
-var ones = later.parse.text('every 1 seconds');
+var ones = later.parse.text('every 1 minutes');
 
 var onet = later.setInterval(oneJob, ones);
 
@@ -1318,7 +1318,7 @@ the handle name-strings. All communication is done using REAL-value type.
 */
 function sendToPlc(handlesVarNames, values, method){
 
-            console.log("Send to PLC")
+            //console.log("Send to PLC")
 
             if(handlesVarNames.length != values.length){
               console.log("ERROR! Number of handles sent to the PLC must equal the number of values! Communication with PLC aborted.")
@@ -1395,7 +1395,7 @@ function sendToPlc(handlesVarNames, values, method){
                       var resId = Resources.find({plcVar: handlesVarNames[i]},{fields:{_id: 1}}).fetch()[0]._id;
                       //console.log(resId);
                       Resources.update({_id: resId},{$set: {value: varValue, timestamp: (new Date).getTime()}});
-                      console.log("Updating RESOURCE here!");
+                      //console.log("Updating RESOURCE here!");
 
                       /*Plotdata.insert({
                             datetime: time, 
@@ -1533,7 +1533,7 @@ function sendToPlc(handlesVarNames, values, method){
                     }
                     else if(method == 'read'){
 
-                        console.log("Sending read command.");
+                        //console.log("Sending read command.");
                       client.readwrite(
                         NETID,
                         PORT,
@@ -1564,7 +1564,7 @@ function sendToPlc(handlesVarNames, values, method){
                 }
 
             });   
-            console.log("Requesting handles.");
+            //console.log("Requesting handles.");
             start = new Date().getTime();
             client.readwrite(
                       NETID,

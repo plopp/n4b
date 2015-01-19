@@ -33,7 +33,7 @@
                   <div class="onoffswitch-switch"></div>
               </label>
           </div>-->
-          <input name="Value" id="valcheckbox" value="your_value" type="checkbox" {{isChecked isTrue true}}/>
+          <input name="Value" id="valcheckbox" value="your_value" type="checkbox"/> <b>{{getVal}}</b>
           {{/if}}
           {{#if valueTypeIsAnalog}}
               {{min}} {{unit}} <input type="range" name="points" min="{{min}}" max="{{max}}" id="valrange"> {{max}} {{unit}} Value: {{sliderVal}} {{unit}}

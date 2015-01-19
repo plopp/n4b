@@ -35,6 +35,6 @@ Template.resourceList.events({
   'submit form': function(e) {
     e.preventDefault();
     console.log("submit");
-    Meteor.Router.to('resourceSubmit');
+    Router.go('resourceSubmit');
   }
 });

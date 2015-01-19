@@ -687,33 +687,12 @@ if(Resources.find().count() === 0){
   });
 */
   
-  Resources.insert({
-    title: 'Temp control room',
-    typeId: measurement,
-    value: 0,
-    unit: '°C',
-    plcVar: 'MAIN.tempControlRoom',
-    logInterval: 1,
-    formatString: "%.1f"
-  });
-
-  
-  var outsideTemp = Resources.insert({
-    title: 'Temp outside',
-    typeId: measurement,
-    value: 0,
-    unit: '°C',
-    plcVar: 'MAIN.tempOutside',
-    logInterval: 1,
-    formatString: "%.1f"
-  });
-
   var res1 = Resources.insert({
     title: 'Power in',
     typeId: measurement,
     value: 0,
     unit: 'W',
-    plcVar: 'MAIN.totalPowerFromAbbMeter',
+    plcVar: 'GVL.totalPowerFromAbbMeter',
     logInterval: 1,
     formatString: "%.0f"
   });
@@ -723,7 +702,8 @@ if(Resources.find().count() === 0){
     typeId: measurement,
     value: 0,
     unit: 'W',
-    plcVar: 'MAIN.pvPower',
+    plcVar: 'GVL.pvPower',
+	logInterval: 1,
     formatString: "%.0f"
   });    
 
@@ -732,7 +712,7 @@ if(Resources.find().count() === 0){
     typeId: measurement,
     value: 0,
     unit: 'W',
-    plcVar: 'MAIN.totalPowerFromPulseMeters',
+    plcVar: 'GVL.totalPowerFromPulseMeters',
     logInterval: 1,
     formatString: "%.0f"
   });
@@ -742,7 +722,7 @@ if(Resources.find().count() === 0){
     typeId: measurement,
     value: 0,
     unit: 'W',
-    plcVar: 'MAIN.totalPowerNotMeasured',
+    plcVar: 'GVL.totalPowerNotMeasured',
     logInterval: 1,
     formatString: "%.0f"
   });
@@ -772,7 +752,8 @@ if(Resources.find().count() === 0){
     typeId: measurement,
     value: 0,
     unit: 'kWh',
-    plcVar: 'MAIN.pvEnergy',
+    plcVar: 'GVL.pvEnergy',
+	logInterval: 1,
     formatString: "%.1f"
   });
 
@@ -781,13 +762,110 @@ if(Resources.find().count() === 0){
     typeId: measurement,
     value: 0,
     unit: 'kWh',
-    plcVar: 'MAIN.totalEnergyFromAbbMeter',
+    plcVar: 'GVL.totalEnergyFromAbbMeter',
+    logInterval: 1,
+    formatString: "%.1f"
+  });
+  
+    var res1 = Resources.insert({
+    title: 'Power import',
+    typeId: measurement,
+    value: 0,
+    unit: 'W',
+    plcVar: 'GVL.p70_power_imp',
+    logInterval: 1,
+    formatString: "%.1f"
+  });
+  
+	var res1 = Resources.insert({
+    title: 'Power export',
+    typeId: measurement,
+    value: 0,
+    unit: 'W',
+    plcVar: 'GVL.p70_power_exp',
     logInterval: 1,
     formatString: "%.1f"
   });
 
+  var res1 = Resources.insert({
+    title: 'Air outside (280)',
+    typeId: measurement,
+    value: 0,
+    unit: '°C',
+    plcVar: 'GVL.uteluft280',
+    logInterval: 1,
+    formatString: "%.1f"
+  });
 
-  console.log("Resources:");
+  var res1 = Resources.insert({
+    title: 'Air out facade (281)',
+    typeId: measurement,
+    value: 0,
+    unit: '°C',
+    plcVar: 'GVL.avluftfasad281',
+    logInterval: 1,
+    formatString: "%.1f"
+  });
+
+  var res1 = Resources.insert({
+    title: 'Air input (282)',
+    typeId: measurement,
+    value: 0,
+    unit: '°C',
+    plcVar: 'GVL.tilluft282',
+    logInterval: 1,
+    formatString: "%.1f"
+  });
+
+  var res1 = Resources.insert({
+    title: 'Air out (283)',
+    typeId: measurement,
+    value: 0,
+    unit: '°C',
+    plcVar: 'GVL.franluft283',
+    logInterval: 1,
+    formatString: "%.1f"
+  });
+
+  var res1 = Resources.insert({
+    title: 'Air out technology room (279)',
+    typeId: measurement,
+    value: 0,
+    unit: '°C',
+    plcVar: 'GVL.avluftteknikrum279',
+    logInterval: 1,
+    formatString: "%.1f"
+  });
+  
+  var res1 = Resources.insert({
+    title: 'Ventilation pressure 38',
+    typeId: measurement,
+    value: 0,
+    unit: 'mBar',
+    plcVar: 'GVL.press38',
+    logInterval: 1,
+    formatString: "%.1f"
+  }); 
+  var res1 = Resources.insert({
+    title: 'Ventilation pressure 39',
+    typeId: measurement,
+    value: 0,
+    unit: 'mBar',
+    plcVar: 'GVL.press39',
+    logInterval: 1,
+    formatString: "%.1f"
+  });
+   var res1 = Resources.insert({
+    title: 'Ventilation pressure 40',
+    typeId: measurement,
+    value: 0,
+    unit: 'mBar',
+    plcVar: 'GVL.press40',
+    logInterval: 1,
+    formatString: "%.1f"
+  });
+
+  /*console.log("Resources:");
   Resources.find().forEach(function(res,j){
     //console.log(j);
     for (var i = 0; i < 100; i++) {
@@ -795,7 +873,7 @@ if(Resources.find().count() === 0){
       Plotdata.insert({datetime: (new Date())-i*60000000, value: value, maxvalue: value, minvalue: value, resourceId: res._id})
     };
   })
-
+*/
 /*
 
   waterLevel = Resources.insert({

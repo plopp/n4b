@@ -179,7 +179,7 @@ Template.ruleEdit.events({
 
       Rules.remove(currentRuleId);
 
-      Meteor.Router.to('scenarioPage', Session.get("currentScenarioId"));
+      Router.go('scenarioPage', Session.get("currentScenarioId"));
       /* TODO - make sure that every occurrence is cleaned */
     }
   },

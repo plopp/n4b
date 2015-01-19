@@ -21,10 +21,11 @@ Template.resourceSubmit.events({
         min: min,
         unit: $(e.target).find('[name=unit]').val(),
         value: 0,
-        plcVar: $(e.target).find('[name=plcvar]').val()
+        plcVar: $(e.target).find('[name=plcvar]').val(),
+		logInterval: 1
       }
       resource._id = Resources.insert(resource);
-      Meteor.Router.to('resourcePage');
+      Router.go('resourcePage');
       return true;
     }
     else{
@@ -35,7 +36,7 @@ Template.resourceSubmit.events({
   },
   'click #cancel-btn': function(e) {
     e.preventDefault();
-    Meteor.Router.to('resourcePage');
+    Router.go('resourcePage');
   },
   "change #type_select": function(evt) {
     var typeId = $(evt.target).val(); //The resource ID is stored in the value property in every option.
