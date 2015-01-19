@@ -1,0 +1,44 @@
+<template name="resourceEdit">
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">Edit resource<span class="glyphicon glyphicon-pencil" style="float: right"></span></div>
+  {{#with resource}}
+  <form class="main">
+    <div class="control-group">
+        <label class="control-label" for="title">Title</label>
+        <div class="controls">
+            <input name="title" type="text" value="{{title}}" placeholder="Set title"/>
+        </div>
+    </div>
+	
+	<div class="control-group">
+        <label class="control-label" for="unit">Plc-variable</label>
+        <div class="controls">
+            <input name="plc" type="text" value="{{plcVar}}" placeholder="Set Plc-variable"/>
+        </div>
+    </div>
+	
+	 <div class="control-group">
+        <label class="control-label" for="unit">Unit</label>
+        <div class="controls">
+            <input name="unit" type="text" value="{{unit}}" placeholder="Set unit"/>
+        </div>
+    </div>
+    
+    <hr/>
+    <div class="control-group">
+        <div class="controls">
+            <!--<input type="submit" value="Submit" class="btn btn-primary"/>-->
+            <button id="submit-btn" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk"></span>  Save</button>
+        </div>
+    </div>
+    <hr/>
+    <div class="control-group">
+        <div class="controls">
+            <a class="btn btn-danger delete" href="#"><span class="glyphicon glyphicon-trash"></span>  Delete resource</a>
+        </div>
+    </div>
+  </form>
+  {{/with}}
+  </div>
+</template>
