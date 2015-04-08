@@ -3,6 +3,8 @@ Meteor.startup(function(){
   //Meteor.call('readAllPlcVarOnStartupMethod');
   //console.log(new Later);
   Meteor.call('scheduleOccurrences');
+  Meteor.call("doJob");
+  Meteor.call("collectLog");
 });
 
 Meteor.publish('jobs', function(){

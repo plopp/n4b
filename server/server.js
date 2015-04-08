@@ -152,16 +152,17 @@ var debug = false;
 //var minuteJob = schedule.scheduleJob(minuteRule, function(){ //Checks if any resource value should change
 //});
 
+
 Meteor.setInterval(function(){
     Meteor.call("doJob");
     Meteor.call("collectLog");
-},2000);
+},60000);
 
-var oneJob = function(){
+//var oneJob = function(){
     //doJob();
     //
     //
-}
+//}
 /* var fiveJob = function(){
     collectLog(5);
 }
@@ -177,9 +178,9 @@ var weekJob = function(){
     Meteor.call("calcOcc");
 }
 
-var ones = later.parse.text('every 10 seconds');
+//var ones = later.parse.text('every 10 seconds');
 
-var onet = later.setInterval(oneJob, ones);
+//var onet = later.setInterval(oneJob, ones);
 
 /* var fives = later.parse.text('every 5 min');
 
