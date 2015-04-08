@@ -1,24 +1,30 @@
 <template name="logsPage">
+<div class="content">
     <div class="panel panel-warning">
       <!-- Default panel contents -->
       <div class="panel-heading">Event log</div>
 
       <!-- Table -->
-      <table class="table">
-        <tr><td>Event 1</td><td>Info</td><td>12:00</td></tr>
-        <tr><td>Event 2</td><td>Info</td><td>12:00</td></tr>
-        <tr><td>Event 3</td><td>Info</td><td>12:00</td></tr>
-      </table>
+      <div class="panel-body">
+        <table class="table">
+          <tr><td>Event 1</td><td>Info</td><td>12:00</td></tr>
+          <tr><td>Event 2</td><td>Info</td><td>12:00</td></tr>
+          <tr><td>Event 3</td><td>Info</td><td>12:00</td></tr>
+        </table>
+      </div>
     </div>
     <div class="panel panel-danger">
       <!-- Default panel contents -->
       <div class="panel-heading">Alarm log</div>
 
+      <div class="panel-body">
       <!-- Table -->
       <table class="table">
         <tr><td>Alarm 1</td><td>A</td><td>12:00</td></tr>
         <tr><td>Alarm 2</td><td>A</td><td>12:00</td></tr>
         <tr><td>Alarm 3</td><td>A</td><td>12:00</td></tr>
       </table>
+      </div>
     </div>
+</div>
 </template>

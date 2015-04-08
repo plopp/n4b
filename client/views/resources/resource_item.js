@@ -97,10 +97,10 @@ Template.resourceItem.events({
   },
 
   'mouseenter .delete-resource' : function(evt){
-    $(evt.target).addClass("btn-danger");
+    //$(evt.target).addClass("btn-danger");
   },
   'mouseleave .delete-resource' : function(evt){
-    $(evt.target).removeClass("btn-danger");
+    //$(evt.target).removeClass("btn-danger");
   },
   'click #view-rules' : function(evt){
     $("#showRulesDiv-"+this._id).toggle();

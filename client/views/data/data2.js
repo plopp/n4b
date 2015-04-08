@@ -21,7 +21,7 @@ Template.cardsPage.helpers({
             all = all.slice(size);
         }
         chunks.push({row: all});
-		console.log("Labels length: "+labels.length);
+		//console.log("Labels length: "+labels.length);
         return chunks;
 		//return curs;
 	}
@@ -197,7 +197,7 @@ Template.cardsPage.rendered = function(){
 		});
 	}
 	else{
-		console.log(visarr);
+		//console.log(visarr);
 		$('input[type=checkbox]').each(function (index) {
 		   $(this).prop('checked',visarr[index]);
 		   //resArr.push(this.id);

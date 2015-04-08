@@ -178,15 +178,14 @@ Template.ruleEdit.events({
       console.log("Removed "+numOcc+" occurrences.");
 
       Rules.remove(currentRuleId);
-
-      Router.go('scenarioPage', Session.get("currentScenarioId"));
+      Router.go('scenarioPage', {_id: Session.get("currentScenarioId")});
       /* TODO - make sure that every occurrence is cleaned */
     }
   },
 
   "change #resource_select": function(evt) {
     var resourceId = $(evt.target).val(); //The resource ID is stored in the value property in every option.
-    Session.set("selectedResource", resourceId)
+    Session.set("selectedResource", resourceId);
   },
   "change #valrange": function(evt){
     var val = $(evt.target).val();

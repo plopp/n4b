@@ -6,8 +6,4 @@ Template.scenariosList.helpers({
 });
 
 Template.scenariosList.events({
-  'submit form': function(e) {
-    e.preventDefault();
-    Router.go('scenarioSubmit');
-  }
 });

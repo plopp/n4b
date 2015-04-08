@@ -49,6 +49,7 @@ hr {
 
 .values .glyphicon{font-size: 36px;}
 
+
 .panel-wrapper-shim{
 	display: table-cell;
 	width: auto;
@@ -80,13 +81,14 @@ hr {
 	margin: 0px 8px 8px 0px;
 }
 
+/*
 .panel-body{
 	width: 100%;
 	display: inline;
 	float: left;
 	min-width: 224px;
 }
-
+*/
 .span-value{
 	font-size: 36px; 
 	margin: 0px 8px 0px 0px;

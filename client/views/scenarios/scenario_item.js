@@ -25,12 +25,12 @@ Template.scenarioItem.events({
         Rules.remove(rulesArr[i]._id);
       }
       Scenarios.remove(this._id);
-      //Router.go("/scenarios");
+      Router.go("/scenarios");
   },
   'mouseenter #delete-btn-scenario' : function(evt){
-    $(evt.target).addClass("btn-danger");
+    //$(evt.target).addClass("btn-danger");
   },
   'mouseleave #delete-btn-scenario' : function(evt){
-    $(evt.target).removeClass("btn-danger");
+    //$(evt.target).removeClass("btn-danger");
   }
 });

@@ -1,12 +1,13 @@
-var schedule = Meteor.require('node-schedule');
-var later = Meteor.require('later');
+//var schedule = Meteor.npmRequire('node-schedule');
+//var later =Meteor.npmRequire('later');
 later.date.localTime()
-var Fiber = Npm.require('fibers');
-var Future = Npm.require('fibers/future');
+var debug = false;
+//var Fiber = Meteor.npmRequire('fibers');//Npm.require('fibers');
+//var Future = Meteor.npmRequire('fibers/future');//Npm.require('fibers/future');
 
 //Checks to see if anything should be done this minute
-var minuteRule = new schedule.RecurrenceRule();
-minuteRule.second = 0;
+//var minuteRule = new schedule.RecurrenceRule();
+//minuteRule.second = 0;
 
 // Meteor.Router.add('/exportDataToCsv/:filename', function() {
 //     // curl http://localhost:3000/exportUsers/Users.csv
@@ -35,119 +36,131 @@ minuteRule.second = 0;
     //}
 //},10000);
 
-var exportCSV = function(responseStream){
+// var exportCSV = function(responseStream){
 
-   var dataStream = createStream();
-    // Set up a future, Stream doesn't work properly without it.
-    var fut = new Future();
-    var samples = {};
+//    var dataStream = createStream();
+//     // Set up a future, Stream doesn't work properly without it.
+//     var fut = new Future();
+//     var samples = {};
 
-    //Here this Package is used to parse a stream from an array to a string of CSVs.
-   CSV().from(dataStream)
-    .to(responseStream)
-    .transform(function(data, index){
-    if(data._id){
-        //var dateCreated = new Date(user.createdAt);
-        curRes = Resources.findOne(data.resourceId);
-        return [new Date(data.datetime).toLocaleString(), curRes.title, data.value, curRes.unit];
-    }else
-        return data;
-    })
-    .on('error', function(error){
-        console.log('Error streaming CSV export: ', error.message);
-    })
-    .on('end', function(count){
-        responseStream.end();
-        fut.return("");
-    });
+//     //Here this Package is used to parse a stream from an array to a string of CSVs.
+//    CSV().from(dataStream)
+//     .to(responseStream)
+//     .transform(function(data, index){
+//     if(data._id){
+//         //var dateCreated = new Date(user.createdAt);
+//         curRes = Resources.findOne(data.resourceId);
+//         return [new Date(data.datetime).toLocaleString(), curRes.title, data.value, curRes.unit];
+//     }else
+//         return data;
+//     })
+//     .on('error', function(error){
+//         console.log('Error streaming CSV export: ', error.message);
+//     })
+//     .on('end', function(count){
+//         responseStream.end();
+//         fut.return("");
+//     });
 
-    //Write table headings for CSV to stream.
+//     //Write table headings for CSV to stream.
     
-    dataStream.write(["Timestamp","Resource","Value"]);
+//     dataStream.write(["Timestamp","Resource","Value"]);
 
-    var samples = Plotdata.find({});
+//     var samples = Plotdata.find({});
 
-    //Pushing each user into the stream, If we could access the MongoDB driver we could
-    //convert the Cursor into a stream directly, making this a lot cleaner.
-    var count = 0;
-    samples.forEach(function (data) {
-        dataStream.write(data); //Stream transform takes care of cleanup and formatting.
-        count += 1;
-        if(count >= samples.count())
-            dataStream.end();
-    });
+//     //Pushing each user into the stream, If we could access the MongoDB driver we could
+//     //convert the Cursor into a stream directly, making this a lot cleaner.
+//     var count = 0;
+//     samples.forEach(function (data) {
+//         dataStream.write(data); //Stream transform takes care of cleanup and formatting.
+//         count += 1;
+//         if(count >= samples.count())
+//             dataStream.end();
+//     });
 
-    return fut.wait();
-};
+//     return fut.wait();
+// };
 
-//Creates and returns a Duplex(Read/Write) Node stream
-//Used to pipe users from .find() Cursor into our CSV stream parser.
-var createStream = function(){
+// //Creates and returns a Duplex(Read/Write) Node stream
+// //Used to pipe users from .find() Cursor into our CSV stream parser.
+// var createStream = function(){
 
-    var stream = Meteor.require('stream');
-    var myStream = new stream.Stream();
-    myStream.readable = true;
-    myStream.writable = true;
+//     var stream = Meteor.npmRequire('stream');
+//     var myStream = new stream.Stream();
+//     myStream.readable = true;
+//     myStream.writable = true;
 
-    myStream.write = function (data) {
-        myStream.emit('data', data);
-        return true; // true means 'yes i am ready for more data now'
-        // OR return false and emit('drain') when ready later
-    };
+//     myStream.write = function (data) {
+//         myStream.emit('data', data);
+//         return true; // true means 'yes i am ready for more data now'
+//         // OR return false and emit('drain') when ready later
+//     };
 
-    myStream.end = function (data) {
-        //Node convention to emit last data with end
-        if (arguments.length)
-            myStream.write(data);
+//     myStream.end = function (data) {
+//         //Node convention to emit last data with end
+//         if (arguments.length)
+//             myStream.write(data);
 
-        // no more writes after end
-        myStream.writable = false;
-        myStream.emit('end');
-    };
+//         // no more writes after end
+//         myStream.writable = false;
+//         myStream.emit('end');
+//     };
 
-    myStream.destroy = function () {
-        myStream.writable = false;
-    };
+//     myStream.destroy = function () {
+//         myStream.writable = false;
+//     };
 
-    return myStream;
-};
+//     return myStream;
+// };
 
-var doJob = function(){
-        doJobWithFuture().wait();
-}.future();
+// var doJob = function(){
+//         console.log("Doing job");
+//         doJobWithFuture().wait();
+// }.future();
 
-var doJobWithFuture = function(){//Fiber(function(){
-  //Check if any rule should be performed by matching occurences
-    //for every rule.
-    var future = new Future;
-    var plcHandleNames = new Array();
-    var plcValues = new Array();
-    var occurrences = Occurrences.find().fetch();
-    for (var h = occurrences.length - 1; h >= 0; h--) {
-      if(new Date(occurrences[h].datetime) < new Date()){
-        var curRule = Rules.findOne(occurrences[h].ruleId);
-        Resources.update(curRule.resourceId, {$set: {value:curRule.value}});
-        var curResource = Resources.findOne(curRule.resourceId);
-        //console.log(curResource.title + " has changed value to "+curResource.value);
-        plcHandleNames.push(curResource.plcVar);
-        plcValues.push(curResource.value);
-        Occurrences.remove(occurrences[h]._id);
-        //console.log("Occurrence "+occurrences[h]._id+" has been removed. Remaining: "+Occurrences.find().count());
-      }
-    };
-    if(plcHandleNames.length > 0){
-      //We have data to write...do it
-      future.return(sendToPlc(plcHandleNames, plcValues, 'write'));
-    }
-    //console.log('Minute check done.');
-};
+// var doJobWithFuture = function(){//Fiber(function(){
+//   //Check if any rule should be performed by matching occurences
+//     //for every rule.
+//     console.log("In job");
+//     //var future = new Future;
+//     console.log("In job2");
+//     var plcHandleNames = new Array();
+//     var plcValues = new Array();
+//     console.log("In job3");
+//     var occurrences = Occurrences.find().fetch();
+//     console.log("Going through occurrences...");
+//     for (var h = occurrences.length - 1; h >= 0; h--) {
+//       console.log(h);
+//       if(new Date(occurrences[h].datetime) < new Date()){
+//         var curRule = Rules.findOne(occurrences[h].ruleId);
+//         Resources.update(curRule.resourceId, {$set: {value:curRule.value}});
+//         var curResource = Resources.findOne(curRule.resourceId);
+//         //console.log(curResource.title + " has changed value to "+curResource.value);
+//         plcHandleNames.push(curResource.plcVar);
+//         plcValues.push(curResource.value);
+//         Occurrences.remove(occurrences[h]._id);
+//         //console.log("Occurrence "+occurrences[h]._id+" has been removed. Remaining: "+Occurrences.find().count());
+//       }
+//     };
+//     if(plcHandleNames.length > 0){
+//       //We have data to write...do it
+//       future.return(sendToPlc(plcHandleNames, plcValues, 'write'));
+//     }
+//     //console.log('Minute check done.');
+// };
 
 //var minuteJob = schedule.scheduleJob(minuteRule, function(){ //Checks if any resource value should change
 //});
 
+Meteor.setInterval(function(){
+    Meteor.call("doJob");
+    Meteor.call("collectLog");
+},2000);
+
 var oneJob = function(){
-    doJob();
-    collectLog(1);
+    //doJob();
+    //
+    //
 }
 /* var fiveJob = function(){
     collectLog(5);
@@ -161,10 +174,10 @@ var fifteenJob = function(){
 
 var weekJob = function(){
     //console.log("Weekrule");
-    calcOcc();
+    Meteor.call("calcOcc");
 }
 
-var ones = later.parse.text('every 1 minutes');
+var ones = later.parse.text('every 10 seconds');
 
 var onet = later.setInterval(oneJob, ones);
 
@@ -200,65 +213,104 @@ var weekt = later.setInterval(weekJob, weeks);
 //     collectLog(15);
 // });
 
-var collectLog = function(min){
-    doLogWithFuture(min).wait();
-}.future();
+// var collectLog = function(min){
+//     doLogWithFuture(min).wait();
+// }.future();
 
-function doLogWithFuture(min){
-    var future = new Future;
+// function doLogWithFuture(min){
+//     var future = new Future;
 
-    var plcHandleNames = new Array();
-    var plcValues = new Array();
-    //console.log(min.toString()+" minute log");
-    //Fetch all resources that have been configured to be sampled
-    if(min > 0){
-        var res = Resources.find({logInterval: min}).fetch();
-        for (var i = res.length - 1; i >= 0; i--) {
-            curResource = res[i];
-            plcHandleNames.push(curResource.plcVar);
-            plcValues.push(curResource.value);
-        };
-        if(plcHandleNames.length > 0){
-            //console.log("Logging these resources: "+plcHandleNames.toString());
-            future.return(sendToPlc(plcHandleNames, plcValues, 'read'));
-        }
-    }
+//     var plcHandleNames = new Array();
+//     var plcValues = new Array();
+//     //console.log(min.toString()+" minute log");
+//     //Fetch all resources that have been configured to be sampled
+//     if(min > 0){
+//         var res = Resources.find({logInterval: min}).fetch();
+//         for (var i = res.length - 1; i >= 0; i--) {
+//             curResource = res[i];
+//             plcHandleNames.push(curResource.plcVar);
+//             plcValues.push(curResource.value);
+//         };
+//         if(plcHandleNames.length > 0){
+//             //console.log("Logging these resources: "+plcHandleNames.toString());
+//             future.return(sendToPlc(plcHandleNames, plcValues, 'read'));
+//         }
+//     }
 
-    return future;
-}
+//     return future;
+// }
 
-var readAllPlcVar = function(){
-    readAllPlcVarWithFuture().wait();
-}.future();
+// var readAllPlcVar = function(){
+//     readAllPlcVarWithFuture().wait();
+// }.future();
 
-function readAllPlcVarWithFuture(){
-    var future = new Future;
+// function readAllPlcVarWithFuture(){
+//     var future = new Future;
 
-    var plcHandleNames = new Array();
-    var plcValues = new Array();
-    //Fetch all resources that have been configured to be sampled
-        var res = Resources.find({}).fetch();
-        for (var i = res.length - 1; i >= 0; i--) {
-            curResource = res[i];
-            plcHandleNames.push(curResource.plcVar);
-            plcValues.push(curResource.value);
-        };
-        if(plcHandleNames.length > 0){
-            future.return(sendToPlc(plcHandleNames, plcValues, 'read'));
-        }
-    return future;
-}
+//     var plcHandleNames = new Array();
+//     var plcValues = new Array();
+//     //Fetch all resources that have been configured to be sampled
+//         var res = Resources.find({}).fetch();
+//         for (var i = res.length - 1; i >= 0; i--) {
+//             curResource = res[i];
+//             plcHandleNames.push(curResource.plcVar);
+//             plcValues.push(curResource.value);
+//         };
+//         if(plcHandleNames.length > 0){
+//             future.return(sendToPlc(plcHandleNames, plcValues, 'read'));
+//         }
+//     return future;
+// }
 
-var calcOcc = function(){
-        calcOccWithFuture().wait();
-}.future();
+// var calcOcc = function(){
+//         calcOccWithFuture().wait();
+// }.future();
 
-var calcOccWithFuture = function(){//Fiber(function(){
-  //Check if any rule should be performed by matching occurences
-    //for every rule.
-    var future = new Future;
-    var schedule = Meteor.require('node-schedule');
-    var later = Meteor.require('later');
+// var calcOccWithFuture = function(){//Fiber(function(){
+//   //Check if any rule should be performed by matching occurences
+//     //for every rule.
+//     var future = new Future;
+//     //var schedule = Meteor.npmRequire('node-schedule');
+//     //var later = Meteor.npmRequire('later');
+
+//     //console.log("Starting calculation of occurrences...");
+
+//     var nextSunday = later.schedule(later.parse.text("at 12:00 on sunday")).next();
+//     //console.log("nextSunday: "+nextSunday);
+//     //console.log("Scheduling from: "+new Date().toString()+" to "+nextSunday);
+
+//     //Clear existing occurrences that are newer than now - the remaining ones will have been missed and needs
+//     //to be performed.
+
+//     var rulesArr = Rules.find().fetch();
+//     var k = 0;
+//     var m = 0;
+//     for (var i = rulesArr.length - 1; i >= 0; i--) {
+//         calculatedOccurrences = later.schedule(later.parse.text(rulesArr[i].timerule)).next(11000,new Date(), nextSunday);
+//         for (var j = calculatedOccurrences.length - 1; j >= 0; j--) {
+//           if(Occurrences.find({ruleId: rulesArr[i]._id, datetime: new Date(calculatedOccurrences[j]).getTime()}).count() === 0){
+//               Occurrences.insert({ruleId: rulesArr[i]._id, datetime: new Date(calculatedOccurrences[j]).getTime()});
+//               //console.log("Scheduled "+Rules.findOne(rulesArr[i]._id).title+" at "+new Date(calculatedOccurrences[j]).toString()+" with rule "+rulesArr[i].timerule);
+//               k++;
+//           }
+//         };
+//     }
+//     //console.log("Added "+k+" occurrences. "+Occurrences.find().count()+" in total.");
+//     //console.log('Calculating new occurrences done.');
+//     return future;
+// };
+
+//var calcOccurrencesFiberTask = Fiber(function(){
+      
+//});
+
+
+
+
+Meteor.methods({
+  calcOcc : function(){
+    //var schedule = Meteor.npmRequire('node-schedule');
+    //var later = Meteor.npmRequire('later');
 
     //console.log("Starting calculation of occurrences...");
 
@@ -284,17 +336,49 @@ var calcOccWithFuture = function(){//Fiber(function(){
     }
     //console.log("Added "+k+" occurrences. "+Occurrences.find().count()+" in total.");
     //console.log('Calculating new occurrences done.');
-    return future;
-};
-
-//var calcOccurrencesFiberTask = Fiber(function(){
-      
-//});
-
-
-
-
-Meteor.methods({
+    //return future;
+  },
+  collectLog: function(){
+    var plcHandleNames = new Array();
+    var plcValues = new Array();
+    //console.log(min.toString()+" minute log");
+    //Fetch all resources that have been configured to be sampled
+    
+    var res = Resources.find({logInterval: 1}).fetch();
+    for (var i = res.length - 1; i >= 0; i--) {
+        curResource = res[i];
+        plcHandleNames.push(curResource.plcVar);
+        plcValues.push(curResource.value);
+    };
+    if(plcHandleNames.length > 0){
+        //console.log("Logging these resources: "+plcHandleNames.toString());
+        sendToPlc(plcHandleNames, plcValues, 'read');
+    }
+  },  
+  doJob: function(){
+    //var future = new Future;
+    var plcHandleNames = new Array();
+    var plcValues = new Array();
+    var occurrences = Occurrences.find().fetch();
+    for (var h = occurrences.length - 1; h >= 0; h--) {
+      if(new Date(occurrences[h].datetime) < new Date()){
+        var curRule = Rules.findOne(occurrences[h].ruleId);
+        Resources.update(curRule.resourceId, {$set: {value:curRule.value}});
+        var curResource = Resources.findOne(curRule.resourceId);
+        //console.log(curResource.title + " has changed value to "+curResource.value);
+        plcHandleNames.push(curResource.plcVar);
+        plcValues.push(curResource.value);
+        Occurrences.remove(occurrences[h]._id);
+        //console.log("Occurrence "+occurrences[h]._id+" has been removed. Remaining: "+Occurrences.find().count());
+      }
+    };
+    if(plcHandleNames.length > 0){
+      //We have data to write...do it
+      if(!debug){
+        sendToPlc(plcHandleNames, plcValues, 'write');
+      }
+    }
+  },
   verifyTimerule: function(rule){
     console.log("Rnning verifyTimerule");
     var sched = later.parse.text(rule);
@@ -307,7 +391,7 @@ Meteor.methods({
   },
   scheduleOccurrences: function(){
     console.log("Reschedule");
-    calcOcc();
+    Meteor.call("calcOcc");
 
   },
   removeAllOccurrences: function(){
@@ -315,7 +399,22 @@ Meteor.methods({
   },
   readAllPlcVarOnStartupMethod: function(){
     //console.log("Reading all PLC resources.");
-    readAllPlcVar();
+    //readAllPlcVar();
+    //var future = new Future;
+
+    var plcHandleNames = new Array();
+    var plcValues = new Array();
+    //Fetch all resources that have been configured to be sampled
+        var res = Resources.find({}).fetch();
+        for (var i = res.length - 1; i >= 0; i--) {
+            curResource = res[i];
+            plcHandleNames.push(curResource.plcVar);
+            plcValues.push(curResource.value);
+        };
+        if(plcHandleNames.length > 0){
+            sendToPlc(plcHandleNames, plcValues, 'read');
+        }
+    //return future;
   },
   save_pv_records: function(data){
     //console.log("Got sun data!")
@@ -332,7 +431,9 @@ Meteor.methods({
             }
         }
         Resources.update({plcVar: 'MAIN.pvPower'},{$set: {value: pow, timestamp: (new Date).getTime()}});
-        sendToPlc(['MAIN.pvPower'],[pow*1000],'write');
+        if(!debug){
+            sendToPlc(['MAIN.pvPower'],[pow*1000],'write');
+        }
     }
     else{
         for(var i = 0; i < data.length; i++){
@@ -343,7 +444,9 @@ Meteor.methods({
         }
         Resources.update({plcVar: 'MAIN.pvPower'},{$set: {value: pow, timestamp: (new Date).getTime()}});
         //console.log("Writing sun data to PLC.");
-        sendToPlc(['MAIN.pvPower'],[pow*1000],'write');
+        if(!debug){
+            sendToPlc(['MAIN.pvPower'],[pow*1000],'write');
+        }
     }
   },
   save_pv_records_forced: function(data){
@@ -356,7 +459,9 @@ Meteor.methods({
         //Plotdata.insert({datetime: timestamp, value: pow, maxvalue: pow, minvalue: pow, resourceId: pvPower[0]._id}); //Todo add accurracy
     };
     Resources.update({plcVar: 'MAIN.pvPower'},{$set: {value: pow, timestamp: (new Date).getTime()}});
-    sendToPlc(['MAIN.pvPower'],[pow*1000],'write');
+    if(!debug){
+        sendToPlc(['MAIN.pvPower'],[pow*1000],'write');
+    }
   }
 });
 
@@ -366,7 +471,7 @@ Meteor.methods({
 
 /* TwinCat Ads Web Service Object for communication with PLC */
 var TcAdsWebService = new (function () {
-    var XMLHttpRequest = Meteor.require("xmlhttprequest").XMLHttpRequest;
+    //var XMLHttpRequest = Meteor.npmRequire("xmlhttprequest").XMLHttpRequest;
     this.Response = (function (hasError, error, reader, isBusy) {
 
         this.isBusy = isBusy;
@@ -523,7 +628,7 @@ var TcAdsWebService = new (function () {
 
                 return resp;
             }
-            var DOMParser = Meteor.require('xmldom').DOMParser;
+            //var DOMParser = Meteor.npmRequire('xmldom').DOMParser;
 
             var sSoapResponse = new DOMParser().parseFromString(xhr.responseText);
             var faultstringNodes = sSoapResponse.getElementsByTagName('faultstring');
@@ -596,9 +701,10 @@ var TcAdsWebService = new (function () {
                 if (xhr.status == 200) {
 
                     var errorMessage = undefined, errorCode = 0;
-                    var DOMParser = Meteor.require('xmldom').DOMParser;
+                    //var DOMParser = Meteor.npmRequire('xmldom').DOMParser;
 
                     fixResponse = xhr.responseText.replace(" >",">"); //Bug detected in Beckhoff SOAP-serialization, might affect actual data if it contains " >".
+
                     var sSoapResponse = new DOMParser().parseFromString(fixResponse, "application/xml");
 
                     // console.log("Status: "+xhr.status+" Response: "+sSoapResponse);
@@ -690,10 +796,214 @@ var TcAdsWebService = new (function () {
             }
         }
 
+        var handleAsyncResponseNonXhr = function (response, pCallback, userState) {
+            //console.log("Handle async response NonXHR...");
+            //console.log("xhr.readystate: "+xhr.readyState);
+            
+            if (response.statusCode == 200) {
+
+                var errorMessage = undefined, errorCode = 0;
+                //var DOMParser = Meteor.npmRequire('xmldom').DOMParser;
+
+                var fixResponse = response.content.replace(" >",">"); //Bug detected in Beckhoff SOAP-serialization, might affect actual data if it contains " >".
+
+                xml2js.parseString(fixResponse, function (err, result) {
+                    var sSoapResonse = result["SOAP-ENV:Envelope"]["SOAP-ENV:Body"][0]["ns1:ReadWriteResponse"][0];
+
+                    var ppDataNodes = result["SOAP-ENV:Envelope"]["SOAP-ENV:Body"][0]["ns1:ReadWriteResponse"][0]["ppData"];
+                    //var ppDataNodes = sSoapResponse.getElementsByTagName('ppData');
+                    var ppRdDataNodes = result["SOAP-ENV:Envelope"]["SOAP-ENV:Body"][0]["ns1:ReadWriteResponse"][0]["ppRdData"];
+                    //var ppRdDataNodes = sSoapResponse.getElementsByTagName('ppRdData');
+                    var pAdsStateNodes = result["SOAP-ENV:Envelope"]["SOAP-ENV:Body"][0]["ns1:ReadWriteResponse"][0]["pAdsState"];
+                    //var pAdsStateNodes = sSoapResponse.getElementsByTagName('pAdsState');
+                    var pDeviceStateNodes = result["SOAP-ENV:Envelope"]["SOAP-ENV:Body"][0]["ns1:ReadWriteResponse"][0]["pDeviceState"];
+                    //var pDeviceStateNodes = sSoapResponse.getElementsByTagName('pDeviceState');
+                    // console.log("Tags read...");
+
+                    var soapData = undefined;
+                    if (ppDataNodes !== undefined && ppDataNodes.length != 0) {
+                        //read
+                        //soapData = ppDataNodesfirstChild.data;
+                        //TODO
+                        console.log("ppDataNodes NOT IMPLEMENTED YET");
+                    } else if (ppRdDataNodes !== undefined && ppRdDataNodes.length != 0) {
+                        // readwrite
+                        //soapData = ppRdDataNodes[0].firstChild.data;
+                        soapData = ppRdDataNodes[0];
+                    } else if (pAdsStateNodes !== undefined && pDeviceStateNodes !== undefined && pAdsStateNodes.length != 0 && pDeviceStateNodes.length) {
+                        // readState
+                        console.log("ppAdsState NOT IMPLEMENTED YET");
+                        // var adsState = pAdsStateNodes[0].firstChild.data;
+                        // var deviceState = pDeviceStateNodes[0].firstChild.data;
+
+                        // var writer = new TcAdsWebService.DataWriter();
+                        // writer.writeWORD(parseInt(adsState, 10));
+                        // writer.writeWORD(parseInt(deviceState, 10));
+
+                        // soapData = writer.getBase64EncodedData();
+                    }
+
+                    /*
+
+                    var soapData = undefined;
+                    if (ppDataNodes.length != 0) {
+                        //read
+                        soapData = ppDataNodesfirstChild.data;
+                    } else if (ppRdDataNodes.length != 0) {
+                        // readwrite
+                        soapData = ppRdDataNodes[0].firstChild.data;
+                    } else if (pAdsStateNodes.length != 0 && pDeviceStateNodes.length) {
+                        // readState
+                        var adsState = pAdsStateNodes[0].firstChild.data;
+                        var deviceState = pDeviceStateNodes[0].firstChild.data;
+
+                        var writer = new TcAdsWebService.DataWriter();
+                        writer.writeWORD(parseInt(adsState, 10));
+                        writer.writeWORD(parseInt(deviceState, 10));
+
+                        soapData = writer.getBase64EncodedData();
+                    }*/
+
+                    // console.log("Base64 encoded soapData: "+soapData);
+                    if (soapData) {
+                        //console.log("Got soap data!");
+                        if (pCallback) {
+                            var resp = new TcAdsWebService.Response(
+                                        false, undefined, new TcAdsWebService.DataReader(soapData), false);
+                            if (pCallback)
+                                pCallback(resp, userState);
+                        }
+                    } else {
+
+                        // write completes without data in response
+                        if (pCallback) {
+                            var resp = new TcAdsWebService.Response(false, undefined, undefined, false);
+                            pCallback(resp, userState);
+                        }
+                    }
+
+
+                    //console.log(result["SOAP-ENV:Envelope"]["SOAP-ENV:Body"][0]["ns1:ReadWriteResponse"][0]);
+                    //console.log(result);
+                });
+                /*
+                var sSoapResponse = new DOMParser().parseFromString(fixResponse, "application/xml");
+
+                // console.log("Status: "+xhr.status+" Response: "+sSoapResponse);
+                var faultstringNodes = sSoapResponse.getElementsByTagName('faultstring');
+                
+                if (faultstringNodes.length != 0) {
+
+                    errorMessage = faultstringNodes[0].firstChild.data;
+                    var errorCodeNodes = sSoapResponse.getElementsByTagName('errorcode');
+
+                    if (errorCodeNodes.length != 0) {
+                        errorCode = sSoapResponse.getElementsByTagName('errorcode')[0].firstChild.data;
+                    } else {
+                        errorCode = "-";
+                    }
+
+                    if (pCallback) {
+                        var resp = new TcAdsWebService.Response(
+                                    true, new TcAdsWebService.Error(errorMessage, errorCode), undefined, false);
+                        pCallback(resp, userState);
+                    }
+
+                } else {
+
+                    var ppDataNodes = sSoapResponse.getElementsByTagName('ppData');
+                    // console.log("ppDataNodes: "+ppDataNodes);
+                    var ppRdDataNodes = sSoapResponse.getElementsByTagName('ppRdData');
+                    var pAdsStateNodes = sSoapResponse.getElementsByTagName('pAdsState');
+                    var pDeviceStateNodes = sSoapResponse.getElementsByTagName('pDeviceState');
+                    // console.log("Tags read...");
+                    var soapData = undefined;
+                    if (ppDataNodes.length != 0) {
+                        //read
+                        soapData = ppDataNodesfirstChild.data;
+                    } else if (ppRdDataNodes.length != 0) {
+                        // readwrite
+                        soapData = ppRdDataNodes[0].firstChild.data;
+                    } else if (pAdsStateNodes.length != 0 && pDeviceStateNodes.length) {
+                        // readState
+                        var adsState = pAdsStateNodes[0].firstChild.data;
+                        var deviceState = pDeviceStateNodes[0].firstChild.data;
+
+                        var writer = new TcAdsWebService.DataWriter();
+                        writer.writeWORD(parseInt(adsState, 10));
+                        writer.writeWORD(parseInt(deviceState, 10));
+
+                        soapData = writer.getBase64EncodedData();
+                    }
+                    // console.log("Base64 encoded soapData: "+soapData);
+
+
+                    if (soapData) {
+                        if (pCallback) {
+                            var resp = new TcAdsWebService.Response(
+                                        false, undefined, new TcAdsWebService.DataReader(soapData), false);
+                            if (pCallback)
+                                pCallback(resp, userState);
+                        }
+                    } else {
+
+                        // write completes without data in response
+                        if (pCallback) {
+                            var resp = new TcAdsWebService.Response(false, undefined, undefined, false);
+                            pCallback(resp, userState);
+                        }
+                    }
+
+
+                }*/
+
+            } else {
+                // Request has been aborted.
+                //  Maybe because of timeout.
+                // console.log("Request aborted...xhr.status: "+xhr.status);
+                if (pCallback) {
+
+                    var resp = undefined;
+                    try {
+                        resp = new TcAdsWebService.Response(
+                    true, new TcAdsWebService.ResquestError(response.statusCode, response.content), undefined, false);
+                    } catch (err) {
+                        // Internet Explorer throws exception on abort
+                        resp = new TcAdsWebService.Response(
+                    true, new TcAdsWebService.ResquestError(0, 0), undefined, false);
+                    }
+                    pCallback(resp, userState);
+                }
+            }
+        }
+
         var sendMessage = function (message, method, pCallback, userState, ajaxTimeout, ajaxTimeoutCallback, async) {
-            // console.log("Sending message...");
+            //console.log("Sending message...");
             if (async == null || async == undefined)
                 async = true;
+
+            var options = {
+                headers: {"Content-Type": "text/xml; charset=utf-8"},
+                content: message,
+                timeout: ajaxTimeout
+            }
+
+            //console.log("SENDING!");
+            HTTP.call("POST", sServiceUrl, options,function(error,response){
+                if(response && !error){
+                    var data = response.data; //json-content
+                    var headers = response.headers;
+                    var statusCode = response.statusCode;
+                    var content = response.content;//other content
+                    handleAsyncResponseNonXhr(response,pCallback, userState);
+                }
+                else{
+                    if(error.code == 'ETIMEDOUT'){
+                        ajaxTimeoutCallback();
+                    }
+                }
+            });            
+            /*
 
             var xhr = undefined;
             xhr = new XMLHttpRequest();
@@ -739,7 +1049,9 @@ var TcAdsWebService = new (function () {
                 // console.log("Returning null since response handler is async.");
                 return null;
             }
+            */
         }
+        
     });
 
     this.DataReader = (function (data) {
@@ -1340,7 +1652,7 @@ function sendToPlc(handlesVarNames, values, method){
             //var SERVICE_URL = "http://192.168.1.100/TcAdsWebService/TcAdsWebService.dll";
 	    //var SERVICE_URL = "http://192.168.1.100/TcAdsWebService/TcAdsWebService.dll";
             var client = new TcAdsWebService.Client(SERVICE_URL, null, null);
-            var general_timeout = 500;
+            var general_timeout = 5000;
             var readLoopID = null;
             var readLoopDelay = 500;
             var readSymbolValuesData = null;
@@ -1390,6 +1702,7 @@ function sendToPlc(handlesVarNames, values, method){
                     }
                     for(var i = 0 ; i < handlesVarNames.length; i++){
                       var varValue = reader.readLREAL();
+                      //console.log(handlesVarNames[i]," ",varValue);
                       //DO SOMETHING WITH THE READ VALUES -> STORE TO DATABASE FOR EXAMPLE
                       //console.log("Read PLC-variable: "+handlesVarNames[i]+"="+varValue);
                       var resId = Resources.find({plcVar: handlesVarNames[i]},{fields:{_id: 1}}).fetch()[0]._id;

@@ -5,7 +5,7 @@ Template.ruleSubmit.helpers({
     if(digId){
       var firstResource = Resources.findOne({typeId: digId._id});
       if(firstResource){
-        Session.set("selectedResource", firstResource._id);
+        //Session.set("selectedResource", firstResource._id);
         //TODO If Types.find return more than one object there will be problems, that will happen if two Signal types are created with the same name.
         return Resources.find({typeId: digId._id},{fields: {title: 1}});
       }
@@ -85,6 +85,10 @@ Template.ruleSubmit.helpers({
   getVal : function() {
 	return (Session.get("checkboxVal") == 0 ? "Off" : "On");
     //return ($('input[name=Value]').prop("checked") ? "On" : "Off");
+  },
+  selRes : function(){
+    console.log("WARNING - Session value changed: "+Session.get("selectedResource"));
+    return Session.get("selectedResource");
   }
 });
 
@@ -93,6 +97,7 @@ Template.ruleSubmit.events({
   'submit form': function(e) {
     e.preventDefault();
     var selRes = Session.get("selectedResource");
+    console.log("Submitting: ",selRes);
     var val;
     switch(Types.findOne(Resources.findOne(selRes).typeId).title){
       case "Analog":
@@ -124,7 +129,8 @@ Template.ruleSubmit.events({
   },
   "change #resource_select": function(evt) {
     var resourceId = $(evt.target).val(); //The resource ID is stored in the value property in every option.
-    Session.set("selectedResource", resourceId)
+    console.log("CHANGED!",resourceId);
+    Session.set("selectedResource", resourceId);
   },
   "change #valrange": function(evt){
     var val = $(evt.target).val();

@@ -38,7 +38,6 @@ Template.ruleItem.events({
         Occurrences.remove(arrOcc[i]._id);
       }
       console.log("Removed "+numOcc+" occurrences.");
-
       Rules.remove(this._id);
   },
   'mouseenter #delete-btn' : function(evt){

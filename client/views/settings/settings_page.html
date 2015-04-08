@@ -1,19 +1,25 @@
 <template name="settingsPage">
+<div class="content">
     <div class="panel panel-default">
       <!-- Default panel contents -->
-      <div class="panel-heading">PLC</div>
+      <div class="panel-heading">
+        <div class="panel-title">PLC</div>
+      </div>
 
       <!-- Table -->
-      <table class="table">
-        <tr>
-        <td>IP Address: {{plcIpAddress}}</td>
-        </tr>
-        <tr>
-        <td>Current time: {{plcTime}}</td>
-        </tr>
-        <tr>
-        <td>Scheduled occurrences: {{getNofOccurrences}}</td>
-        </tr>        
-      </table>
+      <div class="panel-body">
+        <table class="table">
+          <tr>
+          <td>IP Address: {{plcIpAddress}}</td>
+          </tr>
+          <tr>
+          <td>Current time: {{plcTime}}</td>
+          </tr>
+          <tr>
+          <td>Scheduled occurrences: {{getNofOccurrences}}</td>
+          </tr>        
+        </table>
+      </div>
     </div>
+  </div>
 </template>

@@ -4,11 +4,5 @@
       {{> scenarioItem}}
     {{/each}}
   </div>
-	<form>
-	  <div class="control-group">
-		    <div class="controls">
-		        <input type="submit" value="+ Add scenario" class="btn btn-primary"/>
-		    </div>
-		</div>
-	</form>
+	<a href="{{pathFor 'scenarioSubmit'}}" class="btn btn-primary">+ Add scenario</a>
 </template>

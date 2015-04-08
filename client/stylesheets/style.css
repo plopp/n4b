@@ -59,7 +59,6 @@ input {
     border-radius: 3px;
     padding: 18px;
     margin-bottom: 10px;
-    /*box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);*/
 }
 
 .panel .scenario {
@@ -182,8 +181,6 @@ body {
     text-decoration: none;
     background: rgba(0, 0, 0, 0.1);
 }
-
-/* CSS declarations go here */
 body {
   overflow-y:scroll;
 }
@@ -200,18 +197,4 @@ svg {
   height: 500px;
   min-width: 100px;
   min-height: 100px;
-/*
-  margin: 50px;
-  Minimum height and width is a good idea to prevent negative SVG dimensions...
-  For example width should be =< margin.left + margin.right + 1,
-  of course 1 pixel for the entire chart would not be very useful, BUT should not have errors
-*/
 }
-
-/*!
- * Bootstrap v3.0.1 by @fat and @mdo
- * Copyright 2013 Twitter, Inc.
- * Licensed under http://www.apache.org/licenses/LICENSE-2.0
- *
- * Designed and built with all the love in the world by @mdo and @fat.
- */

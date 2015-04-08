@@ -5,4 +5,8 @@ Template.scenarioPage.helpers({
 });
 
 Template.scenarioPage.events({
+	'click #submit':function(){
+		console.log(Session.get('currentScenarioId'));
+		Router.go('ruleSubmit',{_id:Session.get('currentScenarioId')});
+	}
 });

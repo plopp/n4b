@@ -2,23 +2,15 @@
     <div class="panel panel-default">
       <!-- Default panel contents -->
       <div class="panel-heading">Adding scenarios</div>
-
-      <!-- Table -->
-      <table class="table">
-        <tr>
-        <td>A scenario represents an event in the house. It could for example be the family coming home, a family member taking a shower, or the family going to bed. Multiple scenarios can be created. To create a scenario press <a class="" href="{{scenariosListPath}}"><span class="glyphicon glyphicon-play"></span> Scenarios</a> and then press "+ Add rule" and continue reading below.</td>
-        </tr>
-      </table>
+        <div class="panel-body">
+          A scenario represents an event in the house. It could for example be the family coming home, a family member taking a shower, or the family going to bed. Multiple scenarios can be created. To create a scenario press <a class="" href="{{pathFor 'scenariosList'}}"><span class="glyphicon glyphicon-play"></span> Scenarios</a> and then press "+ Add scenario". Name the new   scenario and press "Submit". You will be redirected to your new scenario. Then you can continue by adding rules to your new scenario. Do this py pressing "+Add rule". Continue reading below for further instructions on adding rules.
+        </div>
     </div>
     <div class="panel panel-default">
       <!-- Default panel contents -->
       <div class="panel-heading">Adding rules</div>
-
-      <!-- Table -->
-      <table class="table">
-        <tr>
-        <td>Rules make up a scenario and an individual rule changes value of a resource in the house. A rule is created for example to turn on an outlet, and another to turn it off. To create a rule, create a new scenario or chose an existing one, and then press "+ Add rule". When a rule is created, a resource is to be selected, its value chosen and a timerule defined to tell the system when this rule should apply. A timerule spawns recurring occurrences stating when the rule should take effect. To create a rule, for example assign the timerule a value such as "every 2 hours starting at the 1st hour" to create a rule which takes effect at 13:00, 15:00, 17:00 etc.</td>
-        </tr>
-      </table>
+        <div class="panel-body">
+          Rules make up a scenario and an individual rule changes value of a resource in the house. A rule is created for example to turn on an outlet, and another to turn it off. To create a rule, create a new scenario or chose an existing one, and then press "+ Add rule". When a rule is created, a resource is to be selected, its value chosen and a timerule defined to tell the system when this rule should apply. A timerule spawns recurring occurrences stating when the rule should take effect. To create a rule, for example assign the timerule a value such as "every 2 hours starting at the 1st hour" to create a rule which takes effect at 13:00, 15:00, 17:00 etc.
+        </div>
     </div>
 </template>

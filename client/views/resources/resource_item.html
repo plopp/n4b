@@ -4,12 +4,12 @@
 			<td><span class="label {{#if isZeroAndDigital}}label-danger{{else}}label-success{{/if}}">{{getNiceValue}} {{#if hasUnit}}{{unit}}{{/if}}</span></td>
 			<td>{{getTimestamp}}</td>
 			<td>
-				<a href="{{pathFor 'graphItem'}}" class="btn" id="view-graph"><span class="glyphicon glyphicon-signal"></span></a>
+				<a href="{{pathFor 'graphItem'}}" class="btn btn-default" id="view-graph"><span class="glyphicon glyphicon-signal"></span></a>
 				{{#if hasRules}}
-				<a href="" class="btn" id="view-rules"><span class="glyphicon glyphicon-align-justify"></span></a>
+				<a href="" class="" id="view-rules"><span class="glyphicon glyphicon-align-justify"></span></a>
 				{{/if}}		
-				<a href="{{pathFor 'resourceEdit'}}" id="edit-btn-resource" class="discuss btn edit-resource"><span class="glyphicon glyphicon-pencil"></span></a>		
-				<a href="" class="btn delete delete-resource"><span class="glyphicon glyphicon-trash"></span></a>
+				<a href="{{pathFor 'resourceEdit'}}" id="edit-btn-resource" class="discuss btn btn-default edit-resource"><span class="glyphicon glyphicon-pencil"></span></a>		
+				<a href="" class="btn btn-danger delete delete-resource"><span class="glyphicon glyphicon-trash"></span></a>
 			</td>
 			<td>
 			<div id="showRulesDiv-{{_id}}" hidden>

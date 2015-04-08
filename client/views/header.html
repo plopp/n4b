@@ -1,22 +1,26 @@
 <template name="header">
-  <header class="navbar">
-    <div class="navbar-inner">
-    	<ul class="nav">
-    		<li><a class="navbar-brand" href="{{pathFor 'dashboardPage'}}"><span class="glyphicon glyphicon-home"></span> NEED4B</a></li>
-    		<li class="divider-vertical"></li>
-    		<li><a class="" href="{{pathFor 'scenariosList'}}"><span class="glyphicon glyphicon-play"></span> Scenarios</a></li>
-    		<li class="divider-vertical"></li>
-            <li><a class="" href="{{pathFor 'cardsPage'}}"><span class="glyphicon glyphicon-signal"></span> Data</a></li>
+  <nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+        	<ul class="nav navbar-nav navbar-right">
+        		<li><a class="navbar-brand" href="{{pathFor 'dashboardPage'}}"><span class="glyphicon glyphicon-home"></span> NEED4B</a></li>
+        	</ul>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
             <li class="divider-vertical"></li>
-    		<li><a class="" href="{{pathFor 'resourcePage'}}"><span class="glyphicon glyphicon-resize-horizontal"></span> Resources</a></li>
-    		<li class="divider-vertical"></li>
-    		<li><a class="" href="{{pathFor 'settingsPage'}}"><span class="glyphicon glyphicon-wrench"></span> Settings</a></li>
-    		<li class="divider-vertical"></li>
-    		<li><a class="" href="{{pathFor 'documentationPage'}}"><span class="glyphicon glyphicon-book"></span> Docs</a></li>
-    		<li class="divider-vertical"></li>
-    		<li><a class="" href="{{pathFor 'logsPage'}}"><span class="glyphicon glyphicon-list-alt"></span> Logs</a></li>
-    		<li class="divider-vertical"></li>
-    	</ul>
+                <li><a class="" href="{{pathFor 'scenariosList'}}"><span class="glyphicon glyphicon-play"></span> Scenarios</a></li>
+                <li class="divider-vertical"></li>
+                <li><a class="" href="{{pathFor 'cardsPage'}}"><span class="glyphicon glyphicon-signal"></span> Data</a></li>
+                <li class="divider-vertical"></li>
+                <li><a class="" href="{{pathFor 'resourcePage'}}"><span class="glyphicon glyphicon-resize-horizontal"></span> Resources</a></li>
+                <li class="divider-vertical"></li>
+                <li><a class="" href="{{pathFor 'settingsPage'}}"><span class="glyphicon glyphicon-wrench"></span> Settings</a></li>
+                <li class="divider-vertical"></li>
+                <li><a class="" href="{{pathFor 'documentationPage'}}"><span class="glyphicon glyphicon-book"></span> Docs</a></li>
+                <li class="divider-vertical"></li>
+                <!--<li><a class="" href="{{pathFor 'logsPage'}}"><span class="glyphicon glyphicon-list-alt"></span> Logs</a></li>
+                <li class="divider-vertical"></li>-->
+        </ul>
     </div>
-  </header>
+  </nav>
 </template>
