@@ -381,7 +381,6 @@ Meteor.methods({
     }
   },
   verifyTimerule: function(rule){
-    console.log("Rnning verifyTimerule");
     var sched = later.parse.text(rule);
     var occurrence = later.schedule(sched).next(1);
 
@@ -391,7 +390,6 @@ Meteor.methods({
     }
   },
   scheduleOccurrences: function(){
-    console.log("Reschedule");
     Meteor.call("calcOcc");
 
   },
