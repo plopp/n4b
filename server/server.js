@@ -364,11 +364,13 @@ Meteor.methods({
     for (var h = occurrences.length - 1; h >= 0; h--) {
       if(new Date(occurrences[h].datetime) < new Date()){
         var curRule = Rules.findOne(occurrences[h].ruleId);
-        Resources.update(curRule.resourceId, {$set: {value:curRule.value}});
-        var curResource = Resources.findOne(curRule.resourceId);
-        //console.log(curResource.title + " has changed value to "+curResource.value);
-        plcHandleNames.push(curResource.plcVar);
-        plcValues.push(curResource.value);
+        if(curRule !== undefined){
+	        Resources.update(curRule.resourceId, {$set: {value:curRule.value}});
+	        var curResource = Resources.findOne(curRule.resourceId);
+	        //console.log(curResource.title + " has changed value to "+curResource.value);
+	        plcHandleNames.push(curResource.plcVar);
+        	plcValues.push(curResource.value);
+        }
         Occurrences.remove(occurrences[h]._id);
         //console.log("Occurrence "+occurrences[h]._id+" has been removed. Remaining: "+Occurrences.find().count());
       }

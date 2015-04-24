@@ -14,12 +14,15 @@ Template.scenarioItem.helpers({
 Template.scenarioItem.events({
   'click #delete-btn-scenario' : function(evt){
       //Delete occurrences
+      evt.preventDefault();
       var rulesVector = Rules.find({scenId:this._id});
       var rulesArr = rulesVector.fetch();
-      for(var i = 0; i<rulesVector.count(); i++){
+      var rulesCount = rulesVector.count();
+      for(var i = 0; i<rulesCount; i++){
         var occVector = Occurrences.find({ruleId:rulesArr[i]._id});
         var occArr = occVector.fetch();
-        for(var j = 0; j<occVector.count(); j++){
+        var occCount = occVector.count();
+        for(var j = 0; j<occCount; j++){
           Occurrences.remove(occArr[j]._id);
         }
         Rules.remove(rulesArr[i]._id);
