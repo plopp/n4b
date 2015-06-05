@@ -1,0 +1,61 @@
+<template name="lineDiagramPage">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Panel header</h3>
+    </div>
+    <div id="svgcontainer" class="panel-body" style="width:1000px;height:1200px;position:relative;top:0px;left:0px;z-index:1">
+    <object width="1000" height="1200" data="/img/Principscheman.svg" type="image/svg+xml" style="width:1000px;height:1200px;position:relative;top:0px;left:0px;z-index:1">
+      Bild
+    </object>
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="1200" style="position:absolute;top:0px;left:0px;z-index:1">
+        <!-- <image x="0" y="0" width="800" height="600" xlink:href="/img/Principscheman.svg" /> -->
+        <!-- <object width="800" height="600" data="/img/Principscheman.svg" type="image/svg+xml">
+          Bild
+        </object> -->
+        <!-- <object data="/img/Principscheman.svg" type="image/svg+xml"></object> -->
+        <text x="335" y="237">{{getValue 'GVL.vmmvs_rettemp'}}</text>
+        <text x="385" y="196">{{getValue 'GVL.vmmvs_fwdtemp'}}</text>
+        
+        <text x="458" y="125">{{getValue 'GVL.vmmvent_fwdtemp'}}</text>
+        <text x="502" y="185">{{getValue 'GVL.vmmvent_rettemp'}}</text>
+
+        <text x="645" y="125">{{getValue 'GVL.vmmgolvpl2_fwdtemp'}}</text>
+        <text x="690" y="185">{{getValue 'GVL.vmmgolvpl2_rettemp'}}</text>
+
+        <text x="833" y="125">{{getValue 'GVL.vmmradpl2_fwdtemp'}}</text>
+        <text x="880" y="187">{{getValue 'GVL.vmmradpl2_rettemp'}}</text>
+
+        <text x="518" y="315">{{getValue 'GVL.vmmgolvpl1_fwdtemp'}}</text>
+        <text x="561" y="374">{{getValue 'GVL.vmmgolvpl1_rettemp'}}</text>
+
+        <text x="706" y="315">{{getValue 'GVL.vmmradpl1_fwdtemp'}}</text>
+        <text x="751" y="374">{{getValue 'GVL.vmmradpl1_rettemp'}}</text>
+
+        <text x="507" y="518">{{getValue 'GVL.vmmGolvVindfang_fwdtemp'}}</text>
+        <text x="457" y="560">{{getValue 'GVL.vmmGolvVindfang_rettemp'}}</text>
+
+        <text x="739" y="518">{{getValue 'GVL.vmmGolvUterum_fwdtemp'}}</text>
+        <text x="689" y="560">{{getValue 'GVL.vmmGolvUterum_rettemp'}}</text>
+
+        <text x="231" y="315">{{getFlow 'GVL.vmKv_flow'}}</text>
+        <text x="137" y="502">{{getFlow 'GVL.vmmKb_flow'}}</text>
+
+        <text x="154" y="695">{{getFlow 'GVL.tapp20_flow'}}</text>
+        <text x="263" y="695">{{getFlow 'GVL.tapp21_flow'}}</text>
+        <text x="364" y="695">{{getFlow 'GVL.tapp22_flow'}}</text>
+        <text x="483" y="695">{{getFlow 'GVL.tapp23_flow'}}</text>
+        <text x="605" y="695">{{getFlow 'GVL.tapp24_flow'}}</text>
+        <text x="715" y="695">{{getFlow 'GVL.tapp25_flow'}}</text>
+        <text x="154" y="840">{{getFlow 'GVL.tapp26_flow'}}</text>
+        <text x="263" y="840">{{getFlow 'GVL.tapp27_flow'}}</text>
+        <text x="364" y="840">{{getFlow 'GVL.tapp28_flow'}}</text>
+        <text x="483" y="840">{{getFlow 'GVL.tapp29_flow'}}</text>
+        <text x="605" y="840">{{getFlow 'GVL.tapp30_flow'}}</text>
+        <text x="715" y="840">{{getFlow 'GVL.tapp31_flow'}}</text>
+        <!--<text x="154" y="840">{{getFlow 'GVL.tapp32_flow'}}</text>-->
+
+      </svg>
+    </div>
+    <div class="panel-footer">Panel footer</div>
+  </div>
+</template>
