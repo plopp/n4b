@@ -13,7 +13,7 @@ Template.lineDiagramPage.helpers({
 		//return plcvar;
       	var ret = Resources.findOne({plcVar: plcvar});
       	if(ret !== undefined){
-      		return ret.value+ " m³";
+      		return sprintf("%.2f m³/h",ret.value);
       	}
       	else{
       		return "N/A";
