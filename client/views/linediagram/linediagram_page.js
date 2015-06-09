@@ -3,10 +3,10 @@ Template.lineDiagramPage.helpers({
 		//return plcvar;
       	var ret = Resources.findOne({plcVar: plcvar});
       	if(ret !== undefined){
-      		return ret.value+ " °";
+      		return sprintf("%.1f °",ret.value);;
       	}
       	else{
-      		return "N/A";
+      		return "N/A °";
       	}
   	},
   	getFlow : function(plcvar){
@@ -16,7 +16,7 @@ Template.lineDiagramPage.helpers({
       		return sprintf("%.2f m³/h",ret.value);
       	}
       	else{
-      		return "N/A";
+      		return "N/A  m³/h";
       	}
   	}
 });
