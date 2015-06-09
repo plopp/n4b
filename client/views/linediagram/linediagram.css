@@ -1,0 +1,11 @@
+.hot {
+	fill: rgba(240,0,0,1.0);
+}
+
+.cold {
+	fill: rgba(84,139,212,1.0);
+}
+
+.sensor {
+	fill: rgba(40,40,40,0.5);
+}
