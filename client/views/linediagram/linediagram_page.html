@@ -1,83 +1,33 @@
 <template name="lineDiagramPage">
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">Panel header</h3>
+      <h3 class="panel-title">Line diagram</h3>
     </div>
-    <div id="svgcontainer" class="panel-body" style="width:100%;height:960px;position:relative;top:0px;left:0px;z-index:1">
-    <object width="1000" height="1200" data="/img/Principschema_utext.svg" type="image/svg+xml" style="width:1700px;height:2040px;position:relative;top:-574px;left:-399px;z-index:1">
+    <!-- {{#with getFifo 'GVL.totalPowerFromAbbMeter'}}
+        {{> sparkline csv=this}}
+    {{/with}} -->
+
+    <div id="svgcontainer" class="panel-body" style="width:100%;height:960px;position:relative;top:0px;left:0px;z-index:1;overflow:hidden">
+    <object width="1000" height="600" data="/img/Principschema_utext.svg" type="image/svg+xml" style="width:1700px;height:2040px;position:relative;top:-574px;left:-399px;z-index:1">
       Bild
     </object>
       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="1200" style="position:absolute;top:0px;left:0px;z-index:1">
+        <defs>
+            <linearGradient id="grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style="stop-color:rgb(255,255,255);stop-opacity:1" />
+                <stop offset="47%" style="stop-color:rgb(246,246,246);stop-opacity:1" />
+                <stop offset="100%" style="stop-color:rgb(238,238,238);stop-opacity:1" />
+            </linearGradient>
+        </defs>
         <!-- <image x="0" y="0" width="800" height="600" xlink:href="/img/Principscheman.svg" /> -->
         <!-- <object width="800" height="600" data="/img/Principscheman.svg" type="image/svg+xml">
           Bild
         </object> -->
         <!-- <object data="/img/Principscheman.svg" type="image/svg+xml"></object> -->
-        <text x="385" y="196">{{getValue 'GVL.vmmvs_fwdtemp'}}</text>
-        <text x="314" y="269">{{getValue 'GVL.vmmvs_rettemp'}}</text>
-        <text x="338" y="235">{{getFlow 'GVL.vmmvs_flow'}}</text>
-        
-        <text x="490" y="139">{{getValue 'GVL.vmmvent_fwdtemp'}}</text>
-        <text x="539" y="199">{{getValue 'GVL.vmmvent_rettemp'}}</text>
-        <text x="540" y="164">{{getFlow 'GVL.vmmvent_flow'}}</text>
-
-        <text x="679" y="139">{{getValue 'GVL.vmmgolvpl2_fwdtemp'}}</text>
-        <text x="727" y="199">{{getValue 'GVL.vmmgolvpl2_rettemp'}}</text>
-        <text x="728" y="164">{{getFlow 'GVL.vmmgolvpl2_flow'}}</text>
-
-        <text x="865" y="142">{{getValue 'GVL.vmmradpl2_fwdtemp'}}</text>
-        <text x="915" y="203">{{getValue 'GVL.vmmradpl2_rettemp'}}</text>
-        <text x="915" y="169">{{getFlow 'GVL.vmmradpl2_flow'}}</text>
-
-        <text x="550" y="329">{{getValue 'GVL.vmmgolvpl1_fwdtemp'}}</text>
-        <text x="600" y="388">{{getValue 'GVL.vmmgolvpl1_rettemp'}}</text>
-        <text x="600" y="354">{{getFlow 'GVL.vmmgolvpl1_flow'}}</text>
-
-        <text x="738" y="329">{{getValue 'GVL.vmmradpl1_fwdtemp'}}</text>
-        <text x="787" y="388">{{getValue 'GVL.vmmradpl1_rettemp'}}</text>
-        <text x="787" y="354">{{getFlow 'GVL.vmmradpl1_flow'}}</text>
-
-        <text x="507" y="518">{{getValue 'GVL.vmmGolvVindfang_fwdtemp'}}</text>
-        <text x="437" y="593">{{getValue 'GVL.vmmGolvVindfang_rettemp'}}</text>
-        <text x="460" y="560">{{getFlow 'GVL.vmmGolvVindfang_flow'}}</text>
-
-        <text x="739" y="518">{{getValue 'GVL.vmmGolvUterum_fwdtemp'}}</text>
-        <text x="669" y="593">{{getValue 'GVL.vmmGolvUterum_rettemp'}}</text>
-        <text x="693" y="560">{{getFlow 'GVL.vmmGolvUterum_flow'}}</text>
-
-        <text x="360" y="315">{{getFlow 'GVL.vmKv_flow'}}</text>
-        <text x="230" y="315">{{getFlow 'GVL.tapp32_flow'}}</text>#vmKvvv
-        <text x="112" y="502">{{getFlow 'GVL.vmmkb_flow'}}</text>
-
-        <text x="135" y="695">{{getFlow 'GVL.tapp20_flow'}}</text>
-        <text x="263" y="695">{{getFlow 'GVL.tapp21_flow'}}</text>
-        <text x="355" y="695">{{getFlow 'GVL.tapp22_flow'}}</text>
-        <text x="483" y="695">{{getFlow 'GVL.tapp23_flow'}}</text>
-        <text x="580" y="695">{{getFlow 'GVL.tapp24_flow'}}</text>
-        <text x="715" y="695">{{getFlow 'GVL.tapp25_flow'}}</text>
-        <text x="130" y="840">{{getFlow 'GVL.tapp26_flow'}}</text>
-        <text x="263" y="840">{{getFlow 'GVL.tapp27_flow'}}</text>
-        <text x="345" y="840">{{getFlow 'GVL.tapp28_flow'}}</text>
-        <text x="473" y="840">{{getFlow 'GVL.tapp29_flow'}}</text>
-        <text x="580" y="840">{{getFlow 'GVL.tapp30_flow'}}</text>
-        <text x="705" y="840">{{getFlow 'GVL.tapp31_flow'}}</text>
-
-        <text x="326" y="118" class="sensor">vmmVs</text>
-        <text x="415" y="82" class="sensor">vmmVent</text>
-        <text x="254" y="420" class="sensor">vmmKb</text>
-        <text x="328" y="295" class="sensor">vmKv</text>
-        <text x="213" y="300" class="sensor">vmKvVv (tapp32)</text>
-        <text x="100" y="340" class="sensor">Heatpump</text>
-        <text x="780" y="82" class="sensor">vmmRadPl2</text>
-        <text x="464" y="270" class="sensor">vmmGolvPl1</text>
-        <text x="593" y="82" class="sensor">vmmGolvPl2</text>
-        <text x="651" y="270" class="sensor">vmmRadPl1</text>
-        <text x="417" y="442" class="sensor">vmmGolvVindfang</text>
-        <text x="651" y="440" class="sensor">vmmGolvUterum</text>
         <text x="175" y="574" class="cold">Borehole</text>
         <text x="270" y="280" class="cold">Incoming cold water</text>
         <text x="350" y="373" class="cold">Tap water</text>
-        
+
         <text x="478" y="98" class="hot">
             <tspan x="478">Ventilation</tspan>
             <tspan x="478" dy="12">heating coil</tspan>
@@ -130,8 +80,284 @@
             <tspan x="639">Tap water</tspan>
             <tspan x="639" dy="14">kitchen sink</tspan>
         </text>
+
+        <text x="385" y="196">{{getValue 'GVL.vmmvs_fwdtemp'}}</text>
+        <text x="314" y="269">{{getValue 'GVL.vmmvs_rettemp'}}</text>
+        <text x="338" y="232">{{getFlow 'GVL.vmmvs_flow'}}</text>
+        <text x="338" y="246">{{getVol 'GVL.vmmvs_vol'}}</text>
+        
+        <text x="490" y="139">{{getValue 'GVL.vmmvent_fwdtemp'}}</text>
+        <text x="539" y="199">{{getValue 'GVL.vmmvent_rettemp'}}</text>
+        <text x="540" y="164">{{getFlow 'GVL.vmmvent_flow'}}</text>
+        <text x="540" y="178">{{getVol 'GVL.vmmvent_vol'}}</text>
+
+        <text x="679" y="139">{{getValue 'GVL.vmmgolvpl2_fwdtemp'}}</text>
+        <text x="727" y="199">{{getValue 'GVL.vmmgolvpl2_rettemp'}}</text>
+        <text x="728" y="164">{{getFlow 'GVL.vmmgolvpl2_flow'}}</text>
+        <text x="728" y="178">{{getVol 'GVL.vmmgolvpl2_vol'}}</text>
+
+        <text x="865" y="142">{{getValue 'GVL.vmmradpl2_fwdtemp'}}</text>
+        <text x="915" y="203">{{getValue 'GVL.vmmradpl2_rettemp'}}</text>
+        <text x="915" y="169">{{getFlow 'GVL.vmmradpl2_flow'}}</text>
+        <text x="915" y="183">{{getVol 'GVL.vmmradpl2_vol'}}</text>
+
+        <text x="550" y="329">{{getValue 'GVL.vmmgolvpl1_fwdtemp'}}</text>
+        <text x="600" y="388">{{getValue 'GVL.vmmgolvpl1_rettemp'}}</text>
+        <text x="600" y="354">{{getFlow 'GVL.vmmgolvpl1_flow'}}</text>
+        <text x="600" y="368">{{getVol 'GVL.vmmgolvpl1_vol'}}</text>
+
+        <text x="738" y="329">{{getValue 'GVL.vmmradpl1_fwdtemp'}}</text>
+        <text x="787" y="388">{{getValue 'GVL.vmmradpl1_rettemp'}}</text>
+        <text x="787" y="354">{{getFlow 'GVL.vmmradpl1_flow'}}</text>
+        <text x="787" y="368">{{getVol 'GVL.vmmradpl1_vol'}}</text>
+
+        <text x="507" y="518">{{getValue 'GVL.vmmGolvVindfang_fwdtemp'}}</text>
+        <text x="437" y="593">{{getValue 'GVL.vmmGolvVindfang_rettemp'}}</text>
+        <text x="460" y="555">{{getFlow 'GVL.vmmGolvVindfang_flow'}}</text>
+        <text x="460" y="569">{{getVol 'GVL.vmmGolvVindfang_vol'}}</text>
+
+        <text x="739" y="518">{{getValue 'GVL.vmmGolvUterum_fwdtemp'}}</text>
+        <text x="669" y="593">{{getValue 'GVL.vmmGolvUterum_rettemp'}}</text>
+        <text x="693" y="555">{{getFlow 'GVL.vmmGolvUterum_flow'}}</text>
+        <text x="693" y="569">{{getVol 'GVL.vmmGolvUterum_vol'}}</text>
+
+        <text x="360" y="315">{{getFlow 'GVL.vmKv_flow'}}</text>
+        <text x="360" y="329">{{getVol 'GVL.vmKv_vol'}}</text>
+        <text x="230" y="315">{{getFlow 'GVL.tapp32_flow'}}</text>#vmKvvv
+        <text x="230" y="378">{{getVol 'GVL.tapp32_vol'}}</text>#vmKvvv
+        <text x="105" y="502">{{getFlow 'GVL.vmmkb_flow'}}</text>
+        <text x="105" y="516">{{getVol 'GVL.vmmkb_vol'}}</text>
+
+        <text x="125" y="695">{{getFlow 'GVL.tapp20_flow'}}</text>
+        <text x="263" y="695">{{getFlow 'GVL.tapp21_flow'}}</text>
+        <text x="340" y="695">{{getFlow 'GVL.tapp22_flow'}}</text>
+        <text x="483" y="695">{{getFlow 'GVL.tapp23_flow'}}</text>
+        <text x="570" y="695">{{getFlow 'GVL.tapp24_flow'}}</text>
+        <text x="715" y="695">{{getFlow 'GVL.tapp25_flow'}}</text>
+        <text x="125" y="840">{{getFlow 'GVL.tapp26_flow'}}</text>
+        <text x="263" y="840">{{getFlow 'GVL.tapp27_flow'}}</text>
+        <text x="340" y="840">{{getFlow 'GVL.tapp28_flow'}}</text>
+        <text x="473" y="840">{{getFlow 'GVL.tapp29_flow'}}</text>
+        <text x="570" y="840">{{getFlow 'GVL.tapp30_flow'}}</text>
+        <text x="705" y="840">{{getFlow 'GVL.tapp31_flow'}}</text>
+
+        <text x="125" y="709">{{getVol 'GVL.tapp20_vol'}}</text>
+        <text x="263" y="709">{{getVol 'GVL.tapp21_vol'}}</text>
+        <text x="340" y="709">{{getVol 'GVL.tapp22_vol'}}</text>
+        <text x="483" y="709">{{getVol 'GVL.tapp23_vol'}}</text>
+        <text x="570" y="709">{{getVol 'GVL.tapp24_vol'}}</text>
+        <text x="715" y="709">{{getVol 'GVL.tapp25_vol'}}</text>
+        <text x="125" y="854">{{getVol 'GVL.tapp26_vol'}}</text>
+        <text x="263" y="854">{{getVol 'GVL.tapp27_vol'}}</text>
+        <text x="340" y="854">{{getVol 'GVL.tapp28_vol'}}</text>
+        <text x="473" y="854">{{getVol 'GVL.tapp29_vol'}}</text>
+        <text x="570" y="854">{{getVol 'GVL.tapp30_vol'}}</text>
+        <text x="705" y="854">{{getVol 'GVL.tapp31_vol'}}</text>
+
+        <text x="326" y="118" class="sensor">vmmVs</text>
+        <rect x="326" y="118" width="40" height="100" style="fill:rgba(0,0,255,0.0);" id="rect_vmmvs" />
+        <g id="rect_vmmvs_info" transform="translate(216,118)">
+            <rect x="-4" y="-4" width="100" height="100" rx="4" ry="4" id="rect_vmmvs_info" class=".cd-popup" style="fill:url(#grad);stroke-width:1;stroke:rgb(140,140,140)" />
+            <line x1="0" y1="16" x2="92" y2="16" style="stroke:rgb(100,100,100);stroke-width:1" />
+            <text x="0" y="12">
+                <tspan x="0">Energy:</tspan>
+                <tspan x="0" dy="18">{{getEnergy 'GVL.vmmvs_energy'}}</tspan>
+            </text>
+            <line x1="0" y1="52" x2="92" y2="52" style="stroke:rgb(100,100,100);stroke-width:1" />
+            <text x="0" y="48">
+                <tspan x="0">Power:</tspan>
+                <tspan x="0" dy="18">{{getPower 'GVL.vmmvs_power'}}</tspan>
+            </text>
+            <g transform="translate(0,74)">
+            {{#each getFifo 'GVL.vmmvs_power'}}
+                <line x1={{x1}} y1={{y1}} x2={{x2}} y2={{y2}} style="stroke:rgb(100,100,240);stroke-width:1" />
+            {{/each}}
+            </g>
+        </g>
+        <text x="415" y="82" class="sensor">vmmVent</text>
+        <rect x="418" y="82" width="40" height="100" style="fill:rgba(0,0,255,0.0);" id="rect_vmmvent" />
+        <!--<rect x="308" y="82" width="100" height="100" rx="4" ry="4" id="rect_vmmvent_info" class=".cd-popup" style="fill:url(#grad)" />-->
+        <g id="rect_vmmvent_info" transform="translate(308,82)">
+            <rect x="-4" y="-4" width="100" height="100" rx="4" ry="4" id="rect_vmmvent_info" class=".cd-popup" style="fill:url(#grad);stroke-width:1;stroke:rgb(140,140,140)" />
+            <line x1="0" y1="16" x2="92" y2="16" style="stroke:rgb(100,100,100);stroke-width:1" />
+            <text x="0" y="12">
+                <tspan x="0">Energy:</tspan>
+                <tspan x="0" dy="18">{{getEnergy 'GVL.vmmvent_energy'}}</tspan>
+            </text>
+            <line x1="0" y1="52" x2="92" y2="52" style="stroke:rgb(100,100,100);stroke-width:1" />
+            <text x="0" y="48">
+                <tspan x="0">Power:</tspan>
+                <tspan x="0" dy="18">{{getPower 'GVL.vmmvent_power'}}</tspan>
+            </text>
+            <g transform="translate(0,74)">
+            {{#each getFifo 'GVL.vmmvent_power'}}
+                <line x1={{x1}} y1={{y1}} x2={{x2}} y2={{y2}} style="stroke:rgb(100,100,240);stroke-width:1" />
+            {{/each}}
+            </g>
+        </g>
+
+        <text x="254" y="420" class="sensor">vmmKb</text>
+        <rect x="254" y="420" width="40" height="100" style="fill:rgba(0,0,255,0.0);" id="rect_vmmkb" />
+        <!--<rect x="144" y="420" width="100" height="100" rx="4" ry="4" id="rect_vmmkb_info" class=".cd-popup" style="fill:url(#grad)" />-->
+        <g id="rect_vmmkb_info" transform="translate(144,420)">
+            <rect x="-4" y="-4" width="100" height="100" rx="4" ry="4" id="rect_vmmkb_info" class=".cd-popup" style="fill:url(#grad);stroke-width:1;stroke:rgb(140,140,140)" />
+            <line x1="0" y1="16" x2="92" y2="16" style="stroke:rgb(100,100,100);stroke-width:1" />
+            <text x="0" y="12">
+                <tspan x="0">Energy:</tspan>
+                <tspan x="0" dy="18">{{getEnergy 'GVL.vmmkb_energy'}}</tspan>
+            </text>
+            <line x1="0" y1="52" x2="92" y2="52" style="stroke:rgb(100,100,100);stroke-width:1" />
+            <text x="0" y="48">
+                <tspan x="0">Power:</tspan>
+                <tspan x="0" dy="18">{{getPower 'GVL.vmmkb_power'}}</tspan>
+            </text>
+            <g transform="translate(0,74)">
+            {{#each getFifo 'GVL.vmmkb_power'}}
+                <line x1={{x1}} y1={{y1}} x2={{x2}} y2={{y2}} style="stroke:rgb(100,100,240);stroke-width:1" />
+            {{/each}}
+            </g>
+        </g>
+
+        <text x="328" y="295" class="sensor">vmKv</text>
+
+        <text x="213" y="300" class="sensor">vmKvVv (tapp32)</text>
+
+        <text x="100" y="340" class="sensor">Heatpump</text>
+
+        <text x="780" y="82" class="sensor">vmmRadPl2</text>
+        <rect x="792" y="82" width="40" height="100" style="fill:rgba(0,0,255,0.0);" id="rect_vmmradpl2" />
+        <!--<rect x="682" y="82" width="100" height="100" rx="4" ry="4" id="rect_vmmradpl2_info" class=".cd-popup" style="fill:url(#grad)" />-->
+        <g id="rect_vmmradpl2_info" transform="translate(682,82)">
+            <rect x="-4" y="-4" width="100" height="100" rx="4" ry="4" id="rect_vmmradpl2_info" class=".cd-popup" style="fill:url(#grad);stroke-width:1;stroke:rgb(140,140,140)" />
+            <line x1="0" y1="16" x2="92" y2="16" style="stroke:rgb(100,100,100);stroke-width:1" />
+            <text x="0" y="12">
+                <tspan x="0">Energy:</tspan>
+                <tspan x="0" dy="18">{{getEnergy 'GVL.vmmradpl2_energy'}}</tspan>
+            </text>
+            <line x1="0" y1="52" x2="92" y2="52" style="stroke:rgb(100,100,100);stroke-width:1" />
+            <text x="0" y="48">
+                <tspan x="0">Power:</tspan>
+                <tspan x="0" dy="18">{{getPower 'GVL.vmmradpl2_power'}}</tspan>
+            </text>
+            <g transform="translate(0,74)">
+            {{#each getFifo 'GVL.vmmradpl2_power'}}
+                <line x1={{x1}} y1={{y1}} x2={{x2}} y2={{y2}} style="stroke:rgb(100,100,240);stroke-width:1" />
+            {{/each}}
+            </g>
+        </g>
+
+        <text x="464" y="270" class="sensor">vmmGolvPl1</text>
+        <rect x="479" y="270" width="40" height="100" style="fill:rgba(0,0,255,0.0);" id="rect_vmmgolvpl1" />
+        <!--<rect x="369" y="270" width="100" height="100" rx="4" ry="4" id="rect_vmmgolvpl1_info" class=".cd-popup" style="fill:url(#grad)" />-->
+        <g id="rect_vmmgolvpl1_info" transform="translate(369,270)">
+            <rect x="-4" y="-4" width="100" height="100" rx="4" ry="4" id="rect_vmmgolvpl1_info" class=".cd-popup" style="fill:url(#grad);stroke-width:1;stroke:rgb(140,140,140)" />
+            <line x1="0" y1="16" x2="92" y2="16" style="stroke:rgb(100,100,100);stroke-width:1" />
+            <text x="0" y="12">
+                <tspan x="0">Energy:</tspan>
+                <tspan x="0" dy="18">{{getEnergy 'GVL.vmmgolvpl1_energy'}}</tspan>
+            </text>
+            <line x1="0" y1="52" x2="92" y2="52" style="stroke:rgb(100,100,100);stroke-width:1" />
+            <text x="0" y="48">
+                <tspan x="0">Power:</tspan>
+                <tspan x="0" dy="18">{{getPower 'GVL.vmmgolvpl1_power'}}</tspan>
+            </text>
+            <g transform="translate(0,74)">
+            {{#each getFifo 'GVL.vmmgolvpl1_power'}}
+                <line x1={{x1}} y1={{y1}} x2={{x2}} y2={{y2}} style="stroke:rgb(100,100,240);stroke-width:1" />
+            {{/each}}
+            </g>
+        </g>
+
+        <text x="593" y="82" class="sensor">vmmGolvPl2</text>
+        <rect x="605" y="82" width="40" height="100" style="fill:rgba(0,0,255,0.0);" id="rect_vmmgolvpl2" />
+        <!--<rect x="495" y="82" width="100" height="100" rx="4" ry="4" id="rect_vmmgolvpl2_info" class=".cd-popup" style="fill:url(#grad)" />-->
+        <g id="rect_vmmgolvpl2_info" transform="translate(495,82)">
+            <rect x="-4" y="-4" width="100" height="100" rx="4" ry="4" id="rect_vmmgolvpl2_info" class=".cd-popup" style="fill:url(#grad);stroke-width:1;stroke:rgb(140,140,140)" />
+            <line x1="0" y1="16" x2="92" y2="16" style="stroke:rgb(100,100,100);stroke-width:1" />
+            <text x="0" y="12">
+                <tspan x="0">Energy:</tspan>
+                <tspan x="0" dy="18">{{getEnergy 'GVL.vmmgolvpl2_energy'}}</tspan>
+            </text>
+            <line x1="0" y1="52" x2="92" y2="52" style="stroke:rgb(100,100,100);stroke-width:1" />
+            <text x="0" y="48">
+                <tspan x="0">Power:</tspan>
+                <tspan x="0" dy="18">{{getPower 'GVL.vmmgolvpl2_power'}}</tspan>
+            </text>
+            <g transform="translate(0,74)">
+            {{#each getFifo 'GVL.vmmgolvpl2_power'}}
+                <line x1={{x1}} y1={{y1}} x2={{x2}} y2={{y2}} style="stroke:rgb(100,100,240);stroke-width:1" />
+            {{/each}}
+            </g>
+        </g>
+
+        <text x="651" y="270" class="sensor">vmmRadPl1</text>
+        <rect x="665" y="270" width="40" height="100" style="fill:rgba(0,0,255,0.0);" id="rect_vmmradpl1" />
+        <!--<rect x="555" y="270" width="100" height="100" rx="4" ry="4" id="rect_vmmradpl1_info" class=".cd-popup" style="fill:url(#grad)" />-->
+        <g id="rect_vmmradpl1_info" transform="translate(555,270)">
+            <rect x="-4" y="-4" width="100" height="100" rx="4" ry="4" id="rect_vmmradpl1_info" class=".cd-popup" style="fill:url(#grad);stroke-width:1;stroke:rgb(140,140,140)" />
+            <line x1="0" y1="16" x2="92" y2="16" style="stroke:rgb(100,100,100);stroke-width:1" />
+            <text x="0" y="12">
+                <tspan x="0">Energy:</tspan>
+                <tspan x="0" dy="18">{{getEnergy 'GVL.vmmradpl1_energy'}}</tspan>
+            </text>
+            <line x1="0" y1="52" x2="92" y2="52" style="stroke:rgb(100,100,100);stroke-width:1" />
+            <text x="0" y="48">
+                <tspan x="0">Power:</tspan>
+                <tspan x="0" dy="18">{{getPower 'GVL.vmmradpl1_power'}}</tspan>
+            </text>
+            <g transform="translate(0,74)">
+            {{#each getFifo 'GVL.vmmradpl1_power'}}
+                <line x1={{x1}} y1={{y1}} x2={{x2}} y2={{y2}} style="stroke:rgb(100,100,240);stroke-width:1" />
+            {{/each}}
+            </g>
+        </g>
+
+        <text x="417" y="442" class="sensor">vmmGolvVindfang</text>
+        <rect x="446" y="442" width="40" height="100" style="fill:rgba(0,0,255,0.0);" id="rect_vmmgolvvindfang" />
+        <!-- <rect x="336" y="442" width="100" height="100" rx="4" ry="4" id="rect_vmmgolvvindfang_info" class=".cd-popup" style="fill:url(#grad)" /> -->
+        <g id="rect_vmmgolvvindfang_info" transform="translate(336,442)">
+            <rect x="-4" y="-4" width="100" height="100" rx="4" ry="4" id="rect_vmmgolvvindfang_info" class=".cd-popup" style="fill:url(#grad);stroke-width:1;stroke:rgb(140,140,140)" />
+            <line x1="0" y1="16" x2="92" y2="16" style="stroke:rgb(100,100,100);stroke-width:1" />
+            <text x="0" y="12">
+                <tspan x="0">Energy:</tspan>
+                <tspan x="0" dy="18">{{getEnergy 'GVL.vmmGolvVindfang_energy'}}</tspan>
+            </text>
+            <line x1="0" y1="52" x2="92" y2="52" style="stroke:rgb(100,100,100);stroke-width:1" />
+            <text x="0" y="48">
+                <tspan x="0">Power:</tspan>
+                <tspan x="0" dy="18">{{getPower 'GVL.vmmGolvVindfang_power'}}</tspan>
+            </text>
+            <g transform="translate(0,74)">
+            {{#each getFifo 'GVL.vmmGolvVindfang_power'}}
+                <line x1={{x1}} y1={{y1}} x2={{x2}} y2={{y2}} style="stroke:rgb(100,100,240);stroke-width:1" />
+            {{/each}}
+            </g>
+        </g>
+
+        <text x="651" y="440" class="sensor">vmmGolvUterum</text>
+        <rect x="678" y="440" width="40" height="100" style="fill:rgba(0,0,255,0.0);" id="rect_vmmgolvuterum" />
+     <!--    <rect x="568" y="440" width="100" height="100" rx="4" ry="4" id="rect_vmmgolvuterum_info" class=".cd-popup" style="fill:url(#grad)" /> -->
+        <g id="rect_vmmgolvuterum_info" transform="translate(568,440)">
+            <rect x="-4" y="-4" width="100" height="100" rx="4" ry="4" id="rect_vmmgolvuterum_info" class=".cd-popup" style="fill:url(#grad);stroke-width:1;stroke:rgb(140,140,140)" />
+            <line x1="0" y1="16" x2="92" y2="16" style="stroke:rgb(100,100,100);stroke-width:1" />
+            <text x="0" y="12">
+                <tspan x="0">Energy:</tspan>
+                <tspan x="0" dy="18">{{getEnergy 'GVL.vmmGolvUterum_energy'}}</tspan>
+            </text>
+            <line x1="0" y1="52" x2="92" y2="52" style="stroke:rgb(100,100,100);stroke-width:1" />
+            <text x="0" y="48">
+                <tspan x="0">Power:</tspan>
+                <tspan x="0" dy="18">{{getPower 'GVL.vmmGolvUterum_power'}}</tspan>
+            </text>
+            <g transform="translate(0,74)">
+            {{#each getFifo 'GVL.vmmGolvUterum_power'}}
+                <line x1={{x1}} y1={{y1}} x2={{x2}} y2={{y2}} style="stroke:rgb(100,100,240);stroke-width:1" />
+            {{/each}}
+            </g>
+        </g>
+        
       </svg>
     </div>
-    <div class="panel-footer">Panel footer</div>
+    <div class="panel-footer">Move the mouse over a heat meter to see its power and energy data.</div>
   </div>
 </template>

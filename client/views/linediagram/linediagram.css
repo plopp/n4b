@@ -9,3 +9,22 @@
 .sensor {
 	fill: rgba(40,40,40,0.5);
 }
+
+.cd-popup {
+  	opacity: 0;
+  	visibility: hidden;
+  	transition: opacity 0.1s 0s, visibility 0s 0.2s;
+}
+ 
+.cd-popup.is-visible {
+  	opacity: 1;
+  	visibility: visible;
+  	transition: opacity 0.1s 0s, visibility 0s 0s;
+}
+
+.sparkline {
+	position:absolute;
+	height:16px !important;
+	width:60px !important;
+	overflow:hidden;
+}

@@ -156,7 +156,7 @@ var debug = false;
 Meteor.setInterval(function(){
     Meteor.call("doJob");
     Meteor.call("collectLog");
-},60000);
+},10000);
 
 //var oneJob = function(){
     //doJob();
@@ -309,6 +309,15 @@ var weekt = later.setInterval(weekJob, weeks);
 
 
 Meteor.methods({
+  getFifo : function(plcvar){
+    var ret = Resources.findOne({plcVar: plcvar});
+    if(ret !== undefined){
+      return ret.fifo.join();
+    }
+    else{
+      return [0].join();
+    }
+  },
   calcOcc : function(){
     //var schedule = Meteor.npmRequire('node-schedule');
     //var later = Meteor.npmRequire('later');
@@ -1709,6 +1718,26 @@ function sendToPlc(handlesVarNames, values, method){
                       var resId = Resources.find({plcVar: handlesVarNames[i]},{fields:{_id: 1}}).fetch()[0]._id;
                       //console.log(resId);
                       Resources.update({_id: resId},{$set: {value: varValue, timestamp: (new Date).getTime()}});
+                      
+                      //Add a simple fifo buffer to each resource to save its last 10minutes values
+                      var res = Resources.findOne(resId);
+                      if(res){
+                        if(res.fifo === undefined){
+                          //Create it if it does not exists
+                          var $set = {};
+                          $set['fifo'] = [];
+                          Resources.update({_id:resId}, { $set: $set });
+                        }
+                        if(res.fifo !== undefined){
+                          //Do fifo buffering if it exists
+                          res.fifo.push(varValue);
+                          if(res.fifo.length > 20){
+                            res.fifo.shift();
+                          }
+                          Resources.update({_id:resId}, { $set: {fifo: res.fifo} });
+                          console.log(res.fifo);
+                        }
+                      }
                       //console.log("Updating RESOURCE here!");
 
                       /*Plotdata.insert({
