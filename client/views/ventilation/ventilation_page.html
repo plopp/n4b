@@ -1,0 +1,21 @@
+<template name="ventilationPage">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Ventilation</h3>
+                </div>
+                <div id="svgcontainer" class="panel-body" style="margin-top: 40px">
+                    <img src="/img/ftx.jpg" style="">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="600" height="600" style="position:absolute;top:40px;left:0px;z-index:1">
+                        <text x="56" y="40">{{getValue 'GVL.franluft283'}}</text>
+                        <text x="124" y="40">{{getValue 'GVL.uteluft280'}}</text>
+                        <text x="189" y="40">{{getValue 'GVL.avluftteknikrum279'}}</text>
+                        <text x="261" y="40">{{getValue 'GVL.tilluft282'}}</text>  
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6"></div>
+    </div>
+</template>
