@@ -35,6 +35,7 @@ to enable this. This application requires that this API is served on a IP-addres
 ![n4b8](https://cloud.githubusercontent.com/assets/590304/7315359/fbbe360e-ea6c-11e4-86fe-0998d56b0833.png)
 <hr>
 ![n4b2](https://cloud.githubusercontent.com/assets/590304/7315362/fbd9fc0e-ea6c-11e4-9749-c509ec972240.png)
-
+<hr>
+![n4blinediagram](https://cloud.githubusercontent.com/assets/590304/8106092/bca625ba-103e-11e5-9365-b5b3a9e8e31b.png)
 
 
