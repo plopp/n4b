@@ -156,7 +156,7 @@ var debug = false;
 Meteor.setInterval(function(){
     Meteor.call("doJob");
     Meteor.call("collectLog");
-},10000);
+},60000);
 
 //var oneJob = function(){
     //doJob();
