@@ -1,10 +1,10 @@
 <template name="dashboardPage">
   <div class="dashboard-content" style="display: block; float: left">
     <div style="position: relative; padding: 100px 30px 30px 30px">
-      <div style="position: absolute; left: 30px; top: 0px">
+      <div style="position: absolute; left: 30px; top: -35px">
         <span class="glyphicon glyphicon-home" style= "font-size: 200px; margin: 120px 50px 50px 50px"></span>
       </div>
-      <div style="position: absolute; left: 80px; top: 260px">
+      <div style="position: absolute; left: 80px; top: 225px">
         <svg style="float: right;" height="80" width="80" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
               <image x="0" y="0" height="80" width="80"  xlink:href="/Icons/SVG/leaf.svg"></image>
         </svg>
@@ -20,7 +20,15 @@
         A resource can for example be a heat pump, a lamp, an outlet or anything else that is actively controlled by the control
         system in the house.
 
-      <p><a href="{{pathFor 'documentationPage'}}" class="btn btn-primary btn-lg" role="button">Learn more</a></p>
+      <p style="margin-top:10px"><a href="{{pathFor 'documentationPage'}}" class="btn btn-primary btn-lg" role="button">Learn more</a></p>
+    </div>
+    <div class="panel panel-default" style="margin-top: 60px">
+      <div class="panel-heading">
+        <h3 class="panel-title"><span style="color:rgba(241,196,15,1.0)">Solar production</span> vs <span style="color:rgba(46,204,113,1.0)">bought electricity</span></h3>
+      </div>
+      <div class="panel-body">
+        <canvas id="barChartSolar" width="800" height="200"></canvas>
+      </div>
     </div>
   </div>
 </template>

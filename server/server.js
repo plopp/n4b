@@ -1735,7 +1735,6 @@ function sendToPlc(handlesVarNames, values, method){
                             res.fifo.shift();
                           }
                           Resources.update({_id:resId}, { $set: {fifo: res.fifo} });
-                          console.log(res.fifo);
                         }
                       }
                       //console.log("Updating RESOURCE here!");
