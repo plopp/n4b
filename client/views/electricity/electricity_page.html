@@ -1,0 +1,17 @@
+<template name="electricityPage">
+    <div class="panel panel-default">
+      <!-- Default panel contents -->
+      <div class="panel-heading">Electricity</div>
+        <div class="panel-body">
+          <img id="elsystemimg" src="img/elsystem.jpg" style="display: none;">
+          <div id="container">
+          </div>
+        </div>
+    </div>
+    <div style="display:none">
+    {{getCurrentPvPower}}
+    {{getCurrentAbbPower}}
+    {{getCurrentOutletsPower}}
+    {{getCurrentHeatingPower}}
+    </div>
+</template>
